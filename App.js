@@ -72,7 +72,6 @@ const App = () => {
           <Section title="Debug">
             <DebugInstructions />
           </Section>
-          <LearnMoreLinks />
         </View>
       </ScrollView>
     </SafeAreaView>
