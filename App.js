@@ -17,7 +17,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import {HomeScreen} from "./screens/home";
+import {HomeScreen} from "./screens/pages/home";
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
