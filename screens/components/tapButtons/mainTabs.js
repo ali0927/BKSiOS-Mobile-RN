@@ -5,6 +5,7 @@ import { HomeScreen } from '../../pages/home';
 import { ExplorerScreen } from '../../pages/explorer';
 import { SettingsScreen } from '../../pages/settings';
 import { NewsScreen } from '../../pages/news';
+import { SettingsStackScreen } from './settingsStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,7 +16,7 @@ export default function MainTabs() {
         <Tab.Screen name="Home" component={HomeScreen}  options={{ headerShown: false }} />
         <Tab.Screen name="Explorer" component={ExplorerScreen}  options={{ headerShown: false }} />
         <Tab.Screen name="News" component={NewsScreen}  options={{ headerShown: false }} />
-        <Tab.Screen name="Settings" component={SettingsScreen}  options={{ headerShown: false }} />
+        <Tab.Screen name="Settings" component={SettingsStackScreen}  options={{ headerShown: false }} />
       </Tab.Navigator>
     </NavigationContainer>
   );

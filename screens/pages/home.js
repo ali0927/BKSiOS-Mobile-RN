@@ -12,11 +12,11 @@ import BackstagersCarousel from '../components/homePage/backstagersCarousel';
 import ExploreCarousel from '../components/homePage/exploreCarousel';
 import GetStarted from '../components/getStarted';
 
-export const HomeScreen = () => {
+export const HomeScreen = ({navigation}) => {
   return (
     <ScrollView style={styles.container}>
       <View>
-        <HomeHero />
+        <HomeHero navigation = {navigation}/>
       </View>
       <View>
         <Text style={styles.subtitle}>Hot Collections</Text>

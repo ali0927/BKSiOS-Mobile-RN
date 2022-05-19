@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: "100%",
     borderRadius: 16,
-    border: '1px solid #14142f',
   },
   collectionName: {
     width: '100%',

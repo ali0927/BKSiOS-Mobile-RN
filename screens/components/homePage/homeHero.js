@@ -9,7 +9,7 @@ import {
 import { NativeScreenNavigationContainer } from 'react-native-screens';
 import homeBackImg from '../../../assets/img/home/home.png';
 
-export const HomeHero = () => (
+export const HomeHero = ({navigation}) => (
   <View style={styles.container}>
     <ImageBackground
       style={styles.imgBackground}
@@ -18,10 +18,10 @@ export const HomeHero = () => (
       <Text style={styles.text1}>The events NFT marketplace</Text>
       <Text style={styles.text2}>A decentralized Ecosystems </Text>
       <Text style={styles.text2}>powering the events industry</Text>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Explorer")}>
         <Text style={styles.text3}>Explore</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => console.log("SFSFS")}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("SignIn")}>
         <Text style={styles.text3}>Sign In</Text>
       </TouchableOpacity>
     </ImageBackground>
