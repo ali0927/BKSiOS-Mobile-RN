@@ -5,12 +5,11 @@ import {
   Text,
   View,
 } from 'react-native';
-import {HomeHero} from '../components/homeHero';
-import CollectionCarousel from '../components/collectionCarousel';
-import {windowHeight} from '../../config/config';
-import EventsCarousel from '../components/eventsCarousel';
-import BackstagersCarousel from '../components/backstagersCarousel';
-import ExploreCarousel from '../components/exploreCarousel';
+import {HomeHero} from '../components/homePage/homeHero';
+import CollectionCarousel from '../components/homePage/collectionCarousel';
+import EventsCarousel from '../components/homePage/eventsCarousel';
+import BackstagersCarousel from '../components/homePage/backstagersCarousel';
+import ExploreCarousel from '../components/homePage/exploreCarousel';
 import GetStarted from '../components/getStarted';
 
 export const HomeScreen = () => {

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { NativeScreenNavigationContainer } from 'react-native-screens';
 import homeBackImg from '../../assets/img/home/home.png';
 
 export const HomeHero = () => (
@@ -20,7 +21,7 @@ export const HomeHero = () => (
       <TouchableOpacity style={styles.button}>
         <Text style={styles.text3}>Explore</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => console.log("SFSFS")}>
         <Text style={styles.text3}>Sign In</Text>
       </TouchableOpacity>
     </ImageBackground>

@@ -8,7 +8,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import {collectionList} from '../constant/collections';
+import {collectionList} from '../../constant/collections';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
