@@ -36,6 +36,7 @@ export const HomeScreen = () => {
         <ExploreCarousel />
       </View>
       <View>
+        <View style={styles.divider}></View>
         <Text style={styles.subtitle}>Get started creating & selling your NFTs</Text>
         <GetStarted />
       </View>
@@ -46,7 +47,6 @@ export const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    minHeight: windowHeight,
     backgroundColor: '#14142f',
   },
   subtitle: {
@@ -57,5 +57,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 50,
   },
-  
+  divider: {
+    width: "100%",
+    backgroundColor: "#887bff",
+    height: 2,
+    marginTop: 50,
+    marginBottom: 20
+  },
 });
