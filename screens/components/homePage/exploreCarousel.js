@@ -7,9 +7,9 @@ import {
   StyleSheet,
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import img1 from '../../assets/img/cover/cover3.jpg';
-import img2 from '../../assets/img/cover/cover4.jpg';
-import img3 from '../../assets/img/cover/cover5.jpg';
+import img1 from '../../../assets/img/cover/cover3.jpg';
+import img2 from '../../../assets/img/cover/cover4.jpg';
+import img3 from '../../../assets/img/cover/cover5.jpg';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);

@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import { NativeScreenNavigationContainer } from 'react-native-screens';
-import homeBackImg from '../../assets/img/home/home.png';
+import homeBackImg from '../../../assets/img/home/home.png';
 
 export const HomeHero = () => (
   <View style={styles.container}>
