@@ -1,11 +1,5 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {HomeHero} from '../components/homePage/homeHero';
-import CollectionCarousel from '../components/homePage/collectionCarousel';
-import EventsCarousel from '../components/homePage/eventsCarousel';
-import BackstagersCarousel from '../components/homePage/backstagersCarousel';
-import ExploreCarousel from '../components/homePage/exploreCarousel';
-import GetStarted from '../components/getStarted';
 import {Banner} from '../components/authorPage/banner';
 import { Overview } from '../components/authorPage/overview';
 
@@ -15,28 +9,8 @@ export const AuthorScreen = ({navigation}) => {
       <View>
         <Banner />
       </View>
-      
       <View>
           <Overview />
-      </View>
-      <View>
-        <Text style={styles.subtitle}>Latest Events</Text>
-        <EventsCarousel />
-      </View>
-      <View>
-        <Text style={styles.subtitle}>Backstagers</Text>
-        <BackstagersCarousel />
-      </View>
-      <View>
-        <Text style={styles.subtitle}>Explore</Text>
-        <ExploreCarousel />
-      </View>
-      <View>
-        <View style={styles.divider}></View>
-        <Text style={styles.subtitle}>
-          Get started creating & selling your NFTs
-        </Text>
-        <GetStarted />
       </View>
     </ScrollView>
   );

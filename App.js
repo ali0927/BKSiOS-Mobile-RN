@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
+import {ToastProvider} from 'react-native-toast-notifications';
 import MainTabs from './screens/components/tapButtons/mainTabs';
 
 import {MainPage} from './screens/pages/mainPage';
@@ -9,9 +10,11 @@ const App = () => {
   useEffect(() => {}, [isStarted]);
   if (!isStarted) return <MainPage submit={setIsStarted} />;
   return (
+    <ToastProvider>
     <SafeAreaView style={styles.container}>
       <MainTabs />
     </SafeAreaView>
+    </ToastProvider>
   );
 };
 

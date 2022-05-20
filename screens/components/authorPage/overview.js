@@ -5,17 +5,21 @@ import {
   StyleSheet,
   TextInput,
   Image,
-  Button,
   Platform,
   TouchableOpacity,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
+import Clipboard from '@react-native-clipboard/clipboard';
+
+import {useToast} from 'react-native-toast-notifications';
+
 import imgAvatar from '../../../assets/img/avatars/avatar.jpg';
 import badgeMark from '../../../assets/img/icons/verified.png';
 import socialImg1 from '../../../assets/img/icons/social1.png';
 import socialImg2 from '../../../assets/img/icons/social2.png';
 import socialImg3 from '../../../assets/img/icons/social3.png';
 import socialImg4 from '../../../assets/img/icons/social4.png';
+import copyImg from '../../../assets/img/icons/copy-32.png';
 
 const SERVER_URL = 'http://localhost:3000';
 
@@ -37,6 +41,8 @@ const createFormData = (photo, body = {}) => {
 
 export const Overview = () => {
   const [photo, setPhoto] = useState(null);
+
+  const toast = useToast();
 
   const handleChoosePhoto = async () => {
     const result = await launchImageLibrary({mediaType: 'photo'}, response => {
@@ -61,14 +67,30 @@ export const Overview = () => {
       });
   };
 
+  const copyToClipboard = key => {
+    toast.show('Copied', {
+        type: "success",
+        placement: "bottom",
+        duration: 4000,
+        offset: 80,
+        animationType: "zoom-in",
+      });
+    if (key === 'wallet') {
+      Clipboard.setString('XAVUW3sw3ZunitokcLtemEfX3tGuX2plateWdh');
+    } else {
+      Clipboard.setString('https://bksbackstage.io');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <TouchableOpacity onPress={handleChoosePhoto} style={styles.avatarDiv}>
-          <Image
-            source={{uri: photo ? photo.uri : imgAvatar}}
-            style={styles.avatarImg}
-          />
+          {photo ? (
+            <Image source={{uri: photo.uri}} style={styles.avatarImg} />
+          ) : (
+            <Image source={imgAvatar} style={styles.avatarImg} />
+          )}
           <Image source={badgeMark} style={styles.badgeMark} />
         </TouchableOpacity>
         {/* <Button title="Save" onPress={handleUploadPhoto} /> */}
@@ -77,16 +99,31 @@ export const Overview = () => {
       <Text style={styles.text2}>
         Please insert below your Binance Smart Chain wallet address
       </Text>
-      <TextInput
-        style={styles.input}
-        editable={false}
-        value="XAVUW3sw3ZunitokcLtemEfX3tGuX2plateWdh"
-      />
-      <TextInput
-        style={styles.input}
-        editable={false}
-        value="https://bksbackstage.io"
-      />
+      <View style={styles.clipboardDiv}>
+        <TextInput
+          style={styles.input}
+          editable={false}
+          value="XAVUW3sw3ZunitokcLtemEfX3tGuX2plateWdh"
+        />
+        <TouchableOpacity
+          style={styles.copyImg}
+          onPress={() => copyToClipboard('wallet')}>
+          <Image source={copyImg} />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.clipboardDiv}>
+        <TextInput
+          style={styles.input}
+          editable={false}
+          value="https://bksbackstage.io"
+        />
+        <TouchableOpacity
+          style={styles.copyImg}
+          onPress={() => copyToClipboard('website')}>
+          <Image source={copyImg} />
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.socialDiv}>
         <Image source={socialImg1} style={styles.socialImg} />
         <Image source={socialImg2} style={styles.socialImg} />
@@ -119,7 +156,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     marginTop: -150,
-    marginBottom: 30
+    marginBottom: 30,
   },
   avatarImg: {
     width: '100%',
@@ -139,11 +176,21 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
   },
+  clipboardDiv: {
+    position: 'relative',
+  },
+  copyImg: {
+    position: 'absolute',
+    right: 10,
+    top: 25,
+    opacity: 0.7,
+  },
   input: {
     height: 45,
     backgroundColor: '#534f77',
     marginTop: 20,
     padding: 8,
+    paddingRight: 50,
     paddingLeft: 20,
     color: 'white',
     borderRadius: 14,
@@ -185,7 +232,7 @@ const styles = StyleSheet.create({
   socialImg: {
     marginRight: 20,
     width: 30,
-    height: 30
+    height: 30,
   },
   followDiv: {
     flexDirection: 'row',
