@@ -7,8 +7,10 @@ import {
   Image,
   TouchableOpacity,
   Text,
+  ScrollView,
 } from 'react-native';
 import CheckBox from 'react-native-check-box';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import imgLogo from '../../../assets/img/logo.png';
 
 export const SignUpScreen = ({navigation}) => {
@@ -29,6 +31,13 @@ export const SignUpScreen = ({navigation}) => {
       <Image source={imgLogo} style={styles.img} />
       <TextInput
         style={styles.input}
+        placeholder="Name"
+        autoCapitalize="none"
+        placeholderTextColor="white"
+        onChangeText={val => setUserEmail(val)}
+      />
+      <TextInput
+        style={styles.input}
         placeholder="Email"
         autoCapitalize="none"
         placeholderTextColor="white"
@@ -42,29 +51,49 @@ export const SignUpScreen = ({navigation}) => {
         placeholderTextColor="white"
         onChangeText={val => setPwd(val)}
       />
-      <CheckBox
-        style={styles.checkBox}
-        onClick={()=>{
-            setChecked(!checked)
+      <View
+        style={{
+          flexDirection: 'row',
+          marginTop: 20,
+          alignItems: 'center',
+          width: 350,
+        }}>
+        <CheckBox
+          style={styles.checkBox}
+          onClick={() => {
+            setChecked(!checked);
           }}
-        isChecked={checked}
-        checkBoxColor={'#534f77'}
-        rightTextStyle={styles.checkBoxText}
-        rightText={'Remember Me'}
-    />
-      <TouchableOpacity style={styles.button} onPress={() => signUp()}>
-        <Text style={styles.text3}>Sign In</Text>
-      </TouchableOpacity>
-      <View style={{flexDirection: "row", marginTop: 30, marginBottom: 20}}>
-        <Text style={styles.text1}>Don't have an account?</Text>
-        <Text style={styles.text2} onPress={() => navigation.navigate("SignUp")}>Sign up!</Text>
+          isChecked={checked}
+          checkBoxColor={'#534f77'}
+          rightTextStyle={styles.checkBoxText}
+          rightText={''}
+        />
+        <Text style={styles.text1}>I agree to the</Text>
+        <Text style={styles.text2}>Privacy Policy</Text>
       </View>
-      <Text style={styles.text2} onPress={() => navigation.navigate("ForgetPassword")}>Forgot password?</Text>
+
+      <TouchableOpacity style={styles.button} onPress={() => signUp()}>
+        <Text style={styles.text3}>Sign Up</Text>
+      </TouchableOpacity>
+      <View style={{flexDirection: 'row', marginTop: 30, marginBottom: 20}}>
+        <Text style={styles.text1}>Already have an account?</Text>
+        <Text
+          style={styles.text2}
+          onPress={() => navigation.navigate('SignIn')}>
+          Sign In!
+        </Text>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#14142f',
+  },
   input: {
     width: 350,
     height: 55,
@@ -77,12 +106,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
   },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#14142f',
-  },
   img: {
     width: '70%',
     height: 52,
@@ -94,7 +117,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
     height: 40,
-    marginRight: 20
+    marginRight: 10,
   },
   text2: {
     color: '#6164ff',
@@ -121,12 +144,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   checkBox: {
-      width: 350,
-      height: 20,
-      marginTop: 20,
+    width: 30,
+    height: 30,
+    marginTop: -12,
   },
-  checkBoxText: {
-      color: "#fff",
-      fontSize: 16
-  }
 });

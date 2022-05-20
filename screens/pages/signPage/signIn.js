@@ -44,22 +44,30 @@ export const SignInScreen = ({navigation}) => {
       />
       <CheckBox
         style={styles.checkBox}
-        onClick={()=>{
-            setChecked(!checked)
-          }}
+        onClick={() => {
+          setChecked(!checked);
+        }}
         isChecked={checked}
         checkBoxColor={'#534f77'}
         rightTextStyle={styles.checkBoxText}
         rightText={'Remember Me'}
-    />
+      />
       <TouchableOpacity style={styles.button} onPress={() => signIn()}>
         <Text style={styles.text3}>Sign In</Text>
       </TouchableOpacity>
-      <View style={{flexDirection: "row", marginTop: 30, marginBottom: 20}}>
+      <View style={{flexDirection: 'row', marginTop: 30, marginBottom: 20}}>
         <Text style={styles.text1}>Don't have an account?</Text>
-        <Text style={styles.text2} onPress={() => navigation.navigate("SignUp")}>Sign up!</Text>
+        <Text
+          style={styles.text2}
+          onPress={() => navigation.navigate('SignUp')}>
+          Sign up!
+        </Text>
       </View>
-      <Text style={styles.text2} onPress={() => navigation.navigate("ForgetPassword")}>Forgot password?</Text>
+      <Text
+        style={styles.text2}
+        onPress={() => navigation.navigate('ForgetPassword')}>
+        Forgot password?
+      </Text>
     </View>
   );
 };
@@ -94,7 +102,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
     height: 40,
-    marginRight: 20
+    marginRight: 20,
   },
   text2: {
     color: '#6164ff',
@@ -121,12 +129,12 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   checkBox: {
-      width: 350,
-      height: 20,
-      marginTop: 20,
+    width: 350,
+    height: 20,
+    marginTop: 20,
   },
   checkBoxText: {
-      color: "#fff",
-      fontSize: 16
-  }
+    color: '#fff',
+    fontSize: 16,
+  },
 });
