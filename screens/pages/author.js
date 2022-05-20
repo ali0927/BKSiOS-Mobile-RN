@@ -16,7 +16,8 @@ import {Profile} from '../components/authorPage/profile';
 export const AuthorScreen = ({navigation}) => {
   const [selected, setSelected] = useState(0);
   return (
-    <ScrollView stickyHeaderIndices={[0]} style={styles.container}>
+    <ScrollView style={styles.container}>
+    {/* <ScrollView stickyHeaderIndices={[1]} style={styles.container}> */}
       <ScrollView horizontal={true}>
         <View style={styles.categories}>
           <TouchableOpacity onPress={() => setSelected(0)}>
