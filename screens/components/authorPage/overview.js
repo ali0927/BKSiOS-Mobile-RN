@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import imgAvatar from '../../../assets/img/avatars/avatar.jpg';
-import badgeMark from '../../../assets/img/avatars/avatar.jpg';
+import badgeMark from '../../../assets/img/icons/verified.png';
 import socialImg1 from '../../../assets/img/icons/social1.png';
 import socialImg2 from '../../../assets/img/icons/social2.png';
 import socialImg3 from '../../../assets/img/icons/social3.png';
@@ -69,11 +69,10 @@ export const Overview = () => {
             source={{uri: photo ? photo.uri : imgAvatar}}
             style={styles.avatarImg}
           />
+          <Image source={badgeMark} style={styles.badgeMark} />
         </TouchableOpacity>
-        <Image source={badgeMark} />
         {/* <Button title="Save" onPress={handleUploadPhoto} /> */}
       </View>
-        
       <Text style={styles.text1}>Mislan</Text>
       <Text style={styles.text2}>
         Please insert below your Binance Smart Chain wallet address
@@ -113,23 +112,35 @@ export const Overview = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 30,
   },
   avatarDiv: {
-    width: 250,
-    height: 250,
-    borderRadius: 20,
-    borderColor: '#fff',
-    borderWidth: 3,
-    marginTop: -150
+    position: 'relative',
+    width: 200,
+    height: 200,
+    marginTop: -150,
+    marginBottom: 30
   },
   avatarImg: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 20
+    width: '100%',
+    height: '100%',
+    borderRadius: 20,
+    borderColor: '#ee4f77',
+    borderWidth: 3,
+  },
+  badgeMark: {
+    position: 'absolute',
+    right: -5,
+    bottom: -5,
+    backgroundColor: '#2f80ed',
+    borderRadius: 20,
+    borderColor: '#fff',
+    borderWidth: 2,
+    width: 30,
+    height: 30,
   },
   input: {
-    height: 55,
+    height: 45,
     backgroundColor: '#534f77',
     marginTop: 20,
     padding: 8,
@@ -173,6 +184,8 @@ const styles = StyleSheet.create({
   },
   socialImg: {
     marginRight: 20,
+    width: 30,
+    height: 30
   },
   followDiv: {
     flexDirection: 'row',
