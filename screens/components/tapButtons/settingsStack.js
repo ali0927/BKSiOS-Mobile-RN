@@ -10,9 +10,6 @@ const SettingsStack = createNativeStackNavigator();
 export const SettingsStackScreen = () => {
   return (
     <SettingsStack.Navigator>
-      <SettingsStack.Screen name="SignIn" component={SignInScreen} />
-      <SettingsStack.Screen name="SignUp" component={SignUpScreen} />
-      <SettingsStack.Screen name="ForgetPassword" component={ForgetPasswordScreen} />
       <SettingsStack.Screen name="Profile" component={ProfileScreen} />
     </SettingsStack.Navigator>
   );
