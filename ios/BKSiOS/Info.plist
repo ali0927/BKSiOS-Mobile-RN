@@ -53,5 +53,11 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array/>
+	<key>NSCameraUsageDescription</key>
+	<string>BKSbackstorage accesses your camera to upload images to customer avatar</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>BKSbackstorage accesses your camera to upload images to customer avatar</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>BKSbackstorage accesses your photos to upload the images.</string>
 </dict>
 </plist>
