@@ -72,7 +72,7 @@ export const Overview = () => {
         type: "success",
         placement: "bottom",
         duration: 4000,
-        offset: 80,
+        offset: 400,
         animationType: "zoom-in",
       });
     if (key === 'wallet') {

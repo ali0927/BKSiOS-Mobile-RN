@@ -10,10 +10,20 @@ const App = () => {
   useEffect(() => {}, [isStarted]);
   if (!isStarted) return <MainPage submit={setIsStarted} />;
   return (
-    <ToastProvider>
-    <SafeAreaView style={styles.container}>
-      <MainTabs />
-    </SafeAreaView>
+    <ToastProvider
+      placement="top"
+      duration={5000}
+      animationType="zoom-in"
+      animationDuration={250}
+      successColor="green"
+      textStyle={{fontSize: 20}}
+      offset={50} // offset for both top and bottom toasts
+      offsetTop={30}
+      offsetBottom={40}
+      swipeEnabled={true}>
+      <SafeAreaView style={styles.container}>
+        <MainTabs />
+      </SafeAreaView>
     </ToastProvider>
   );
 };
