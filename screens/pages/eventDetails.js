@@ -15,9 +15,8 @@ import creatorImg from '../../assets/img/avatars/avatar.jpg';
 import collectionImg from '../../assets/img/avatars/avatar2.jpg';
 import addonsImg from '../../assets/img/avatars/avatar5.jpg';
 import badgeMark from '../../assets/img/icons/verified.png';
+import OthersCarousel from '../components/eventDetails/otherAuthorCarousel';
 
-export const SLIDER_WIDTH = Dimensions.get('window').width;
-export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
 export const EventDetailsScreen = ({route}) => {
   const [currentEvent, setCurrentEvent] = useState(null);
@@ -139,6 +138,8 @@ export const EventDetailsScreen = ({route}) => {
               </TouchableOpacity>
             </View>
           </Modal>
+          <Text style={styles.text3}>Other Author Assets</Text>
+          <OthersCarousel />
         </View>
       )}
     </ScrollView>
