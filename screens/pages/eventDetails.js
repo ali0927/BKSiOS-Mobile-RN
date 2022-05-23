@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import {eventData} from '../constant/eventData';
 import creatorImg from '../../assets/img/avatars/avatar.jpg';
 import collectionImg from '../../assets/img/avatars/avatar2.jpg';
@@ -20,6 +21,13 @@ export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
 export const EventDetailsScreen = ({route}) => {
   const [currentEvent, setCurrentEvent] = useState(null);
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    console.log('This is Modal');
+    setModalVisible(!isModalVisible);
+  };
+
   useEffect(() => {
     setCurrentEvent(eventData.find(item => route.params.item == item.id));
   });
@@ -57,7 +65,7 @@ export const EventDetailsScreen = ({route}) => {
           </View>
           <View style={{marginBottom: 50}}>
             <Text style={styles.text1}>Addons</Text>
-            <TouchableOpacity onPress={() => console.log("AddonClick...")}>
+            <TouchableOpacity onPress={() => console.log('AddonClick...')}>
               <Image source={addonsImg} style={styles.avatarImg} />
             </TouchableOpacity>
           </View>
@@ -77,12 +85,18 @@ export const EventDetailsScreen = ({route}) => {
             </Text>
           </View>
           <View style={styles.divider}></View>
-          <View style={{flexDirection: 'row', alignItems: "center"}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <View>
               <Text style={styles.text2}> &#9200; Events start in</Text>
               <Text style={styles.text1}>Event Started</Text>
             </View>
-            <View style={{borderLeftWidth: 1, borderColor: "#887bff", paddingLeft: 20, marginLeft: 50}}>
+            <View
+              style={{
+                borderLeftWidth: 1,
+                borderColor: '#887bff',
+                paddingLeft: 20,
+                marginLeft: 50,
+              }}>
               <Text style={styles.text2}>Price</Text>
               <Text style={styles.text1}>{currentEvent.price} &#8364;</Text>
             </View>
@@ -92,14 +106,39 @@ export const EventDetailsScreen = ({route}) => {
             style={styles.input}
             placeholder="amount of ticket"
             autoCapitalize="none"
-            defaultValue = "1"
+            defaultValue="1"
             keyboardType={'numeric'}
             placeholderTextColor="white"
             onChangeText={val => console.log('Values: ', val)}
           />
-          <TouchableOpacity style={styles.button} onPress={() => console.log("Buy ticket")}>
+          <TouchableOpacity style={styles.button} onPress={() => toggleModal()}>
             <Text style={styles.text3}>Buy Ticket</Text>
           </TouchableOpacity>
+          <Modal isVisible={isModalVisible}>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalTitleContainer}>
+                <Text style={styles.modalTitle}>Proceed to Pay</Text>
+                <TouchableOpacity onPress={toggleModal}>
+                  <Text style={styles.modalClose}>&times;</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                style={styles.payButton}
+                onPress={() => toggleModal()}>
+                <Text style={styles.text3}>Pay with PayPal</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.payButton}
+                onPress={() => toggleModal()}>
+                <Text style={styles.text3}>Buy with crypto: BSC</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.payButton}
+                onPress={() => toggleModal()}>
+                <Text style={styles.text3}>Buy with Crypto: NEAR</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
         </View>
       )}
     </ScrollView>
@@ -210,4 +249,41 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     width: 350,
   },
+  modalContainer: {
+    backgroundColor: '#14142f',
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: '#887bff',
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingRight: 10,
+    paddingLeft: 10,
+  },
+  modalTitleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20
+  },
+  modalTitle: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: '600',
+  },
+  modalClose: {
+    color: '#fff',
+    width: 25,
+    margin: 0,
+    textAlign: 'center',
+    fontSize: 20,
+    borderRadius: 8,
+    borderColor: '#fff',
+    borderWidth: 1,
+  },
+  payButton: {
+    marginTop: 10,
+    marginBottom: 10,
+    paddingTop: 10,
+    backgroundColor: '#6164ff',
+    borderRadius: 12,
+  }
 });
