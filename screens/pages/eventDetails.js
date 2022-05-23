@@ -12,6 +12,7 @@ import {
 import {eventData} from '../constant/eventData';
 import creatorImg from '../../assets/img/avatars/avatar.jpg';
 import collectionImg from '../../assets/img/avatars/avatar2.jpg';
+import addonsImg from '../../assets/img/avatars/avatar5.jpg';
 import badgeMark from '../../assets/img/icons/verified.png';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
@@ -26,46 +27,48 @@ export const EventDetailsScreen = ({route}) => {
     <ScrollView style={styles.container}>
       {currentEvent && (
         <View>
-          <View style={styles.itemContainer}>
-            <Image source={currentEvent.img} style={styles.img} />
-            <Text style={styles.info}>&#9825; {currentEvent.followers}</Text>
+          <View style={styles.imgContainer}>
+            <Image source={currentEvent.img} style={styles.eventImg} />
+            <Text style={styles.followers}>
+              &#9825; {currentEvent.followers}
+            </Text>
           </View>
-          <Text style={styles.price}>Descriptions</Text>
-          <Text style={styles.info}>{currentEvent.descriptions}</Text>
+          <Text style={styles.text1}>Descriptions</Text>
+          <Text style={styles.infoText}>{currentEvent.descriptions}</Text>
           <View style={styles.divider}></View>
-          <View style={{flexDirection: 'row'}}>
+          <View style={styles.infoContainer}>
             <View>
-              <Text style={styles.info}>Creator</Text>
+              <Text style={styles.text2}>Creator</Text>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View>
-                  <Image source={creatorImg} style={{position: 'relative'}} />
+                  <Image source={creatorImg} style={styles.avatarImg} />
                   <Image source={badgeMark} style={styles.badgeMark} />
                 </View>
-                <Text style={styles.info}>Admin</Text>
+                <Text style={styles.infoText}>Admin</Text>
               </View>
             </View>
             <View>
-              <Text style={styles.info}>Collection</Text>
+              <Text style={styles.text2}>Collection</Text>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image source={collectionImg} />
-                <Text style={styles.info}>123456</Text>
+                <Image source={collectionImg} style={styles.avatarImg} />
+                <Text style={styles.infoText}>123456</Text>
               </View>
             </View>
           </View>
-          <View style={styles.addons}>
-            <Text style={styles.info}>Addons</Text>
-            <TouchableOpacity>
-              <Image source={creatorImg} />
+          <View style={{marginBottom: 50}}>
+            <Text style={styles.text1}>Addons</Text>
+            <TouchableOpacity onPress={() => console.log("AddonClick...")}>
+              <Image source={addonsImg} style={styles.avatarImg} />
             </TouchableOpacity>
           </View>
-          <Text style={styles.info}>Details</Text>
+          <Text style={styles.text1}>Details</Text>
           <View style={styles.divider}></View>
-          <View style={styles.details}>
-            <Text style={styles.info}>Location: {currentEvent.location}</Text>
-            <Text style={styles.info}>Date: {currentEvent.date}</Text>
-            <Text style={styles.info}>Time: {currentEvent.time}</Text>
-            <Text style={styles.info}>{currentEvent.descriptions}</Text>
-            <Text style={styles.info}>
+          <View>
+            <Text style={styles.text2}>Location: {currentEvent.location}</Text>
+            <Text style={styles.text2}>Date: {currentEvent.date}</Text>
+            <Text style={styles.text2}>Time: {currentEvent.time}</Text>
+            <Text style={styles.text2}>{currentEvent.descriptions}</Text>
+            <Text style={styles.text2}>
               {currentEvent.ticketAmount < 10 ? (
                 <>{currentEvent.ticketAmount} tickets are left</>
               ) : (
@@ -74,28 +77,29 @@ export const EventDetailsScreen = ({route}) => {
             </Text>
           </View>
           <View style={styles.divider}></View>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', alignItems: "center"}}>
             <View>
-              <Text style={styles.info}> &#9200; Events start in</Text>
-              <Text style={styles.info}>Event Started</Text>
+              <Text style={styles.text2}> &#9200; Events start in</Text>
+              <Text style={styles.text1}>Event Started</Text>
             </View>
-            <View>
-              <Text style={styles.info}>Price</Text>
-              <Text style={styles.info}>{currentEvent.price} &#8364;</Text>
+            <View style={{borderLeftWidth: 1, borderColor: "#887bff", paddingLeft: 20, marginLeft: 50}}>
+              <Text style={styles.text2}>Price</Text>
+              <Text style={styles.text1}>{currentEvent.price} &#8364;</Text>
             </View>
           </View>
           <View style={styles.divider}></View>
           <TextInput
             style={styles.input}
-            placeholder="Email"
+            placeholder="amount of ticket"
             autoCapitalize="none"
+            defaultValue = "1"
+            keyboardType={'numeric'}
             placeholderTextColor="white"
             onChangeText={val => console.log('Values: ', val)}
           />
-          <TouchableOpacity style={styles.button} onPress={() => signIn()}>
+          <TouchableOpacity style={styles.button} onPress={() => console.log("Buy ticket")}>
             <Text style={styles.text3}>Buy Ticket</Text>
           </TouchableOpacity>
-         
         </View>
       )}
     </ScrollView>
@@ -106,26 +110,82 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#14142f',
-    margin: 'auto',
     overflow: 'hidden',
     padding: 20,
   },
-  itemContainer: {
+  imgContainer: {
     flex: 1,
     marginTop: 30,
-    backgroundColor: '#14142f',
-    margin: 'auto',
+    marginBottom: 30,
     borderWidth: 1,
     borderColor: '#887bff',
-    padding: 25,
+    padding: 15,
     borderRadius: 16,
     overflow: 'hidden',
+  },
+  eventImg: {
+    width: '100%',
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  followers: {
+    textAlign: 'right',
+    fontSize: 20,
+    color: '#bdbdbd',
+    fontWeight: '400',
+  },
+  text1: {
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: '500',
+  },
+  text2: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '500',
+    marginBottom: 10,
+  },
+  infoText: {
+    textAlign: 'left',
+    fontSize: 20,
+    color: '#bdbdbd',
+    fontWeight: '400',
+  },
+  divider: {
+    width: '100%',
+    backgroundColor: '#887bff',
+    height: 1,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 50,
+  },
+  badgeMark: {
+    position: 'absolute',
+    right: 15,
+    bottom: -5,
+    backgroundColor: '#2f80ed',
+    borderRadius: 20,
+    borderColor: '#fff',
+    borderWidth: 2,
+    width: 20,
+    height: 20,
+  },
+  avatarImg: {
+    position: 'relative',
+    width: 50,
+    height: 50,
+    borderColor: '#6164ff',
+    marginRight: 20,
+    borderRadius: 10,
   },
   input: {
     width: 350,
     height: 55,
     backgroundColor: '#534f77',
-    margin: 10,
     padding: 8,
     paddingLeft: 20,
     color: 'white',
@@ -144,78 +204,10 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10,
+    marginBottom: 50,
     paddingTop: 10,
     backgroundColor: '#6164ff',
     borderRadius: 12,
     width: 350,
-    margin: 10,
-  },
-  img: {
-    width: '100%',
-    borderRadius: 16,
-  },
-  imageDiv: {
-    position: 'relative',
-  },
-  collectionMeta: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
-    width: '100%',
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 0,
-    borderBottomRightRadius: 16,
-    borderBottomLeftRadius: 16,
-  },
-  divider: {
-    width: '100%',
-    backgroundColor: '#887bff',
-    height: 2,
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  name: {
-    width: '100%',
-    textAlign: 'left',
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#fff',
-    marginBottom: 10,
-  },
-  info: {
-    
-    textAlign: 'left',
-    fontSize: 20,
-    color: '#bdbdbd',
-    fontWeight: '400',
-  },
-  owner: {
-    textAlign: 'left',
-    fontSize: 20,
-    color: '#bdbdbd',
-    fontWeight: '400',
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    marginRight: 20,
-  },
-  price: {
-    textAlign: 'left',
-    fontSize: 26,
-    marginTop: 20,
-    color: '#fff',
-    fontWeight: '600',
-  },
-  badgeMark: {
-    position: 'absolute',
-    right: -5,
-    bottom: -5,
-    backgroundColor: '#2f80ed',
-    borderRadius: 20,
-    borderColor: '#fff',
-    borderWidth: 2,
-    width: 30,
-    height: 30,
   },
 });
