@@ -8,43 +8,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import img1 from '../../../assets/img/cover/cover6.jpg';
-import img2 from '../../../assets/img/cover/cover7.jpg';
-import img3 from '../../../assets/img/cover/cover8.jpg';
 import {useNavigation} from '@react-navigation/core';
+import { eventData } from '../../constant/eventData';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
-
-const data = [
-  {
-    id: 1,
-    img: img1,
-    leftTime: 12,
-    name: 'Fed3',
-    date: '2022-05-28',
-    location: 'London',
-    price: 3,
-  },
-  {
-    id: 2,
-    img: img2,
-    leftTime: 9,
-    name: 'Fed3',
-    date: '2022-06-10',
-    location: 'Toronto',
-    price: 2,
-  },
-  {
-    id: 3,
-    img: img3,
-    leftTime: 15,
-    name: 'Fed3',
-    date: '2022-06-5',
-    location: 'New York',
-    price: 4,
-  },
-];
 
 const renderItem = ({item, index}) => {
   return <EventCard item={item} index={index} />;
@@ -55,7 +23,7 @@ const EventCard = ({item, index}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        onPress={() => navigation.navigate('EventDetail', {item: item})}>
+        onPress={() => navigation.navigate('EventDetail', {item: item.id})}>
         <View style={styles.imageDiv}>
           <Image source={item.img} style={styles.img} />
           <Text style={styles.delete}>DELETE</Text>
@@ -79,7 +47,7 @@ const EventsCarousel = () => {
   return (
     <View style={{marginVertical: 10}}>
       <Carousel
-        data={data}
+        data={eventData}
         renderItem={renderItem}
         sliderWidth={SLIDER_WIDTH}
         itemWidth={ITEM_WIDTH}
