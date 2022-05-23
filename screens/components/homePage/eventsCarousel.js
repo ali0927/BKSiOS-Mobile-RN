@@ -5,11 +5,13 @@ import {
   Dimensions,
   Image,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import img1 from '../../../assets/img/cover/cover6.jpg';
 import img2 from '../../../assets/img/cover/cover7.jpg';
 import img3 from '../../../assets/img/cover/cover8.jpg';
+import {useNavigation} from '@react-navigation/core';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
@@ -44,25 +46,31 @@ const data = [
   },
 ];
 
-const renderItem = ({item}) => {
+const renderItem = ({item, index}) => {
+  return <EventCard item={item} index={index} />;
+};
+
+const EventCard = ({item, index}) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <View style={styles.imageDiv}>
-        <Image source={item.img} style={styles.img} />
-        <Text style={styles.delete}>DELETE</Text>
-        <Text style={styles.leftTime}>{item.leftTime} days</Text>
-      </View>
-      <View style={styles.collectionMeta}>
-        <View style={styles.detail}>
-
+      <TouchableOpacity
+        onPress={() => navigation.navigate('EventDetail', {item: item})}>
+        <View style={styles.imageDiv}>
+          <Image source={item.img} style={styles.img} />
+          <Text style={styles.delete}>DELETE</Text>
+          <Text style={styles.leftTime}>{item.leftTime} days</Text>
         </View>
-        <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.info}>{item.date}</Text>
-        <Text style={styles.info}>Location: {item.location}</Text>
-        <View style={styles.divider}></View>
-        <Text style={styles.info}>Current price</Text>
-        <Text style={styles.price}>{item.price} BNB</Text>
-      </View>
+        <View style={styles.collectionMeta}>
+          <View style={styles.detail}></View>
+          <Text style={styles.name}>{item.name}</Text>
+          <Text style={styles.info}>{item.date}</Text>
+          <Text style={styles.info}>Location: {item.location}</Text>
+          <View style={styles.divider}></View>
+          <Text style={styles.info}>Current price</Text>
+          <Text style={styles.price}>{item.price} BNB</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -98,39 +106,39 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   imageDiv: {
-    position: "relative"
+    position: 'relative',
   },
   delete: {
-    position: "absolute",
+    position: 'absolute',
     right: -10,
-    backgroundColor: "#702fa0",
+    backgroundColor: '#702fa0',
     borderRadius: 8,
-    overflow: "hidden",
+    overflow: 'hidden',
     paddingRight: 10,
     paddingLeft: 10,
     paddingTop: 5,
     paddingBottom: 5,
-    color: "#fff",
+    color: '#fff',
     fontSize: 20,
-    fontWeight: "500",
-    borderColor: "#fff",
+    fontWeight: '500',
+    borderColor: '#fff',
     borderWidth: 1,
   },
   leftTime: {
-    position: "absolute",
+    position: 'absolute',
     left: 10,
     bottom: 0,
-    backgroundColor: "#534f77",
+    backgroundColor: '#534f77',
     borderRadius: 20,
-    overflow: "hidden",
+    overflow: 'hidden',
     paddingRight: 15,
     paddingLeft: 15,
     paddingTop: 5,
     paddingBottom: 5,
-    color: "#fff",
+    color: '#fff',
     fontSize: 20,
-    fontWeight: "500",
-    borderColor: "#6164ff",
+    fontWeight: '500',
+    borderColor: '#6164ff',
     borderWidth: 1,
   },
   collectionMeta: {
@@ -143,18 +151,18 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 16,
     borderBottomLeftRadius: 16,
   },
- divider: {
-   width: "100%",
-   backgroundColor: "#887bff",
-   height: 2,
-   marginTop: 20,
-   marginBottom: 20
- },
+  divider: {
+    width: '100%',
+    backgroundColor: '#887bff',
+    height: 2,
+    marginTop: 20,
+    marginBottom: 20,
+  },
   name: {
     width: '100%',
     textAlign: 'left',
     fontSize: 24,
-    fontWeight: "600",
+    fontWeight: '600',
     color: '#fff',
     marginBottom: 10,
   },

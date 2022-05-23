@@ -1,11 +1,8 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HomeScreen } from '../../pages/home';
 import { ExplorerScreen } from '../../pages/explorer';
-import { SettingsScreen } from '../../pages/settings';
 import { NewsScreen } from '../../pages/news';
-import { SettingsStackScreen } from './settingsStack';
 import { HomeStackScreen } from './homeStack';
 import { AuthorScreen } from '../../pages/author';
 const Tab = createBottomTabNavigator();

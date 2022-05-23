@@ -24,7 +24,7 @@ export const HomeScreen = ({navigation}) => {
       </View>
       <View>
         <Text style={styles.subtitle}>Latest Events</Text>
-        <EventsCarousel />
+        <EventsCarousel navigation = {navigation}/>
       </View>
       <View>
         <Text style={styles.subtitle}>Backstagers</Text>
