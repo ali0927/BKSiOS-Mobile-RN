@@ -10,13 +10,17 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.5",
     "@react-native-clipboard/clipboard": "^1.10.0",
     "@react-native-community/checkbox": "^0.5.12",
     "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/material-bottom-tabs": "^6.2.1",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
+    "axios": "^0.27.2",
+    "moment": "^2.29.3",
     "react": "17.0.2",
+    "react-date-object": "^2.1.5",
     "react-native": "0.68.2",
     "react-native-check-box": "^2.1.7",
     "react-native-image-picker": "^4.8.3",
