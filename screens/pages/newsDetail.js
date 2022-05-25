@@ -3,7 +3,6 @@ import {
   ScrollView,
   View,
   Text,
-  Button,
   Image,
   TouchableOpacity,
   StyleSheet,
@@ -11,17 +10,15 @@ import {
 import HTMLView from 'react-native-htmlview';
 import axios from 'axios';
 import DateObject from 'react-date-object';
-import {useNavigation} from '@react-navigation/core';
 import clockImg from '../../assets/img/icons/clock.png';
-import messageImg from '../../assets/img/icons/message.png';
 import shareImg1 from '../../assets/img/icons/share1.png';
 import shareImg2 from '../../assets/img/icons/share2.png';
 import shareImg3 from '../../assets/img/icons/share3.png';
 
-export const NewsDetailScreen = ({route}) => {
-  const [article, setArticle] = useState(null);
+// import {getArticleById} from "../helper/article";
 
-  const navigation = useNavigation();
+export const NewsDetailScreen = ({route, navigation}) => {
+  const [article, setArticle] = useState(null);
 
   const dateString = d => {
     var date = new DateObject({
@@ -49,6 +46,20 @@ export const NewsDetailScreen = ({route}) => {
 
   useEffect(() => {
     getArticleById(route.params.id);
+    // getArticleById(route.params.id)
+    // .then(res => {
+    //   console.log('new article res', res);
+    //   if (res.success) {
+    //     console.log('RES.DATA.ARTICLE', res.data.article);
+    //     setArticle(res.data.article);
+    //   } else {
+    //     console.log('ERROR');
+    //   }
+    // })
+    // .catch(err => {
+    //   console.log('Catch ERROR...');
+    //   navigation.navigate('SignIn');
+    // });
   }, []);
 
   return (
@@ -152,7 +163,7 @@ const styles = StyleSheet.create({
     width: 80,
     alignItems: 'center',
     paddingVertical: 5,
-  }
+  },
 });
 const htmlStyleSheet = StyleSheet.create({
   h1: {
