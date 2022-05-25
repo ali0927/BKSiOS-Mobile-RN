@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ExplorerScreen } from '../../pages/explorer';
 import { NewsScreen } from '../../pages/news';
+import { NewsStackScreen } from './newsStack';
 import { HomeStackScreen } from './homeStack';
 import { AuthorScreen } from '../../pages/author';
 const Tab = createBottomTabNavigator();
@@ -13,7 +14,7 @@ export default function MainTabs() {
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeStackScreen}  options={{ headerShown: false }} />
         <Tab.Screen name="Explorer" component={ExplorerScreen}  options={{ headerShown: false }} />
-        <Tab.Screen name="News" component={NewsScreen}  options={{ headerShown: false }} />
+        <Tab.Screen name="News" component={NewsStackScreen}  options={{ headerShown: false }} />
         <Tab.Screen name="Settings" component={AuthorScreen}  options={{ headerShown: false }} />
       </Tab.Navigator>
     </NavigationContainer>
