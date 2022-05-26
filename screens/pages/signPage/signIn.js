@@ -9,12 +9,11 @@ import {
 } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import imgLogo from '../../../assets/img/logo.png';
-import {login, verifyEmail} from '../../helper/auth';
+import {login} from '../../helper/auth';
 import {validateEmail} from '../../utils';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 export const SignInScreen = ({navigation}) => {
-
   const dispatch = useDispatch();
 
   const [values, setValues] = useState({
@@ -25,12 +24,11 @@ export const SignInScreen = ({navigation}) => {
     email: '',
     password: '',
   });
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
 
   const handleChange = (prop, value) => {
     setValidations(prevState => ({...prevState, [prop]: ''}));
     setValues({...values, [prop]: value});
-    console.log('Values', values);
   };
 
   const checkvalidations = () => {
@@ -55,13 +53,14 @@ export const SignInScreen = ({navigation}) => {
     login(values)
       .then(res => {
         if (res.success) {
-          dispatch({type: 'SET_USER_INFO', payload: JSON.stringify(res.data)})
+          dispatch({type: 'SET_USER_INFO', payload: JSON.stringify(res.data)});
           navigation.navigate('Home');
         } else {
-          console.log('Error while signing...');
+          alert(res.message);
         }
       })
       .catch(error => {
+        alert('Login Failed...');
         console.log('Login failed...', error);
       });
   };
@@ -84,10 +83,10 @@ export const SignInScreen = ({navigation}) => {
           <Text style={styles.errorText}></Text>
         )}
         {validations.email == 'has-danger' ? (
-        <Text style={styles.errorText}>Input Correct Format</Text>
+          <Text style={styles.errorText}>Input Correct Format</Text>
         ) : (
-        <Text style={styles.errorText}></Text>
-      )}
+          <Text style={styles.errorText}></Text>
+        )}
       </View>
       <View style={{position: 'relative'}}>
         <TextInput

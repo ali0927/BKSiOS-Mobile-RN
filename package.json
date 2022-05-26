@@ -23,6 +23,7 @@
     "react-date-object": "^2.1.5",
     "react-native": "0.68.2",
     "react-native-check-box": "^2.1.7",
+    "react-native-customized-toast": "^1.0.1",
     "react-native-htmlview": "^0.16.0",
     "react-native-image-picker": "^4.8.3",
     "react-native-modal": "^13.0.1",

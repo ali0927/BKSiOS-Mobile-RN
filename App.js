@@ -6,7 +6,7 @@ import MainTabs from './screens/components/tapButtons/mainTabs';
 import {MainPage} from './screens/pages/mainPage';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
-import rootReducer from "./redux/reducers";
+import rootReducer from './redux/reducers';
 
 const store = createStore(rootReducer);
 

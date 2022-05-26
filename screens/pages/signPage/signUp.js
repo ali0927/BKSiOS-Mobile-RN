@@ -1,56 +1,138 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
-  Button,
   TextInput,
   StyleSheet,
   Image,
   TouchableOpacity,
   Text,
-  ScrollView,
 } from 'react-native';
 import CheckBox from 'react-native-check-box';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import imgLogo from '../../../assets/img/logo.png';
+import {signup, verifyEmail} from '../../helper/auth';
+import {validateEmail} from '../../utils';
+import {useDispatch, useSelector} from 'react-redux';
 
 export const SignUpScreen = ({navigation}) => {
-  const [userEmail, setUserEmail] = useState('');
-  const [pwd, setPwd] = useState('');
   const [checked, setChecked] = React.useState(false);
+  const [values, setValues] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+  const [validations, setValidations] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+
+  const dispatch = useDispatch();
+  const userInfo = useSelector(state => state.userInfoReducer).userInfo;
+
+  const handleChange = (prop, value) => {
+    setValidations(prevState => ({...prevState, [prop]: ''}));
+    setValues({...values, [prop]: value});
+  };
+
+  const checkvalidations = () => {
+    if (values.name === '') {
+      setValidations({name: 'has-empty', email: '', password: ''});
+      return false;
+    } else if (values.email === '') {
+      setValidations({name: '', email: 'has-empty', password: ''});
+      return false;
+    } else if (!validateEmail(values.email)) {
+      setValidations({name: '', email: 'has-danger', password: ''});
+      return false;
+    } else if (values.password === '') {
+      setValidations({name: '', email: '', password: 'has-empty'});
+      return false;
+    } else {
+      setValidations({name: '', email: '', password: ''});
+    }
+
+    return true;
+  };
 
   const signUp = async () => {
-    try {
-      console.log('user successfully signed in!', success);
-    } catch (err) {
-      console.log('error signing in: ', err);
-    }
+    console.log('signup');
+    if (!checkvalidations()) return;
+
+    signup(values)
+      .then(res => {
+        console.log("RREESS=> ", res);
+        if (res.success) {
+          alert('Signup Success! Please Verify your email.');
+          // setModal({open: true, children: <SignupSuccessMoal />});
+          return;
+          // addToast('Register success. Email was sent. Please verify your email', {appearance: 'success', autoDismiss: true});
+        } else {
+          alert(res.message);
+        }
+      })
+      .catch(error => {
+        alert('Signup failed...', error);
+      });
   };
+
+  useEffect(() => {
+    if (userInfo) navigation.navigate('Home');
+  }, [userInfo]);
 
   return (
     <View style={styles.container}>
       <Image source={imgLogo} style={styles.img} />
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
-        autoCapitalize="none"
-        placeholderTextColor="white"
-        onChangeText={val => setUserEmail(val)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        autoCapitalize="none"
-        placeholderTextColor="white"
-        onChangeText={val => setUserEmail(val)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry={true}
-        autoCapitalize="none"
-        placeholderTextColor="white"
-        onChangeText={val => setPwd(val)}
-      />
+      <View style={{position: 'relative'}}>
+        <TextInput
+          style={styles.input}
+          placeholder="Name"
+          value={values.name}
+          autoCapitalize="none"
+          placeholderTextColor="white"
+          onChangeText={val => handleChange('name', val)}
+        />
+        {validations.name == 'has-empty' ? (
+          <Text style={styles.errorText}>Name required*</Text>
+        ) : (
+          <Text style={styles.errorText}></Text>
+        )}
+      </View>
+      <View style={{position: 'relative'}}>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={values.email}
+          autoCapitalize="none"
+          placeholderTextColor="white"
+          onChangeText={val => handleChange('email', val)}
+        />
+        {validations.email == 'has-empty' ? (
+          <Text style={styles.errorText}>Email required*</Text>
+        ) : (
+          <Text style={styles.errorText}></Text>
+        )}
+        {validations.email == 'has-danger' ? (
+          <Text style={styles.errorText}>Input Correct Format</Text>
+        ) : (
+          <Text style={styles.errorText}></Text>
+        )}
+      </View>
+      <View style={{position: 'relative'}}>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={values.password}
+          secureTextEntry={true}
+          autoCapitalize="none"
+          placeholderTextColor="white"
+          onChangeText={val => handleChange('password', val)}
+        />
+        {validations.password == 'has-empty' ? (
+          <Text style={styles.errorText}>Password required*</Text>
+        ) : (
+          <Text style={styles.errorText}></Text>
+        )}
+      </View>
       <View
         style={{
           flexDirection: 'row',
@@ -98,13 +180,22 @@ const styles = StyleSheet.create({
     width: 350,
     height: 55,
     backgroundColor: '#534f77',
-    margin: 10,
+    marginHorizontal: 10,
+    marginVertical: 20,
     padding: 8,
     paddingLeft: 20,
     color: 'white',
     borderRadius: 14,
     fontSize: 18,
     fontWeight: '500',
+  },
+  errorText: {
+    position: 'absolute',
+    bottom: -25,
+    left: 15,
+    fontSize: 18,
+    marginBottom: 20,
+    color: '#b00020',
   },
   img: {
     width: '70%',

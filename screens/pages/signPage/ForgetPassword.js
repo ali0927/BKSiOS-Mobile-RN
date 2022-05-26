@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {
   View,
-  Button,
   TextInput,
   StyleSheet,
   Image,
@@ -10,33 +9,84 @@ import {
 } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import imgLogo from '../../../assets/img/logo.png';
+import { forgetPassword } from '../../helper/auth';
+import {validateEmail} from '../../utils';
 
-export const ForgetPasswordScreen = ({navigation}) => {
-  const [userEmail, setUserEmail] = useState('');
-  const [pwd, setPwd] = useState('');
-  const [checked, setChecked] = React.useState(false);
+export const ForgetPasswordScreen = () => {
+  const [values, setValues] = useState({
+    email: '',
+  });
+  const [validations, setValidations] = useState({
+    email: '',
+  });
+  const [checked, setChecked] = useState(true);
 
-  const signUp = async () => {
-    try {
-      console.log('user successfully signed in!', success);
-    } catch (err) {
-      console.log('error signing in: ', err);
+  const handleChange = (prop, value) => {
+    setValidations(prevState => ({...prevState, [prop]: ''}));
+    setValues({...values, [prop]: value});
+  };
+
+  const checkvalidations = () => {
+    if (values.email === '') {
+      setValidations({email: 'has-empty'});
+      return false;
+    } else if (!validateEmail(values.email)) {
+      setValidations({email: 'has-danger'});
+      return false;
+    } else {
+      setValidations({email: ''});
     }
+
+    return true;
+  };
+
+  const send = async () => {
+    if (!checkvalidations()) return;
+    forgetPassword(values)
+      .then(res => {
+        if (res.success) {
+          alert(
+            'Email with reset password link was sent. please check your mailbox',
+          );
+        } else {
+          alert(res.message);
+        }
+      })
+      .catch(error => {
+        alert('Failed...');
+      });
   };
 
   return (
     <View style={styles.container}>
       <Image source={imgLogo} style={styles.img} />
-      
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        autoCapitalize="none"
-        placeholderTextColor="white"
-        onChangeText={val => setUserEmail(val)}
-      />
-    
-    <View style={{flexDirection: 'row', marginTop: 20, alignItems: "center", width: 350}}>
+      <View style={{position: 'relative'}}>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={values.email}
+          autoCapitalize="none"
+          placeholderTextColor="white"
+          onChangeText={val => handleChange('email', val)}
+        />
+        {validations.email == 'has-empty' ? (
+          <Text style={styles.errorText}>Email required</Text>
+        ) : (
+          <Text style={styles.errorText}></Text>
+        )}
+        {validations.email == 'has-danger' ? (
+          <Text style={styles.errorText}>Input Correct Format</Text>
+        ) : (
+          <Text style={styles.errorText}></Text>
+        )}
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          marginTop: 20,
+          alignItems: 'center',
+          width: 350,
+        }}>
         <CheckBox
           style={styles.checkBox}
           onClick={() => {
@@ -50,7 +100,7 @@ export const ForgetPasswordScreen = ({navigation}) => {
         <Text style={styles.text1}>I agree to the</Text>
         <Text style={styles.text2}>Privacy Policy</Text>
       </View>
-      <TouchableOpacity style={styles.button} onPress={() => signUp()}>
+      <TouchableOpacity style={styles.button} onPress={() => send()}>
         <Text style={styles.text3}>Submit</Text>
       </TouchableOpacity>
     </View>
@@ -62,13 +112,22 @@ const styles = StyleSheet.create({
     width: 350,
     height: 55,
     backgroundColor: '#534f77',
-    margin: 10,
+    marginHorizontal: 10,
+    marginVertical: 20,
     padding: 8,
     paddingLeft: 20,
     color: 'white',
     borderRadius: 14,
     fontSize: 18,
     fontWeight: '500',
+  },
+  errorText: {
+    position: 'absolute',
+    bottom: -25,
+    left: 15,
+    fontSize: 18,
+    marginBottom: 20,
+    color: '#b00020',
   },
   container: {
     flex: 1,
@@ -87,7 +146,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
     height: 40,
-    marginRight: 10
+    marginRight: 10,
   },
   text2: {
     color: '#6164ff',
@@ -116,6 +175,6 @@ const styles = StyleSheet.create({
   checkBox: {
     width: 30,
     height: 30,
-    marginTop: -12
+    marginTop: -12,
   },
 });
