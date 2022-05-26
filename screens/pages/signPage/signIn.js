@@ -11,8 +11,12 @@ import CheckBox from 'react-native-check-box';
 import imgLogo from '../../../assets/img/logo.png';
 import {login, verifyEmail} from '../../helper/auth';
 import {validateEmail} from '../../utils';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const SignInScreen = ({navigation}) => {
+
+  const dispatch = useDispatch();
+
   const [values, setValues] = useState({
     email: '',
     password: '',
@@ -51,7 +55,7 @@ export const SignInScreen = ({navigation}) => {
     login(values)
       .then(res => {
         if (res.success) {
-          AsyncStorage.setItem('userInfo', JSON.stringify(res.data));
+          dispatch({type: 'SET_USER_INFO', payload: JSON.stringify(res.data)})
           navigation.navigate('Home');
         } else {
           console.log('Error while signing...');

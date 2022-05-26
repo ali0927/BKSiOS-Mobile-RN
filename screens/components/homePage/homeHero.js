@@ -6,27 +6,37 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { NativeScreenNavigationContainer } from 'react-native-screens';
 import homeBackImg from '../../../assets/img/home/home.png';
+import {useSelector} from 'react-redux';
 
-export const HomeHero = ({navigation}) => (
-  <View style={styles.container}>
-    <ImageBackground
-      style={styles.imgBackground}
-      source={homeBackImg}
-      resizeMode="cover">
-      <Text style={styles.text1}>The events NFT marketplace</Text>
-      <Text style={styles.text2}>A decentralized Ecosystems </Text>
-      <Text style={styles.text2}>powering the events industry</Text>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Explorer")}>
-        <Text style={styles.text3}>Explore</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("SignIn")}>
-        <Text style={styles.text3}>Sign In</Text>
-      </TouchableOpacity>
-    </ImageBackground>
-  </View>
-);
+export const HomeHero = ({navigation}) => {
+  const userInfo = useSelector(state => state.userInfoReducer).userInfo;
+
+  return (
+    <View style={styles.container}>
+      <ImageBackground
+        style={styles.imgBackground}
+        source={homeBackImg}
+        resizeMode="cover">
+        <Text style={styles.text1}>The events NFT marketplace</Text>
+        <Text style={styles.text2}>A decentralized Ecosystems </Text>
+        <Text style={styles.text2}>powering the events industry</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('Explorer')}>
+          <Text style={styles.text3}>Explored</Text>
+        </TouchableOpacity>
+        {!userInfo && (
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate('SignIn')}>
+            <Text style={styles.text3}>Sign In</Text>
+          </TouchableOpacity>
+        )}
+      </ImageBackground>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

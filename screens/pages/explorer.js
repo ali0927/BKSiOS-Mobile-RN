@@ -7,7 +7,6 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
 import img1 from '../../assets/img/cover/cover3.jpg';
 import img2 from '../../assets/img/cover/cover4.jpg';
 import img3 from '../../assets/img/cover/cover5.jpg';
@@ -108,8 +107,8 @@ const data = [
 export const ExplorerScreen = () => {
   return (
     <ScrollView style={styles.container}>
-      {data.map(item => (
-        <View style={styles.itemContainer}>
+      {data.map((item) => (
+        <View style={styles.itemContainer} key={item.id}>
           <View style={styles.imageDiv}>
             <Image source={item.img} style={styles.img} />
           </View>
