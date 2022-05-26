@@ -11,10 +11,10 @@ import CheckBox from 'react-native-check-box';
 import imgLogo from '../../../assets/img/logo.png';
 import {signup, verifyEmail} from '../../helper/auth';
 import {validateEmail} from '../../utils';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 export const SignUpScreen = ({navigation}) => {
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = useState(true);
   const [values, setValues] = useState({
     name: '',
     email: '',
@@ -26,7 +26,6 @@ export const SignUpScreen = ({navigation}) => {
     password: '',
   });
 
-  const dispatch = useDispatch();
   const userInfo = useSelector(state => state.userInfoReducer).userInfo;
 
   const handleChange = (prop, value) => {
@@ -60,7 +59,7 @@ export const SignUpScreen = ({navigation}) => {
 
     signup(values)
       .then(res => {
-        console.log("RREESS=> ", res);
+        console.log('RREESS=> ', res);
         if (res.success) {
           alert('Signup Success! Please Verify your email.');
           // setModal({open: true, children: <SignupSuccessMoal />});
@@ -151,7 +150,9 @@ export const SignUpScreen = ({navigation}) => {
           rightText={''}
         />
         <Text style={styles.text1}>I agree to the</Text>
-        <Text style={styles.text2}>Privacy Policy</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Privacy")}>
+          <Text style={styles.text2}>Privacy Policy</Text>
+        </TouchableOpacity>
       </View>
 
       <TouchableOpacity style={styles.button} onPress={() => signUp()}>

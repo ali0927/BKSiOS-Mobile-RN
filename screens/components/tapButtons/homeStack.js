@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SignUpScreen} from '../../pages/signPage/signUp';
 import {SignInScreen} from '../../pages/signPage/signIn';
 import {ForgetPasswordScreen} from '../../pages/signPage/ForgetPassword';
+import { PrivacyScreen } from '../../pages/signPage/privacy';
 import {HomeScreen} from '../../pages/home';
 import {EventDetailsScreen} from '../../pages/eventDetails';
 import {Button} from 'react-native';
@@ -47,6 +48,7 @@ export const HomeStackScreen = () => {
         }}
       />
       <HomeStack.Screen name="EventDetail" component={EventDetailsScreen} />
+      <HomeStack.Screen name="Privacy" component={PrivacyScreen} />
     </HomeStack.Navigator>
   );
 };

@@ -9,10 +9,10 @@ import {
 } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import imgLogo from '../../../assets/img/logo.png';
-import { forgetPassword } from '../../helper/auth';
+import {forgetPassword} from '../../helper/auth';
 import {validateEmail} from '../../utils';
 
-export const ForgetPasswordScreen = () => {
+export const ForgetPasswordScreen = ({navigation}) => {
   const [values, setValues] = useState({
     email: '',
   });
@@ -98,7 +98,9 @@ export const ForgetPasswordScreen = () => {
           rightText={''}
         />
         <Text style={styles.text1}>I agree to the</Text>
-        <Text style={styles.text2}>Privacy Policy</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Privacy')}>
+          <Text style={styles.text2}>Privacy Policy</Text>
+        </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.button} onPress={() => send()}>
         <Text style={styles.text3}>Submit</Text>
