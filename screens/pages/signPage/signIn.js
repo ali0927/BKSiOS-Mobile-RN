@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {
   View,
-  Button,
   TextInput,
   StyleSheet,
   Image,
@@ -10,38 +9,98 @@ import {
 } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import imgLogo from '../../../assets/img/logo.png';
+import {login, verifyEmail} from '../../helper/auth';
+import {validateEmail} from '../../utils';
 
 export const SignInScreen = ({navigation}) => {
-  const [userEmail, setUserEmail] = useState('');
-  const [pwd, setPwd] = useState('');
-  const [checked, setChecked] = React.useState(false);
+  const [values, setValues] = useState({
+    email: '',
+    password: '',
+  });
+  const [validations, setValidations] = useState({
+    email: '',
+    password: '',
+  });
+  const [checked, setChecked] = useState(false);
+
+  const handleChange = (prop, value) => {
+    setValidations(prevState => ({...prevState, [prop]: ''}));
+    setValues({...values, [prop]: value});
+    console.log('Values', values);
+  };
+
+  const checkvalidations = () => {
+    if (values.email === '') {
+      setValidations({email: 'has-empty', password: ''});
+      return false;
+    } else if (!validateEmail(values.email)) {
+      setValidations({email: 'has-danger', password: ''});
+      return false;
+    } else if (values.password === '') {
+      setValidations({email: '', password: 'has-empty'});
+      return false;
+    } else {
+      setValidations({email: '', password: ''});
+    }
+
+    return true;
+  };
 
   const signIn = async () => {
-    try {
-      console.log('user successfully signed in!', success);
-    } catch (err) {
-      console.log('error signing in: ', err);
-    }
+    if (!checkvalidations()) return;
+    login(values)
+      .then(res => {
+        if (res.success) {
+          AsyncStorage.setItem('userInfo', JSON.stringify(res.data));
+          navigation.navigate('Home');
+        } else {
+          console.log('Error while signing...');
+        }
+      })
+      .catch(error => {
+        console.log('Login failed...', error);
+      });
   };
 
   return (
     <View style={styles.container}>
       <Image source={imgLogo} style={styles.img} />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        autoCapitalize="none"
-        placeholderTextColor="white"
-        onChangeText={val => setUserEmail(val)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry={true}
-        autoCapitalize="none"
-        placeholderTextColor="white"
-        onChangeText={val => setPwd(val)}
-      />
+      <View style={{position: 'relative'}}>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={values.email}
+          autoCapitalize="none"
+          placeholderTextColor="white"
+          onChangeText={val => handleChange('email', val)}
+        />
+        {validations.email == 'has-empty' ? (
+          <Text style={styles.errorText}>Email required</Text>
+        ) : (
+          <Text style={styles.errorText}></Text>
+        )}
+        {validations.email == 'has-danger' ? (
+        <Text style={styles.errorText}>Input Correct Format</Text>
+        ) : (
+        <Text style={styles.errorText}></Text>
+      )}
+      </View>
+      <View style={{position: 'relative'}}>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={values.password}
+          secureTextEntry={true}
+          autoCapitalize="none"
+          placeholderTextColor="white"
+          onChangeText={val => handleChange('password', val)}
+        />
+        {validations.password == 'has-empty' ? (
+          <Text style={styles.errorText}>Password required</Text>
+        ) : (
+          <Text style={styles.errorText}></Text>
+        )}
+      </View>
       <CheckBox
         style={styles.checkBox}
         onClick={() => {
@@ -77,13 +136,22 @@ const styles = StyleSheet.create({
     width: 350,
     height: 55,
     backgroundColor: '#534f77',
-    margin: 10,
+    marginHorizontal: 10,
+    marginVertical: 20,
     padding: 8,
     paddingLeft: 20,
     color: 'white',
     borderRadius: 14,
     fontSize: 18,
     fontWeight: '500',
+  },
+  errorText: {
+    position: 'absolute',
+    bottom: -25,
+    left: 15,
+    fontSize: 18,
+    marginBottom: 20,
+    color: '#b00020',
   },
   container: {
     flex: 1,
