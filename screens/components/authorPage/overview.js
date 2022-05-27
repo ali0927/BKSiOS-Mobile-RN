@@ -11,7 +11,7 @@ import {
 import {launchImageLibrary} from 'react-native-image-picker';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import {useToast} from 'react-native-toast-notifications';
+import Toast from 'react-native-toast-message';
 
 import imgAvatar from '../../../assets/img/avatars/avatar.jpg';
 import badgeMark from '../../../assets/img/icons/verified.png';
@@ -42,8 +42,6 @@ const createFormData = (photo, body = {}) => {
 export const Overview = () => {
   const [photo, setPhoto] = useState(null);
 
-  const toast = useToast();
-
   const handleChoosePhoto = async () => {
     const result = await launchImageLibrary({mediaType: 'photo'}, response => {
       console.log('ResponseImage', response);
@@ -68,13 +66,11 @@ export const Overview = () => {
   };
 
   const copyToClipboard = key => {
-    toast.show('Copied', {
-        type: "success",
-        placement: "bottom",
-        duration: 4000,
-        offset: 400,
-        animationType: "zoom-in",
-      });
+    Toast.show({
+      type: 'success',
+      text1: 'Copied',
+      text2: 'You can paste these characters...  👋'
+    });
     if (key === 'wallet') {
       Clipboard.setString('XAVUW3sw3ZunitokcLtemEfX3tGuX2plateWdh');
     } else {
