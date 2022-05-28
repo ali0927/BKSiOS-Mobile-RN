@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -8,7 +8,8 @@ import {
   ImageBackground,
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import {collectionList} from '../../constant/collections';
+import {getAllCollections} from '../../helper/event';
+import badgeMark from '../../../assets/img/icons/verified.png';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
@@ -17,11 +18,24 @@ const renderItem = ({item}) => {
   return (
     <ImageBackground
       style={styles.container}
-      source={item.picture_small}
-      resizeMode="cover">
+      source={{
+        uri:
+          'http://192.168.106.26:3000/api/upload/get_file?path=' +
+          item.picture_large,
+      }}
+      resizeMode="cover"
+      key={item.id}>
       <View style={styles.collectionMeta}>
         <View style={styles.collectionAvatar}>
-          <Image source={item.creator.avatar} style={styles.avatarImg} />
+          <Image
+            source={{
+              uri:
+                'http://192.168.106.26:3000/api/upload/get_file?path=' +
+                item.picture_small,
+            }}
+            style={styles.avatarImg}
+          />
+          <Image source={badgeMark} style={styles.badgeMark} />
         </View>
         <Text style={styles.collectionName}>{item.name}</Text>
         <Text style={styles.collectionNumber}>{item.category}</Text>
@@ -31,14 +45,27 @@ const renderItem = ({item}) => {
 };
 
 const CollectionCarousel = () => {
+  const [collections, setCollections] = useState([]);
+
+  useEffect(() => {
+    getAllCollections().then(res => {
+      if (res.success) {
+        setCollections(res.collections);
+      } else {
+        console.log('ERROR:::', res);
+      }
+    });
+  }, []);
   return (
     <View style={{marginVertical: 10}}>
-      <Carousel
-        data={collectionList}
-        renderItem={renderItem}
-        sliderWidth={SLIDER_WIDTH}
-        itemWidth={ITEM_WIDTH}
-      />
+      {collections.length > 0 && (
+        <Carousel
+          data={collections}
+          renderItem={renderItem}
+          sliderWidth={SLIDER_WIDTH}
+          itemWidth={ITEM_WIDTH}
+        />
+      )}
     </View>
   );
 };
@@ -47,10 +74,10 @@ export default CollectionCarousel;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
     width: '100%',
     marginRight: 30,
-    height: 240,
+    height: 300,
     borderRadius: 16,
     overflow: 'hidden',
   },
@@ -76,23 +103,38 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     position: 'relative',
   },
+  badgeMark: {
+    position: 'absolute',
+    right: -5,
+    bottom: -5,
+    backgroundColor: '#2f80ed',
+    borderRadius: 20,
+    borderColor: '#fff',
+    borderWidth: 2,
+    width: 30,
+    height: 30,
+  },
   avatarImg: {
     width: '100%',
-    height: "100%",
+    height: '100%',
+    borderColor: '#14142f',
+    borderWidth: 1,
     borderRadius: 16,
+    backgroundColor: 'red',
   },
   collectionName: {
     width: '100%',
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 22,
     color: '#fff',
-    marginBottom: 5,
+    marginVertical: 10,
+    fontWeight: "700"
   },
   collectionNumber: {
     width: '100%',
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 16,
     color: '#bdbdbd',
-    fontWeight: '400',
+    fontWeight: '500',
   },
 });

@@ -46,20 +46,6 @@ export const NewsDetailScreen = ({route, navigation}) => {
 
   useEffect(() => {
     getArticleById(route.params.id);
-    // getArticleById(route.params.id)
-    // .then(res => {
-    //   console.log('new article res', res);
-    //   if (res.success) {
-    //     console.log('RES.DATA.ARTICLE', res.data.article);
-    //     setArticle(res.data.article);
-    //   } else {
-    //     console.log('ERROR');
-    //   }
-    // })
-    // .catch(err => {
-    //   console.log('Catch ERROR...');
-    //   navigation.navigate('SignIn');
-    // });
   }, []);
 
   return (

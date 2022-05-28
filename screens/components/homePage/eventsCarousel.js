@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import {useNavigation} from '@react-navigation/core';
-import { eventData } from '../../constant/eventData';
+import {getLatestEventCards} from '../../helper/event';
+import Countdown from 'react-countdown';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
@@ -18,25 +19,76 @@ const renderItem = ({item, index}) => {
   return <EventCard item={item} index={index} />;
 };
 
-const EventCard = ({item, index}) => {
+const CompletionList = () => <Text style={styles.leftTime}>Event Started</Text>;
+
+const pad = (num, size = 2) => {
+  const s = '000000000' + num;
+  return s.substr(s.length - size);
+};
+
+const renderer = ({days, hours, minutes, seconds, completed}) => {
+  if (completed) {
+    return <CompletionList />;
+  } else {
+    return (
+      <Text style={styles.leftTime}>
+        {days} days {pad(hours)}:{pad(minutes)}:{pad(seconds)}
+      </Text>
+    );
+  }
+};
+
+const EventCountDown = ({date}) => {
+  const d = new Date(date);
+  return <Countdown date={d} renderer={renderer} />;
+};
+
+const EventCard = ({item}) => {
   const navigation = useNavigation();
+  const addons = item.addons === '' ? [] : JSON.parse(item.addons);
+  let addonPrice = 0;
+  addons.forEach(addon => {
+    addonPrice += Number(addon.price);
+  });
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
         onPress={() => navigation.navigate('EventDetail', {item: item.id})}>
         <View style={styles.imageDiv}>
-          <Image source={item.img} style={styles.img} />
-          <Text style={styles.delete}>DELETE</Text>
-          <Text style={styles.leftTime}>{item.leftTime} days</Text>
+          <Image
+            source={{
+              uri:
+                'http://192.168.106.26:3000/api/upload/get_file?path=' +
+                item.picture_small,
+            }}
+            style={styles.img}
+          />
+          <EventCountDown date={new Date(item.date).toISOString()} />
         </View>
         <View style={styles.collectionMeta}>
           <View style={styles.detail}></View>
           <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.info}>{item.date}</Text>
+          <Text style={styles.info}>
+            Date: {new Date(item.date).toISOString().toString().split('T')[0]}
+          </Text>
           <Text style={styles.info}>Location: {item.location}</Text>
           <View style={styles.divider}></View>
           <Text style={styles.info}>Current price</Text>
-          <Text style={styles.price}>{item.price} BNB</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}>
+            <Text style={styles.price}>{item.price + addonPrice} BNB</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={styles.price}>&#9825;</Text>
+              <Text style={{...styles.price, marginLeft: 10}}>
+                {item.likes_number ? item.likes_number : 0}
+              </Text>
+            </View>
+          </View>
         </View>
       </TouchableOpacity>
     </View>
@@ -44,14 +96,25 @@ const EventCard = ({item, index}) => {
 };
 
 const EventsCarousel = () => {
+  const [latestEvents, setLatestEvents] = useState([]);
+
+  useEffect(() => {
+    getLatestEventCards().then(res => {
+      if (res.success) {
+        setLatestEvents(res.eventcards);
+      }
+    });
+  }, []);
   return (
     <View style={{marginVertical: 10}}>
-      <Carousel
-        data={eventData}
-        renderItem={renderItem}
-        sliderWidth={SLIDER_WIDTH}
-        itemWidth={ITEM_WIDTH}
-      />
+      {latestEvents && (
+        <Carousel
+          data={latestEvents}
+          renderItem={renderItem}
+          sliderWidth={SLIDER_WIDTH}
+          itemWidth={ITEM_WIDTH}
+        />
+      )}
     </View>
   );
 };
@@ -72,25 +135,11 @@ const styles = StyleSheet.create({
   img: {
     width: '100%',
     borderRadius: 16,
+    height: 250,
+    backgroundColor: 'pink',
   },
   imageDiv: {
     position: 'relative',
-  },
-  delete: {
-    position: 'absolute',
-    right: -10,
-    backgroundColor: '#702fa0',
-    borderRadius: 8,
-    overflow: 'hidden',
-    paddingRight: 10,
-    paddingLeft: 10,
-    paddingTop: 5,
-    paddingBottom: 5,
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: '500',
-    borderColor: '#fff',
-    borderWidth: 1,
   },
   leftTime: {
     position: 'absolute',
@@ -142,7 +191,6 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   price: {
-    width: '100%',
     textAlign: 'left',
     fontSize: 26,
     marginTop: 20,
