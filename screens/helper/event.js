@@ -28,10 +28,10 @@ const getAllCollections = () => {
     });
   };
 
-  const deleteEventCardById = (id) => {
+  const getAllEventCards = () => {
     return new Promise((resolve, reject) => {
       api
-        .delete("/api/event/eventcard/" + id)
+        .get("/api/event/eventcard_multi")
         .then((response) => {
           resolve(response.data);
         })
@@ -41,6 +41,19 @@ const getAllCollections = () => {
         });
     });
   };
+  // const deleteEventCardById = (id) => {
+  //   return new Promise((resolve, reject) => {
+  //     api
+  //       .delete("/api/event/eventcard/" + id)
+  //       .then((response) => {
+  //         resolve(response.data);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //         reject(error);
+  //       });
+  //   });
+  // };
 
   export {
     // createCollection,
@@ -50,12 +63,12 @@ const getAllCollections = () => {
     // getEventCardInCollection,
     // createEventCard,
     // getEventCardById,
-    // getAllEventCards,
+    getAllEventCards,
     getLatestEventCards,
     // buyTicket,
     // userTickets,
     // updateUserTickets,
     // allTickets,
     // getAvailableEvents,
-    deleteEventCardById,
+    // deleteEventCardById,
   };

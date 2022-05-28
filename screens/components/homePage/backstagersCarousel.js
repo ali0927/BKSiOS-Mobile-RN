@@ -12,6 +12,8 @@ import img8 from '../../../assets/img/avatars/avatar13.jpg';
 import img9 from '../../../assets/img/avatars/avatar14.jpg';
 import img10 from '../../../assets/img/avatars/avatar15.jpg';
 
+import badgeMark from '../../../assets/img/icons/verified.png';
+
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
@@ -68,10 +70,14 @@ const data = [
   },
 ];
 
-const renderItem = ({item}) => {
+const renderItem = ({item, index}) => {
   return (
     <View style={styles.container}>
-      <Image source={item.img} style={styles.img} />
+      <View style={{flexDirection: "row", alignItems: "center"}}>
+        <Text style={styles.index}>{index + 1}</Text>
+        <Image source={item.img} style={styles.img} />
+        <Image source={badgeMark} style={styles.badgeMark} />
+      </View>
       <Text style={styles.name}>@ {item.name}</Text>
     </View>
   );
@@ -94,9 +100,9 @@ export default BackstagersCarousel;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     borderWidth: 1,
     borderColor: '#887bff',
     padding: 25,
@@ -108,7 +114,6 @@ const styles = StyleSheet.create({
   img: {
     width: 100,
     height: 100,
-    marginRight: 30,
     borderRadius: 16,
   },
   name: {
@@ -117,5 +122,21 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#fff',
     marginBottom: 10,
+  },
+  index: {
+    color: '#bdbdbd',
+    fontSize: 20,
+    marginRight: 20
+  },
+  badgeMark: {
+    position: 'absolute',
+    right: -5,
+    bottom: 0,
+    backgroundColor: '#2f80ed',
+    borderRadius: 20,
+    borderColor: '#fff',
+    borderWidth: 2,
+    width: 30,
+    height: 30,
   },
 });
