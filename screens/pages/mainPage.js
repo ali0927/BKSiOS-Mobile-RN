@@ -1,23 +1,32 @@
 import React from 'react';
 import {
-  ImageBackground,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  StatusBar,
+  Image,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import logoImg from '../../assets/img/icons/logo.png';
+import backImg from '../../assets/img/icons/start-back.png';
+
+const THEME_COLOR = '#14142f';
+
 export const MainPage = ({submit}) => {
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={styles.text1}>BKS - iOS</Text>
+      <StatusBar barStyle="light-content" />
+      <View style={{zIndex: 30}}>
         <TouchableOpacity
-          style={styles.button}
+          style={{alignItems: 'center'}}
           onPress={() => submit(true)}>
-          <Text style={styles.text3}>Get Started</Text>
+          <Image source={logoImg} />
+          <Text style={styles.text1}>BACKSTAGE</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.overlay}></View>
+      <Image source={backImg} style={styles.backImage} />
     </SafeAreaView>
   );
 };
@@ -25,29 +34,30 @@ export const MainPage = ({submit}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: THEME_COLOR,
   },
   text1: {
-    color: 'black',
-    fontSize: 36,
+    color: '#fff',
+    fontSize: 40,
     lineHeight: 84,
+    letterSpacing: 1.8,
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  text3: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: '700',
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    height: 40,
-    width: 200
+  backImage: {
+    position: 'absolute',
+    bottom: 0,
+    zIndex: 0,
   },
-  button: {
-    marginTop: 150,
-    paddingTop: 10,
-    backgroundColor: '#6164ff',
-    borderRadius: 5,
+  overlay: {
+    backgroundColor: THEME_COLOR,
+    position: 'absolute',
+    height: '100%',
+    width: 500,
+    zIndex: 20,
+    opacity: 0.8,
   },
 });
