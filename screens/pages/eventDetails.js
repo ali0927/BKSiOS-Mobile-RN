@@ -15,32 +15,130 @@ import collectionImg from '../../assets/img/avatars/avatar2.jpg';
 import addonsImg from '../../assets/img/avatars/avatar5.jpg';
 import badgeMark from '../../assets/img/icons/verified.png';
 import OthersCarousel from '../components/eventDetails/otherAuthorCarousel';
-
+import {
+  getEventCardById,
+  getCollectionById,
+  getLatestEventCards,
+  getBuyState,
+} from '../helper/event';
+import Countdown from 'react-countdown';
 
 export const EventDetailsScreen = ({route}) => {
+  const id = route.params.item.id;
+  const tempData = route.params.item;
+  const [isSold, setSold] = useState(false);
+  const [addons, setAddons] = useState([]);
+  const [addonPrice, setAddonPrice] = useState(0);
+  const [collectionName, setCollectionName] = useState();
+  const [latestEvents, setLatestEvents] = useState([]);
   const [currentEvent, setCurrentEvent] = useState(null);
+  const [isAddonModalVisible, setAddonModalVisible] = useState(false);
+  const [selectedAddon, setSelectedAddon] = useState();
   const [isModalVisible, setModalVisible] = useState(false);
+  const [eventCard, setEventCard] = useState(false);
 
   const toggleModal = () => {
     console.log('This is Modal');
     setModalVisible(!isModalVisible);
   };
 
+  const toggleAddonModal = item => {
+    console.log('This is Addon Modal', item);
+    setSelectedAddon(item);
+    setAddonModalVisible(!isAddonModalVisible);
+  };
+
+  const CompletionList = () => <Text style={styles.text1}>Event Started</Text>;
+
+  const pad = (num, size = 2) => {
+    const s = '000000000' + num;
+    return s.substr(s.length - size);
+  };
+
+  const renderer = ({days, hours, minutes, seconds, completed}) => {
+    if (completed) {
+      return <CompletionList />;
+    } else {
+      return (
+        <Text style={styles.text1}>
+          {days} days {pad(hours)}:{pad(minutes)}:{pad(seconds)}
+        </Text>
+      );
+    }
+  };
+
+  const EventCountDown = ({date}) => {
+    const d = new Date(date);
+    return <Countdown date={d} renderer={renderer} />;
+  };
+
   useEffect(() => {
-    setCurrentEvent(eventData.find(item => route.params.item == item.id));
-  });
+    setCurrentEvent(eventData.find(item => id == item.id));
+
+    getEventCardById(id).then(res => {
+      console.log('EventCardById', res);
+      if (res.success) {
+        console.log('Success!!!');
+        setEventCard(res.eventcard);
+        if (res.eventcard.total_tickets === res.eventcard.buy_count)
+          setSold(true);
+        const _addons =
+          res.eventcard.addons === '' ? [] : JSON.parse(res.eventcard.addons);
+        setAddons(_addons);
+        console.log('Addons:::', _addons);
+        let _addonPrice = 0;
+        _addons.forEach(addon => {
+          _addonPrice += Number(addon.price);
+        });
+        setAddonPrice(_addonPrice);
+        console.log('Before setting colle.name', res.eventcard.collection);
+        getCollectionById(res.eventcard.collection).then(res => {
+          if (res.success) {
+            console.log('CollectionByID11111', res.collection.name);
+            setCollectionName(res.collection.name);
+          }
+        });
+      }
+    });
+
+    getLatestEventCards().then(res => {
+      if (res.success) {
+        setLatestEvents(res.eventcards);
+      }
+    });
+
+    getBuyState(id)
+      .then(res => {
+        if (res.success) {
+          console.log('Already bought');
+          // setSold(true);
+        } else {
+          console.log('You can buy');
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
   return (
     <ScrollView style={styles.container}>
-      {currentEvent && (
+      {tempData && (
         <View>
           <View style={styles.imgContainer}>
-            <Image source={currentEvent.img} style={styles.eventImg} />
-            <Text style={styles.followers}>
-              &#9825; {currentEvent.followers}
-            </Text>
+            {tempData.picture_large && (
+              <Image
+                source={{
+                  uri:
+                    'http://192.168.106.26:3000/api/upload/get_file?path=' +
+                    tempData.picture_large,
+                }}
+                style={styles.eventImg}
+              />
+            )}
+            <Text style={styles.followers}>&#9825; 358</Text>
           </View>
           <Text style={styles.text1}>Descriptions</Text>
-          <Text style={styles.infoText}>{currentEvent.descriptions}</Text>
+          <Text style={styles.infoText}>{tempData.venue_description}</Text>
           <View style={styles.divider}></View>
           <View style={styles.infoContainer}>
             <View>
@@ -50,43 +148,105 @@ export const EventDetailsScreen = ({route}) => {
                   <Image source={creatorImg} style={styles.avatarImg} />
                   <Image source={badgeMark} style={styles.badgeMark} />
                 </View>
-                <Text style={styles.infoText}>Admin</Text>
+                <Image source={{uri: tempData.creator.avatar}} />
+                <Text style={styles.infoText}>{tempData.creator.name}</Text>
               </View>
             </View>
             <View>
               <Text style={styles.text2}>Collection</Text>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image source={collectionImg} style={styles.avatarImg} />
-                <Text style={styles.infoText}>123456</Text>
-              </View>
+              {collectionName && (
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Image source={collectionImg} style={styles.avatarImg} />
+                  <Text style={styles.infoText}>{collectionName}</Text>
+                </View>
+              )}
             </View>
           </View>
           <View style={{marginBottom: 50}}>
             <Text style={styles.text1}>Addons</Text>
-            <TouchableOpacity onPress={() => console.log('AddonClick...')}>
-              <Image source={addonsImg} style={styles.avatarImg} />
-            </TouchableOpacity>
+            {addons &&
+              addons.map(item => {
+                let addonImg;
+                switch (item.icon) {
+                  case '/img/avatars/avatar.jpg':
+                    addonImg = require('../../assets/img/avatars/avatar.jpg');
+                    break;
+                  case '/img/avatars/avatar1.jpg':
+                    addonImg = require('../../assets/img/avatars/avatar2.jpg');
+                    break;
+                  case '/img/avatars/avatar2.jpg':
+                    addonImg = require('../../assets/img/avatars/avatar2.jpg');
+                    break;
+                  case '/img/avatars/avatar3.jpg':
+                    addonImg = require('../../assets/img/avatars/avatar3.jpg');
+                    break;
+                  case '/img/avatars/avatar4.jpg':
+                    addonImg = require('../../assets/img/avatars/avatar4.jpg');
+                    break;
+                  case '/img/avatars/avatar5.jpg':
+                    addonImg = require('../../assets/img/avatars/avatar5.jpg');
+                    break;
+                  case '/img/avatars/avatar6.jpg':
+                    addonImg = require('../../assets/img/avatars/avatar6.jpg');
+                    break;
+                  case '/img/avatars/avatar7.jpg':
+                    addonImg = require('../../assets/img/avatars/avatar7.jpg');
+                }
+                return (
+                  <TouchableOpacity onPress={() => toggleAddonModal(item)}>
+                    <Image source={addonImg} style={styles.avatarImg} />
+                  </TouchableOpacity>
+                );
+              })}
           </View>
+          <Modal isVisible={isAddonModalVisible}>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalTitleContainer}>
+                <View>
+                  <Text style={{...styles.modalTitle, marginVertical: 5}}>
+                    Name: {selectedAddon ? selectedAddon.name : ''}
+                  </Text>
+                  <Text style={{...styles.modalTitle, marginVertical: 5}}>
+                    Description:{' '}
+                    {selectedAddon ? selectedAddon.description : ''}
+                  </Text>
+                  <Text style={{...styles.modalTitle, marginVertical: 5}}>
+                    Price: {selectedAddon ? selectedAddon.price + '€' : ''}
+                  </Text>
+                </View>
+                <TouchableOpacity onPress={toggleAddonModal}>
+                  <Text style={styles.modalClose}>&times;</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
           <Text style={styles.text1}>Details</Text>
           <View style={styles.divider}></View>
           <View>
-            <Text style={styles.text2}>Location: {currentEvent.location}</Text>
-            <Text style={styles.text2}>Date: {currentEvent.date}</Text>
-            <Text style={styles.text2}>Time: {currentEvent.time}</Text>
-            <Text style={styles.text2}>{currentEvent.descriptions}</Text>
+            <Text style={styles.text2}>Location: {eventCard.location}</Text>
             <Text style={styles.text2}>
-              {currentEvent.ticketAmount < 10 ? (
-                <>{currentEvent.ticketAmount} tickets are left</>
+              Date:{' '}
+              {new Date(tempData.date).toISOString().toString().split('T')[0]}
+            </Text>
+            <Text style={styles.text2}>
+              Time:{' '}
+              {new Date(tempData.date).toISOString().toString().split('T')[1]}
+            </Text>
+            <Text style={styles.text2}>{tempData.descriptions}</Text>
+            <Text style={styles.text2}>
+              {tempData.total_tickets - tempData.buy_count} tickets are left
+              {/* {eventCard.ticketAmount < 10 ? (
+                <>{eventCard.ticketAmount} tickets are left</>
               ) : (
                 ''
-              )}
+              )} */}
             </Text>
           </View>
           <View style={styles.divider}></View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <View>
+            <View style={{minWidth: 160}}>
               <Text style={styles.text2}> &#9200; Events start in</Text>
-              <Text style={styles.text1}>Event Started</Text>
+              <EventCountDown date={new Date(tempData.date).toISOString()} />
             </View>
             <View
               style={{
@@ -96,7 +256,7 @@ export const EventDetailsScreen = ({route}) => {
                 marginLeft: 50,
               }}>
               <Text style={styles.text2}>Price</Text>
-              <Text style={styles.text1}>{currentEvent.price} &#8364;</Text>
+              <Text style={styles.text1}>{tempData.price} &#8364;</Text>
             </View>
           </View>
           <View style={styles.divider}></View>
@@ -164,8 +324,9 @@ const styles = StyleSheet.create({
   },
   eventImg: {
     width: '100%',
-    borderRadius: 10,
-    marginBottom: 20,
+    borderRadius: 16,
+    height: 280,
+    backgroundColor: 'pink',
   },
   followers: {
     textAlign: 'right',
@@ -262,7 +423,7 @@ const styles = StyleSheet.create({
   modalTitleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20
+    marginBottom: 20,
   },
   modalTitle: {
     color: '#fff',
@@ -285,5 +446,5 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     backgroundColor: '#6164ff',
     borderRadius: 12,
-  }
+  },
 });

@@ -15,10 +15,6 @@ import Countdown from 'react-countdown';
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
-const renderItem = ({item, index}) => {
-  return <EventCard item={item} index={index} />;
-};
-
 const CompletionList = () => <Text style={styles.leftTime}>Event Started</Text>;
 
 const pad = (num, size = 2) => {
@@ -54,7 +50,7 @@ const EventCard = ({item}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        onPress={() => navigation.navigate('EventDetail', {item: item.id})}>
+        onPress={() => navigation.navigate('EventDetail', {item: item})}>
         <View style={styles.imageDiv}>
           <Image
             source={{
@@ -93,6 +89,10 @@ const EventCard = ({item}) => {
       </TouchableOpacity>
     </View>
   );
+};
+
+const renderItem = ({item, index}) => {
+  return <EventCard item={item} index={index} />;
 };
 
 const EventsCarousel = () => {
