@@ -30,7 +30,7 @@ export const HomeScreen = ({navigation}) => {
         <Text style={styles.subtitle}>Backstagers</Text>
         <BackstagersCarousel />
       </View>
-      <View>
+      {/* <View>
         <Text style={styles.subtitle}>Explore</Text>
         <ExploreCarousel />
       </View>
@@ -38,7 +38,7 @@ export const HomeScreen = ({navigation}) => {
         <View style={styles.divider}></View>
         <Text style={styles.subtitle}>Get started creating & selling your NFTs</Text>
         <GetStarted />
-      </View>
+      </View> */}
     </ScrollView>
   );
 };

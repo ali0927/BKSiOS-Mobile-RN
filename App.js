@@ -20,7 +20,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
+        <StatusBar barStyle="light-content" />
         <MainTabs />
       </SafeAreaView>
       <Toast />
@@ -31,7 +31,7 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: THEME_COLOR
+    backgroundColor: THEME_COLOR,
   },
 });
 

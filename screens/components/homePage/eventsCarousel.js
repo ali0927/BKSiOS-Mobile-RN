@@ -68,33 +68,35 @@ const EventCard = ({item}) => {
           <View
             style={{
               flexDirection: 'row',
-              width: "100%",
+              width: '100%',
               alignItems: 'center',
               justifyContent: 'space-between',
               marginTop: 40,
-              marginBottom: 10
+              marginBottom: 10,
             }}>
-            <View style={{width: "50%"}}>
+            <View style={{width: '50%'}}>
               <Text style={styles.info}>Date </Text>
               <Text style={styles.infoVal}>
                 {new Date(item.date).toISOString().toString().split('T')[0]}
               </Text>
             </View>
-            <View style={{width: "50%"}}>
+            <View style={{width: '50%'}}>
               <Text style={styles.info}>Location</Text>
               <Text style={styles.infoVal}>{item.location}</Text>
             </View>
           </View>
           <View style={styles.divider}></View>
-          <Text style={styles.info}>Current price</Text>
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
               width: '100%',
             }}>
-            <Text style={styles.price}>{item.price + addonPrice} €</Text>
-            <View style={{flexDirection: 'row'}}>
+            <View>
+              <Text style={styles.info}>Current price</Text>
+              <Text style={styles.price}>{item.price + addonPrice} €</Text>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: "center"}}>
               <Text style={styles.like}>&#9825;</Text>
               <Text style={{...styles.price, marginLeft: 10}}>
                 {item.likes_number ? item.likes_number : 0}
@@ -175,7 +177,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     paddingTop: 20,
-    paddingBottom: 20,
     paddingLeft: 0,
     borderBottomRightRadius: 16,
     borderBottomLeftRadius: 16,
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
     color: '#fff',
-    marginTop: 10
+    marginTop: 10,
   },
   date: {
     textAlign: 'center',
@@ -224,14 +225,14 @@ const styles = StyleSheet.create({
   price: {
     textAlign: 'left',
     fontSize: 24,
-    marginTop: 20,
+    marginTop: 5,
     color: '#fff',
     fontWeight: '600',
   },
   like: {
     textAlign: 'left',
     fontSize: 24,
-    marginTop: 20,
+    marginTop: 5,
     color: '#fff',
     fontWeight: '300',
   },

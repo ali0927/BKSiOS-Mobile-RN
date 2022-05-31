@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, View, Dimensions, Image, StyleSheet} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import img1 from '../../../assets/img/avatars/avatar2.jpg';
@@ -70,28 +70,35 @@ const data = [
   },
 ];
 
-const renderItem = ({item, index}) => {
-  return (
-    <View style={styles.container}>
-      <View style={{flexDirection: "row", alignItems: "center"}}>
-        <Text style={styles.index}>{index + 1}</Text>
-        <Image source={item.img} style={styles.img} />
-        <Image source={badgeMark} style={styles.badgeMark} />
-      </View>
-      <Text style={styles.name}>@ {item.name}</Text>
-    </View>
-  );
-};
-
 const BackstagersCarousel = () => {
+  const [isViewAll, setViewAll] = useState(false);
+  const [viewData, setViewData] = useState(data);
+  useEffect(() => {
+    if (isViewAll) {
+      setViewData(data);
+    } else {
+      let tempData = data;
+      setViewData(tempData.slice(0,4));
+    }
+  }, [isViewAll])
   return (
-    <View style={{marginVertical: 10}}>
-      <Carousel
-        data={data}
-        renderItem={renderItem}
-        sliderWidth={SLIDER_WIDTH}
-        itemWidth={ITEM_WIDTH}
-      />
+    <View style={{position: 'relative', margin: 20, marginBottom: 100}}>
+      <View style={{position: 'absolute', right: 0, top: -30}}>
+        <Text style={{color: '#fff'}} onPress={() => setViewAll(!isViewAll)}>
+          {!isViewAll ? 'View All ->' : 'View Less <-'}
+        </Text>
+      </View>
+      {viewData &&
+        viewData.map((item, i) => (
+          <View style={styles.container}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={styles.index}>{i + 1}</Text>
+              <Image source={item.img} style={styles.img} />
+            </View>
+            <Text style={styles.name}>@ {item.name}</Text>
+            <Image source={badgeMark} style={styles.badgeMark} />
+          </View>
+        ))}
     </View>
   );
 };
@@ -102,41 +109,39 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: '#887bff',
-    padding: 25,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    paddingHorizontal: 20,
+    marginVertical: 8,
     width: '100%',
-    marginRight: 30,
-    borderRadius: 16,
+    height: 60,
+    borderRadius: 8,
     overflow: 'hidden',
   },
   img: {
-    width: 100,
-    height: 100,
-    borderRadius: 16,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 20,
   },
   name: {
     textAlign: 'right',
-    fontSize: 24,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: '700',
     color: '#fff',
-    marginBottom: 10,
+    marginRight: 10,
   },
   index: {
-    color: '#bdbdbd',
-    fontSize: 20,
-    marginRight: 20
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '700',
+    marginRight: 20,
   },
   badgeMark: {
-    position: 'absolute',
-    right: -5,
-    bottom: 0,
     backgroundColor: '#2f80ed',
     borderRadius: 20,
     borderColor: '#fff',
-    borderWidth: 2,
-    width: 30,
-    height: 30,
+    borderWidth: 1,
+    width: 16,
+    height: 16,
   },
 });
