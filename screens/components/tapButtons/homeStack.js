@@ -34,8 +34,6 @@ export const HomeStackScreen = () => {
     <HomeStack.Navigator
       initialRouteName="Home"
       screenOptions={{
-        // headerShown: false,
-        // header: () => null,
         headerStyle: {
           backgroundColor: THEME_COLOR,
         },
@@ -48,7 +46,19 @@ export const HomeStackScreen = () => {
         name="SignIn"
         component={SignInScreen}
         options={{
-          title: "Sign In",
+          headerTitle: () => (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text
+                style={{
+                  color: '#fff',
+                  fontSize: 16,
+                  marginLeft: 10,
+                  fontWeight: '600',
+                }}>
+                Sign In
+              </Text>
+            </View>
+          ),
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image source={arrowLeft} />
@@ -56,7 +66,30 @@ export const HomeStackScreen = () => {
           ),
         }}
       />
-      <HomeStack.Screen name="SignUp" component={SignUpScreen} />
+      <HomeStack.Screen
+        name="SignUp"
+        component={SignUpScreen}
+        options={{
+          headerTitle: () => (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text
+                style={{
+                  color: '#fff',
+                  fontSize: 16,
+                  marginLeft: 10,
+                  fontWeight: '600',
+                }}>
+                Sign Up
+              </Text>
+            </View>
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image source={arrowLeft} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
       <HomeStack.Screen
         name="ForgetPassword"
         component={ForgetPasswordScreen}
@@ -65,7 +98,7 @@ export const HomeStackScreen = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          headerTitle: props => (
+          headerTitle: () => (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Image source={logoImg} style={{width: 28, height: 28}} />
               <Text

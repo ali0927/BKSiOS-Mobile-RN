@@ -74,7 +74,6 @@ export const SignInScreen = ({navigation}) => {
           }
           value={values.email}
           autoCapitalize="none"
-          placeholderTextColor="white"
           onChangeText={val => handleChange('email', val)}
         />
         {validations.email == 'has-empty' ? (
@@ -99,7 +98,6 @@ export const SignInScreen = ({navigation}) => {
           value={values.password}
           secureTextEntry={true}
           autoCapitalize="none"
-          placeholderTextColor="white"
           onChangeText={val => handleChange('password', val)}
         />
         {validations.password == 'has-empty' ? (
@@ -149,6 +147,13 @@ export const SignInScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#14142f',
+    padding: 20,
+    paddingTop: 50,
+  },
   input: {
     width: '100%',
     height: 44,
@@ -189,13 +194,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: '#b00020',
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#14142f',
-    padding: 20,
-    paddingTop: 50,
   },
   img: {
     width: '70%',
@@ -244,14 +242,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#6a4dfd',
     borderRadius: 4,
     width: '100%',
-    margin: 10,
   },
   button1: {
     width: '100%',
     height: 44,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.33)',
-    marginVeBottom: 20,
     padding: 12,
     borderRadius: 4,
     fontSize: 18,
