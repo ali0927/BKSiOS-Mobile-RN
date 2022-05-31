@@ -12,7 +12,7 @@ import {getAllCollections} from '../../helper/event';
 import badgeMark from '../../../assets/img/icons/verified.png';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
-export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
+export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.4);
 
 const renderItem = ({item}) => {
   return (
@@ -75,10 +75,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-end',
-    width: '100%',
-    marginRight: 30,
-    height: 300,
-    borderRadius: 16,
+    width: 140,
+    marginRight: 5,
+    height: 140,
+    borderRadius: 12,
     overflow: 'hidden',
   },
   collectionMeta: {
@@ -86,46 +86,42 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    paddingTop: 0,
-    paddingBottom: 20,
+    paddingBottom: 10,
     paddingLeft: 0,
     backgroundColor: '#14142f',
     borderWidth: 1,
     borderBottomRightRadius: 16,
     borderBottomLeftRadius: 16,
-    borderColor: '#887bff',
+    borderColor: '#ffffff44',
   },
   collectionAvatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 16,
-    marginTop: -30,
-    marginBottom: 10,
+    borderRadius: 12,
+    marginTop: -25,
     position: 'relative',
   },
   badgeMark: {
     position: 'absolute',
-    right: -5,
-    bottom: -5,
+    right: 0,
+    bottom: 0,
     backgroundColor: '#2f80ed',
     borderRadius: 20,
     borderColor: '#fff',
     borderWidth: 2,
-    width: 30,
-    height: 30,
+    width: 15,
+    height: 15,
   },
   avatarImg: {
-    width: '100%',
-    height: '100%',
+    width: 40,
+    height: 40,
     borderColor: '#14142f',
     borderWidth: 1,
-    borderRadius: 16,
+    borderRadius: 20,
     backgroundColor: 'red',
   },
   collectionName: {
     width: '100%',
     textAlign: 'center',
-    fontSize: 22,
+    fontSize: 16,
     color: '#fff',
     marginVertical: 10,
     fontWeight: "700"
@@ -133,7 +129,7 @@ const styles = StyleSheet.create({
   collectionNumber: {
     width: '100%',
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 10,
     color: '#bdbdbd',
     fontWeight: '500',
   },

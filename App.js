@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, StatusBar} from 'react-native';
 import Toast from 'react-native-toast-message';
 import MainTabs from './screens/components/tapButtons/mainTabs';
 

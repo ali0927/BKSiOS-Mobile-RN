@@ -13,7 +13,7 @@ import {getLatestEventCards} from '../../helper/event';
 import Countdown from 'react-countdown';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
-export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
+export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 
 const CompletionList = () => <Text style={styles.leftTime}>Event Started</Text>;
 
@@ -60,15 +60,31 @@ const EventCard = ({item}) => {
             }}
             style={styles.img}
           />
-          <EventCountDown date={new Date(item.date).toISOString()} />
         </View>
         <View style={styles.collectionMeta}>
           <View style={styles.detail}></View>
           <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.info}>
-            Date: {new Date(item.date).toISOString().toString().split('T')[0]}
-          </Text>
-          <Text style={styles.info}>Location: {item.location}</Text>
+          <EventCountDown date={new Date(item.date).toISOString()} />
+          <View
+            style={{
+              flexDirection: 'row',
+              width: "100%",
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginTop: 40,
+              marginBottom: 10
+            }}>
+            <View style={{width: "50%"}}>
+              <Text style={styles.info}>Date </Text>
+              <Text style={styles.infoVal}>
+                {new Date(item.date).toISOString().toString().split('T')[0]}
+              </Text>
+            </View>
+            <View style={{width: "50%"}}>
+              <Text style={styles.info}>Location</Text>
+              <Text style={styles.infoVal}>{item.location}</Text>
+            </View>
+          </View>
           <View style={styles.divider}></View>
           <Text style={styles.info}>Current price</Text>
           <View
@@ -77,9 +93,9 @@ const EventCard = ({item}) => {
               justifyContent: 'space-between',
               width: '100%',
             }}>
-            <Text style={styles.price}>{item.price + addonPrice} BNB</Text>
+            <Text style={styles.price}>{item.price + addonPrice} €</Text>
             <View style={{flexDirection: 'row'}}>
-              <Text style={styles.price}>&#9825;</Text>
+              <Text style={styles.like}>&#9825;</Text>
               <Text style={{...styles.price, marginLeft: 10}}>
                 {item.likes_number ? item.likes_number : 0}
               </Text>
@@ -123,18 +139,19 @@ export default EventsCarousel;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#14142f',
+    backgroundColor: '#fff1',
     borderWidth: 1,
     borderColor: '#887bff',
-    padding: 25,
+    padding: 15,
     width: '100%',
     marginRight: 30,
-    borderRadius: 16,
+    borderRadius: 12,
     overflow: 'hidden',
   },
   img: {
     width: '100%',
-    borderRadius: 16,
+    borderTopEndRadius: 8,
+    borderTopStartRadius: 8,
     height: 250,
     backgroundColor: 'pink',
   },
@@ -142,25 +159,20 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   leftTime: {
-    position: 'absolute',
-    left: 10,
-    bottom: 0,
-    backgroundColor: '#534f77',
-    borderRadius: 20,
-    overflow: 'hidden',
-    paddingRight: 15,
-    paddingLeft: 15,
-    paddingTop: 5,
-    paddingBottom: 5,
+    textAlign: 'center',
+    fontSize: 12,
     color: '#fff',
-    fontSize: 20,
-    fontWeight: '500',
-    borderColor: '#6164ff',
     borderWidth: 1,
+    borderColor: '#6a4dfd',
+    fontWeight: '400',
+    letterSpacing: 1.6,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 15,
   },
   collectionMeta: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
     width: '100%',
     paddingTop: 20,
     paddingBottom: 20,
@@ -170,14 +182,14 @@ const styles = StyleSheet.create({
   },
   divider: {
     width: '100%',
-    backgroundColor: '#887bff',
-    height: 2,
-    marginTop: 20,
+    backgroundColor: '#fff2',
+    height: 1,
+    marginTop: 10,
     marginBottom: 20,
   },
   name: {
     width: '100%',
-    textAlign: 'left',
+    textAlign: 'center',
     fontSize: 24,
     fontWeight: '600',
     color: '#fff',
@@ -186,15 +198,41 @@ const styles = StyleSheet.create({
   info: {
     width: '100%',
     textAlign: 'left',
-    fontSize: 20,
-    color: '#bdbdbd',
+    fontSize: 12,
+    color: '#fff',
     fontWeight: '400',
+    letterSpacing: 1.6,
+    textTransform: 'uppercase',
+  },
+  infoVal: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#fff',
+    marginTop: 10
+  },
+  date: {
+    textAlign: 'center',
+    fontSize: 12,
+    color: '#fff',
+    borderWidth: 1,
+    borderColor: '#6a4dfd',
+    fontWeight: '400',
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 15,
   },
   price: {
     textAlign: 'left',
-    fontSize: 26,
+    fontSize: 24,
     marginTop: 20,
     color: '#fff',
     fontWeight: '600',
+  },
+  like: {
+    textAlign: 'left',
+    fontSize: 24,
+    marginTop: 20,
+    color: '#fff',
+    fontWeight: '300',
   },
 });

@@ -5,9 +5,12 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image,
 } from 'react-native';
-import homeBackImg from '../../../assets/img/home/home.png';
+import homeBackImg from '../../../assets/img/home/home-hero.png';
 import {useSelector} from 'react-redux';
+
+const THEME_COLOR = '#14142f';
 
 export const HomeHero = ({navigation}) => {
   const userInfo = useSelector(state => state.userInfoReducer).userInfo;
@@ -18,21 +21,42 @@ export const HomeHero = ({navigation}) => {
         style={styles.imgBackground}
         source={homeBackImg}
         resizeMode="cover">
-        <Text style={styles.text1}>The events NFT marketplace</Text>
-        <Text style={styles.text2}>A decentralized Ecosystems </Text>
-        <Text style={styles.text2}>powering the events industry</Text>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('Explorer')}>
           <Text style={styles.text3}>Explored</Text>
-        </TouchableOpacity>
-        {!userInfo && (
+        </TouchableOpacity> */}
+        {/* <Image
+          source={{
+            uri: 'https://w7.pngwing.com/pngs/58/482/png-transparent-computer-icons-user-login-icon-miscellaneous-monochrome-black.png',
+          }}
+          style={{width: 100, height: 100, backgroundColor: "none"}}
+        /> */}
+       {!userInfo && (<><View
+          style={{
+            width: 100,
+            height: 100,
+            borderRadius: 50,
+            backgroundColor: 'pink',
+            zIndex: 10
+          }}></View>
+        <Text style={styles.text1}>Sign in to explore and buy!</Text>
+        
           <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.navigate('SignIn')}>
             <Text style={styles.text3}>Sign In</Text>
           </TouchableOpacity>
+          </> 
         )}
+        <View
+          style={{
+            position: 'absolute',
+            backgroundColor: THEME_COLOR,
+            width: '100%',
+            height: '100%',
+            opacity: 0.7
+          }}></View>
       </ImageBackground>
     </View>
   );
@@ -53,11 +77,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
   },
   text1: {
-    color: 'white',
+    // fontFamily: "SpaceGrotesk-Light.ttf",
+    color: '#fff',
     fontSize: 26,
-    lineHeight: 84,
-    fontWeight: 'bold',
+    lineHeight: 50,
+    fontWeight: '500',
     textAlign: 'center',
+    zIndex: 10
   },
   text2: {
     color: 'white',
@@ -68,7 +94,7 @@ const styles = StyleSheet.create({
   },
   text3: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '500',
     textAlign: 'center',
     textTransform: 'uppercase',
@@ -76,11 +102,12 @@ const styles = StyleSheet.create({
     height: 40,
   },
   button: {
+    width: 173,
+    height: 44,
     marginTop: 30,
     paddingTop: 12,
-    backgroundColor: '#6164ff',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#fff',
+    backgroundColor: '#6a4dfd',
+    borderRadius: 4,
+    zIndex: 10
   },
 });

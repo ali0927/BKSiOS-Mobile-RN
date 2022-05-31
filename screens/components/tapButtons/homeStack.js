@@ -1,16 +1,21 @@
 import React from 'react';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SignUpScreen} from '../../pages/signPage/signUp';
 import {SignInScreen} from '../../pages/signPage/signIn';
 import {ForgetPasswordScreen} from '../../pages/signPage/ForgetPassword';
-import { PrivacyScreen } from '../../pages/signPage/privacy';
+import {PrivacyScreen} from '../../pages/signPage/privacy';
 import {HomeScreen} from '../../pages/home';
 import {EventDetailsScreen} from '../../pages/eventDetails';
 import {Button} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/core';
+import logoImg from '../../../assets/img/icons/logo.png';
+import arrowLeft from '../../../assets/img/icons/arrow-left.png';
 
 const HomeStack = createNativeStackNavigator();
+const THEME_COLOR = '#14142f';
+const THEME_SEC_COLOR = '#887bff';
 
 export const HomeStackScreen = () => {
   const userInfo = useSelector(state => state.userInfoReducer).userInfo;
@@ -19,15 +24,38 @@ export const HomeStackScreen = () => {
   const navigation = useNavigation();
 
   const signOut = () => {
-    if(userInfo) {
-      dispatch({type: 'CLEAR_USER_INFO'})
+    if (userInfo) {
+      dispatch({type: 'CLEAR_USER_INFO'});
     } else {
       navigation.navigate('SignIn');
     }
   };
   return (
-    <HomeStack.Navigator initialRouteName="Home">
-      <HomeStack.Screen name="SignIn" component={SignInScreen} />
+    <HomeStack.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        // headerShown: false,
+        // header: () => null,
+        headerStyle: {
+          backgroundColor: THEME_COLOR,
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}>
+      <HomeStack.Screen
+        name="SignIn"
+        component={SignInScreen}
+        options={{
+          title: "Sign In",
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image source={arrowLeft} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
       <HomeStack.Screen name="SignUp" component={SignUpScreen} />
       <HomeStack.Screen
         name="ForgetPassword"
@@ -37,12 +65,25 @@ export const HomeStackScreen = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          title: 'Home',
+          headerTitle: props => (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Image source={logoImg} style={{width: 28, height: 28}} />
+              <Text
+                style={{
+                  color: '#fff',
+                  fontSize: 16,
+                  marginLeft: 10,
+                  fontWeight: '600',
+                }}>
+                BACKSTAGE
+              </Text>
+            </View>
+          ),
           headerRight: () => (
             <Button
               onPress={() => signOut()}
-              title={userInfo ? 'SignOut' : 'SignIn'}
-              color="#000"
+              title={userInfo ? 'SignOut' : ''}
+              color="#fff"
             />
           ),
         }}

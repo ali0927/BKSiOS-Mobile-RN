@@ -50,11 +50,12 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     color: 'white',
-    fontSize: 26,
+    fontSize: 24,
     lineHeight: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginTop: 50,
+    fontWeight: '700',
+    textAlign: 'left',
+    marginTop: 30,
+    paddingLeft: 20
   },
   divider: {
     width: "100%",
