@@ -10,6 +10,9 @@ import rootReducer from './redux/reducers';
 
 const store = createStore(rootReducer);
 
+const THEME_COLOR = '#14142f';
+const THEME_SEC_COLOR = '#887bff';
+
 const App = () => {
   const [isStarted, setIsStarted] = useState(false);
   useEffect(() => {}, [isStarted]);
@@ -17,6 +20,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" />
         <MainTabs />
       </SafeAreaView>
       <Toast />
@@ -27,6 +31,7 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: THEME_COLOR
   },
 });
 
