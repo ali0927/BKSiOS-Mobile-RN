@@ -15,11 +15,13 @@ import Toast from 'react-native-toast-message';
 
 import imgAvatar from '../../../assets/img/avatars/avatar.jpg';
 import badgeMark from '../../../assets/img/icons/verified.png';
-import socialImg1 from '../../../assets/img/icons/social1.png';
-import socialImg2 from '../../../assets/img/icons/social2.png';
-import socialImg3 from '../../../assets/img/icons/social3.png';
-import socialImg4 from '../../../assets/img/icons/social4.png';
-import copyImg from '../../../assets/img/icons/copy-32.png';
+import telegramImg from '../../../assets/img/icons/telegram.png';
+import globalImg from '../../../assets/img/icons/globe.png';
+import mediumImg from '../../../assets/img/icons/medium.png';
+import twitterImg from '../../../assets/img/icons/twitter.png';
+import facebookImg from '../../../assets/img/icons/facebook.png';
+import instagramImg from '../../../assets/img/icons/instagram.png';
+import copyImg from '../../../assets/img/icons/copy.png';
 
 const SERVER_URL = 'http://localhost:3000';
 
@@ -121,10 +123,12 @@ export const Overview = () => {
       </View>
 
       <View style={styles.socialDiv}>
-        <Image source={socialImg1} style={styles.socialImg} />
-        <Image source={socialImg2} style={styles.socialImg} />
-        <Image source={socialImg3} style={styles.socialImg} />
-        <Image source={socialImg4} style={styles.socialImg} />
+        <Image source={globalImg} style={styles.socialImg} />
+        <Image source={telegramImg} style={styles.socialImg} />
+        <Image source={mediumImg} style={styles.socialImg} />
+        <Image source={twitterImg} style={styles.socialImg} />
+        <Image source={facebookImg} style={styles.socialImg} />
+        <Image source={instagramImg} style={styles.socialImg} />
       </View>
       <View style={styles.divider}></View>
       <View style={styles.followDiv}>

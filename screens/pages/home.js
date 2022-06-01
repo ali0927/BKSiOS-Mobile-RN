@@ -10,7 +10,6 @@ import CollectionCarousel from '../components/homePage/collectionCarousel';
 import EventsCarousel from '../components/homePage/eventsCarousel';
 import BackstagersCarousel from '../components/homePage/backstagersCarousel';
 import ExploreCarousel from '../components/homePage/exploreCarousel';
-import GetStarted from '../components/getStarted';
 
 export const HomeScreen = ({navigation}) => {
   return (
@@ -30,15 +29,6 @@ export const HomeScreen = ({navigation}) => {
         <Text style={styles.subtitle}>Backstagers</Text>
         <BackstagersCarousel />
       </View>
-      {/* <View>
-        <Text style={styles.subtitle}>Explore</Text>
-        <ExploreCarousel />
-      </View>
-      <View>
-        <View style={styles.divider}></View>
-        <Text style={styles.subtitle}>Get started creating & selling your NFTs</Text>
-        <GetStarted />
-      </View> */}
     </ScrollView>
   );
 };

@@ -1,17 +1,21 @@
 import React from 'react';
-import {View, Text, Button} from "react-native";
+import {View, Text, Button, Image, TouchableOpacity} from "react-native";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {MenuHomeScreen} from '../../pages/menuHome';
 import { ProfileScreen } from '../../pages/profile';
 import { ActivityScreen } from '../../pages/activity';
 import { AboutScreen } from '../../pages/about';
 import { AppSettingScreen } from '../../pages/appSetting';
+import arrowLeft from '../../../assets/img/icons/arrow-left.png';
+import {useNavigation} from '@react-navigation/core';
 
 const MenuStack = createNativeStackNavigator();
 const THEME_COLOR = '#14142f';
 const THEME_SEC_COLOR = '#887bff';
 
+
 export const MenuStackScreen = () => {
+  const navigation = useNavigation();
   return (
     <MenuStack.Navigator
       initialRouteName="MoreMain"
@@ -52,6 +56,11 @@ export const MenuStackScreen = () => {
                 Profile
               </Text>
             </View>
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.navigate("MoreMain")}>
+              <Image source={arrowLeft} />
+            </TouchableOpacity>
           ),
         }}/>
         <MenuStack.Screen name="Activity" component={ActivityScreen} options={{
