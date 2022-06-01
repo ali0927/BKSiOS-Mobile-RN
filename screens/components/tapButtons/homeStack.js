@@ -32,7 +32,7 @@ export const HomeStackScreen = () => {
   };
   return (
     <HomeStack.Navigator
-      initialRouteName="Home"
+      initialRouteName="HomeMain"
       screenOptions={{
         headerStyle: {
           backgroundColor: THEME_COLOR,
@@ -115,7 +115,7 @@ export const HomeStackScreen = () => {
         }}
       />
       <HomeStack.Screen
-        name="Home"
+        name="HomeMain"
         component={HomeScreen}
         options={{
           headerTitle: () => (

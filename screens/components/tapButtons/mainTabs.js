@@ -19,6 +19,7 @@ import moveActImg from '../../../assets/img/icons/move-act.png';
 import bookImg from '../../../assets/img/icons/book-open.png';
 import bookActImg from '../../../assets/img/icons/book-open-act.png';
 import {useNavigation} from '@react-navigation/core';
+import { MenuStackScreen } from './menuStack';
 
 const Tab = createBottomTabNavigator();
 const THEME_COLOR = '#14142f';
@@ -50,7 +51,7 @@ export default function MainTabs() {
           />
           <Tab.Screen
             name="Search"
-            component={ExplorerScreen}
+            component={AuthorScreen}
             options={{
               tabBarLabel: 'Search',
               tabBarIcon: (status) => <Image source={status.focused ? searchActImg : searchImg} />,
@@ -59,7 +60,7 @@ export default function MainTabs() {
           />
           <Tab.Screen
             name="Explore"
-            component={NewsStackScreen}
+            component={ExplorerScreen}
             options={{
               tabBarLabel: 'Explore',
               tabBarIcon: (status) => <Image source={status.focused ? moveActImg : moveImg} />,
@@ -68,7 +69,7 @@ export default function MainTabs() {
           />
           <Tab.Screen
             name="News"
-            component={AuthorScreen}
+            component={NewsStackScreen}
             options={{
               tabBarLabel: 'News',
               tabBarIcon: status => <Image source={status.focused ? bookActImg : bookImg} />,
@@ -77,7 +78,7 @@ export default function MainTabs() {
           />
           <Tab.Screen
             name="More"
-            component={AuthorScreen}
+            component={MenuStackScreen}
             options={{
               tabBarLabel: 'More',
               tabBarIcon: (status) => <Image source={status.focused ? menuActImg : menuImg} />,

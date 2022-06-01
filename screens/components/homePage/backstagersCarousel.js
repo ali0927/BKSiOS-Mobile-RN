@@ -90,7 +90,7 @@ const BackstagersCarousel = () => {
       </View>
       {viewData &&
         viewData.map((item, i) => (
-          <View style={styles.container}>
+          <View style={styles.container} key={item.id}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={styles.index}>{i + 1}</Text>
               <Image source={item.img} style={styles.img} />

@@ -358,8 +358,8 @@ const styles = StyleSheet.create({
   },
   eventImg: {
     width: '100%',
-    borderTopStartRadius: 12,
-    borderTopEndRadius: 12,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
     height: 300,
     backgroundColor: 'pink',
   },

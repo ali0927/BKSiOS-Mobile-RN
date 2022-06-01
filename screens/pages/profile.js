@@ -4,9 +4,7 @@ import {View, Text} from "react-native";
 export const ProfileScreen = () => {
     return(
         <View>
-            <Text>
-                Profile Screen
-            </Text>
+            <Text>This is ProfileScreen</Text>
         </View>
     )
 }

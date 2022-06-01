@@ -82,7 +82,7 @@ export const SignUpScreen = ({navigation}) => {
   };
 
   useEffect(() => {
-    if (userInfo) navigation.navigate('Home');
+    if (userInfo) navigation.navigate('HomeMain');
   }, [userInfo]);
 
   return (
@@ -214,7 +214,6 @@ const styles = StyleSheet.create({
     height: 44,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.33)',
-    marginVeBottom: 20,
     padding: 8,
     paddingLeft: 20,
     color: 'white',
@@ -234,7 +233,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 44,
     borderWidth: 1,
-    marginVeBottom: 20,
     padding: 8,
     paddingLeft: 20,
     color: 'white',

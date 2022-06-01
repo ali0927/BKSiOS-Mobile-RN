@@ -152,8 +152,8 @@ const styles = StyleSheet.create({
   },
   img: {
     width: '100%',
-    borderTopEndRadius: 8,
-    borderTopStartRadius: 8,
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8,
     height: 250,
     backgroundColor: 'pink',
   },

@@ -51,7 +51,7 @@ export const SignInScreen = ({navigation}) => {
       .then(res => {
         if (res.success) {
           dispatch({type: 'SET_USER_INFO', payload: JSON.stringify(res.data)});
-          navigation.navigate('Home');
+          navigation.navigate('HomeMain');
         } else {
           alert(res.message);
         }
@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
     height: 44,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.33)',
-    marginVeBottom: 20,
     padding: 8,
     paddingLeft: 20,
     color: 'white',
@@ -179,7 +178,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 44,
     borderWidth: 1,
-    marginVeBottom: 20,
     padding: 8,
     paddingLeft: 20,
     color: 'white',

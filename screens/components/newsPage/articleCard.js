@@ -52,7 +52,7 @@ export const ArticleCard = data => {
             alignItems: 'center',
             paddingVertical: 5,
           }}
-          onPress={() => navigation.navigate('Home')}>
+          onPress={() => console.log("Clicked News Button")}>
           <Text style={{fontSize: 18, color: '#fff', fontWeight: '700'}}>
             News
           </Text>
