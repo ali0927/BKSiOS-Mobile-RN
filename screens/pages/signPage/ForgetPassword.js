@@ -69,7 +69,7 @@ export const ForgetPasswordScreen = ({navigation}) => {
           }
           value={values.email}
           autoCapitalize="none"
-          onChangeText={val => handleChange('email', val)}
+          onChangeText={val => handleChange('email', val.toLowerCase())}
         />
         {validations.email == 'has-empty' ? (
           <Text style={styles.errorText}>Email required</Text>
