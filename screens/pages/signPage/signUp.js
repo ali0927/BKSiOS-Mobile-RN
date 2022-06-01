@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     height: 40,
   },
   text3: {
-    color: 'white',
+    color: '#fff',
     fontSize: 16,
     fontWeight: '700',
     textAlign: 'center',

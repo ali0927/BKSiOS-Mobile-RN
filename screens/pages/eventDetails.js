@@ -12,9 +12,9 @@ import Modal from 'react-native-modal';
 import {eventData} from '../constant/eventData';
 import creatorImg from '../../assets/img/avatars/avatar.jpg';
 import collectionImg from '../../assets/img/avatars/avatar2.jpg';
+import clockImg from '../../assets/img/icons/clock.png';
 import addonsImg from '../../assets/img/avatars/avatar5.jpg';
 import badgeMark from '../../assets/img/icons/verified.png';
-import OthersCarousel from '../components/eventDetails/otherAuthorCarousel';
 import {
   getEventCardById,
   getCollectionById,
@@ -22,6 +22,7 @@ import {
   getBuyState,
 } from '../helper/event';
 import Countdown from 'react-countdown';
+import likeImg from '../../assets/img/icons/like-empty.png';
 
 export const EventDetailsScreen = ({route}) => {
   const id = route.params.item.id;
@@ -36,6 +37,7 @@ export const EventDetailsScreen = ({route}) => {
   const [selectedAddon, setSelectedAddon] = useState();
   const [isModalVisible, setModalVisible] = useState(false);
   const [eventCard, setEventCard] = useState(false);
+  const [ticketAmount, setTicketAmount] = useState(1);
 
   const toggleModal = () => {
     console.log('This is Modal');
@@ -61,7 +63,7 @@ export const EventDetailsScreen = ({route}) => {
     } else {
       return (
         <Text style={styles.text1}>
-          {days} days {pad(hours)}:{pad(minutes)}:{pad(seconds)}
+          {days} days {pad(hours)}h {pad(minutes)}m {pad(seconds)}s
         </Text>
       );
     }
@@ -124,80 +126,102 @@ export const EventDetailsScreen = ({route}) => {
     <ScrollView style={styles.container}>
       {tempData && (
         <View>
-          <View style={styles.imgContainer}>
-            {tempData.picture_large && (
-              <Image
-                source={{
-                  uri:
-                    'http://192.168.106.26:3000/api/upload/get_file?path=' +
-                    tempData.picture_large,
-                }}
-                style={styles.eventImg}
-              />
-            )}
-            <Text style={styles.followers}>&#9825; 358</Text>
+          <Image
+            source={{
+              uri:
+                'http://192.168.106.26:3000/api/upload/get_file?path=' +
+                tempData.picture_large,
+            }}
+            style={styles.eventImg}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginVertical: 20,
+              alignItems: 'center',
+            }}>
+            <Text style={styles.name}>{tempData.name}</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Image source={likeImg} style={{marginRight: 10}} />
+              <Text style={styles.followers}>358</Text>
+            </View>
           </View>
-          <Text style={styles.text1}>Descriptions</Text>
-          <Text style={styles.infoText}>{tempData.venue_description}</Text>
-          <View style={styles.divider}></View>
+          <Text style={styles.description}>{tempData.venue_description}</Text>
+
           <View style={styles.infoContainer}>
-            <View>
+            <View style={{width: 180}}>
               <Text style={styles.text2}>Creator</Text>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <View>
-                  <Image source={creatorImg} style={styles.avatarImg} />
-                  <Image source={badgeMark} style={styles.badgeMark} />
-                </View>
-                <Image source={{uri: tempData.creator.avatar}} />
                 <Text style={styles.infoText}>{tempData.creator.name}</Text>
+                <Image source={badgeMark} style={styles.badgeMark} />
               </View>
             </View>
             <View>
-              <Text style={styles.text2}>Collection</Text>
-              {collectionName && (
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Image source={collectionImg} style={styles.avatarImg} />
-                  <Text style={styles.infoText}>{collectionName}</Text>
-                </View>
-              )}
+              <Text style={styles.text2}>Location</Text>
+              <Text style={styles.infoText}>{tempData.location}</Text>
             </View>
           </View>
-          <View style={{marginBottom: 50}}>
-            <Text style={styles.text1}>Addons</Text>
-            {addons &&
-              addons.map(item => {
-                let addonImg;
-                switch (item.icon) {
-                  case '/img/avatars/avatar.jpg':
-                    addonImg = require('../../assets/img/avatars/avatar.jpg');
-                    break;
-                  case '/img/avatars/avatar1.jpg':
-                    addonImg = require('../../assets/img/avatars/avatar2.jpg');
-                    break;
-                  case '/img/avatars/avatar2.jpg':
-                    addonImg = require('../../assets/img/avatars/avatar2.jpg');
-                    break;
-                  case '/img/avatars/avatar3.jpg':
-                    addonImg = require('../../assets/img/avatars/avatar3.jpg');
-                    break;
-                  case '/img/avatars/avatar4.jpg':
-                    addonImg = require('../../assets/img/avatars/avatar4.jpg');
-                    break;
-                  case '/img/avatars/avatar5.jpg':
-                    addonImg = require('../../assets/img/avatars/avatar5.jpg');
-                    break;
-                  case '/img/avatars/avatar6.jpg':
-                    addonImg = require('../../assets/img/avatars/avatar6.jpg');
-                    break;
-                  case '/img/avatars/avatar7.jpg':
-                    addonImg = require('../../assets/img/avatars/avatar7.jpg');
-                }
-                return (
-                  <TouchableOpacity onPress={() => toggleAddonModal(item)}>
-                    <Image source={addonImg} style={styles.avatarImg} />
-                  </TouchableOpacity>
-                );
-              })}
+          <View style={styles.infoContainer}>
+            <View style={{width: 180}}>
+              <Text style={styles.text2}>Date</Text>
+              <Text style={styles.infoText}>
+                {new Date(tempData.date).toISOString().toString().split('T')[0]}
+              </Text>
+            </View>
+            <View>
+              <Text style={styles.text2}>Time</Text>
+              <Text style={styles.infoText}>
+                {new Date(tempData.date).toISOString().toString().split('T')[1]}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.divider}></View>
+          <View style={styles.infoContainer}>
+            <View style={{width: 180}}>
+              <Text style={styles.text2}>Collection</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Image source={addonsImg} style={styles.avatarImg} />
+                <Text style={styles.infoText}>{collectionName}</Text>
+              </View>
+            </View>
+            <View>
+              <Text style={styles.text2}>Addons</Text>
+              {addons &&
+                addons.map(item => {
+                  let addonImg;
+                  switch (item.icon) {
+                    case '/img/avatars/avatar.jpg':
+                      addonImg = require('../../assets/img/avatars/avatar.jpg');
+                      break;
+                    case '/img/avatars/avatar1.jpg':
+                      addonImg = require('../../assets/img/avatars/avatar2.jpg');
+                      break;
+                    case '/img/avatars/avatar2.jpg':
+                      addonImg = require('../../assets/img/avatars/avatar2.jpg');
+                      break;
+                    case '/img/avatars/avatar3.jpg':
+                      addonImg = require('../../assets/img/avatars/avatar3.jpg');
+                      break;
+                    case '/img/avatars/avatar4.jpg':
+                      addonImg = require('../../assets/img/avatars/avatar4.jpg');
+                      break;
+                    case '/img/avatars/avatar5.jpg':
+                      addonImg = require('../../assets/img/avatars/avatar5.jpg');
+                      break;
+                    case '/img/avatars/avatar6.jpg':
+                      addonImg = require('../../assets/img/avatars/avatar6.jpg');
+                      break;
+                    case '/img/avatars/avatar7.jpg':
+                      addonImg = require('../../assets/img/avatars/avatar7.jpg');
+                  }
+                  return (
+                    <TouchableOpacity onPress={() => toggleAddonModal(item)}>
+                      <Image source={addonImg} style={styles.avatarImg} />
+                    </TouchableOpacity>
+                  );
+                })}
+            </View>
           </View>
           <Modal isVisible={isAddonModalVisible}>
             <View style={styles.modalContainer}>
@@ -220,58 +244,70 @@ export const EventDetailsScreen = ({route}) => {
               </View>
             </View>
           </Modal>
-          <Text style={styles.text1}>Details</Text>
           <View style={styles.divider}></View>
-          <View>
-            <Text style={styles.text2}>Location: {eventCard.location}</Text>
-            <Text style={styles.text2}>
-              Date:{' '}
-              {new Date(tempData.date).toISOString().toString().split('T')[0]}
-            </Text>
-            <Text style={styles.text2}>
-              Time:{' '}
-              {new Date(tempData.date).toISOString().toString().split('T')[1]}
-            </Text>
-            <Text style={styles.text2}>{tempData.descriptions}</Text>
-            <Text style={styles.text2}>
-              {tempData.total_tickets - tempData.buy_count} tickets are left
-              {/* {eventCard.ticketAmount < 10 ? (
-                <>{eventCard.ticketAmount} tickets are left</>
-              ) : (
-                ''
-              )} */}
-            </Text>
-          </View>
-          <View style={styles.divider}></View>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <View style={{minWidth: 160}}>
-              <Text style={styles.text2}> &#9200; Events start in</Text>
+          <View style={{alignItems: 'center', marginBottom: 30}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Image source={clockImg} />
+              <Text style={{...styles.text2, marginBottom: 0, marginLeft: 10}}>
+                Events start in
+              </Text>
+            </View>
+            <View style={{minWidth: 200, marginTop: 20}}>
               <EventCountDown date={new Date(tempData.date).toISOString()} />
             </View>
-            <View
-              style={{
-                borderLeftWidth: 1,
-                borderColor: '#887bff',
-                paddingLeft: 20,
-                marginLeft: 50,
-              }}>
-              <Text style={styles.text2}>Price</Text>
-              <Text style={styles.text1}>{tempData.price} &#8364;</Text>
-            </View>
           </View>
           <View style={styles.divider}></View>
-          <TextInput
-            style={styles.input}
-            placeholder="amount of ticket"
-            autoCapitalize="none"
-            defaultValue="1"
-            keyboardType={'numeric'}
-            placeholderTextColor="white"
-            onChangeText={val => console.log('Values: ', val)}
-          />
-          <TouchableOpacity style={styles.button} onPress={() => toggleModal()}>
-            <Text style={styles.text3}>Buy Ticket</Text>
-          </TouchableOpacity>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+            <Text style={styles.text2}>
+              {tempData.total_tickets - tempData.buy_count} tickets left
+            </Text>
+            <Text style={styles.priceText}>{tempData.price} €</Text>
+          </View>
+          <View style={styles.divider}></View>
+          {tempData.total_tickets - tempData.buy_count == 0 ? (
+            <View style={{flexDirection: 'row', marginBottom: 50}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={styles.counterText}>-</Text>
+                <Text style={styles.counterText}>{ticketAmount}</Text>
+                <Text style={styles.counterText}>+</Text>
+              </View>
+              <TouchableOpacity style={styles.soldButton}>
+                <Text style={styles.text3}>Sold out</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={{flexDirection: 'row', marginBottom: 50}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text
+                  style={styles.counterText}
+                  onPress={() => {
+                    if (ticketAmount < 1) {
+                      return;
+                    }
+                    setTicketAmount(ticketAmount - 1);
+                  }}>
+                  -
+                </Text>
+                <Text style={styles.counterText}>{ticketAmount}</Text>
+                <Text
+                  style={styles.counterText}
+                  onPress={() => setTicketAmount(ticketAmount + 1)}>
+                  +
+                </Text>
+              </View>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => toggleModal()}>
+                <Text style={styles.text3}>Buy Ticket</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
           <Modal isVisible={isModalVisible}>
             <View style={styles.modalContainer}>
               <View style={styles.modalTitleContainer}>
@@ -297,8 +333,6 @@ export const EventDetailsScreen = ({route}) => {
               </TouchableOpacity>
             </View>
           </Modal>
-          <Text style={styles.text3}>Other Author Assets</Text>
-          <OthersCarousel />
         </View>
       )}
     </ScrollView>
@@ -324,63 +358,95 @@ const styles = StyleSheet.create({
   },
   eventImg: {
     width: '100%',
-    borderRadius: 16,
-    height: 280,
+    borderTopStartRadius: 12,
+    borderTopEndRadius: 12,
+    height: 300,
     backgroundColor: 'pink',
+  },
+  name: {
+    textAlign: 'right',
+    fontSize: 24,
+    color: '#fff',
+    fontWeight: '700',
   },
   followers: {
     textAlign: 'right',
-    fontSize: 20,
-    color: '#bdbdbd',
+    fontSize: 14,
+    color: '#fff',
     fontWeight: '400',
   },
   text1: {
     color: '#fff',
-    fontSize: 22,
+    fontSize: 16,
     fontWeight: '500',
+    borderWidth: 1,
+    borderRadius: 20,
+    padding: 10,
+    textAlign: 'center',
+    borderColor: '#6a4dfd',
   },
   text2: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: '500',
     marginBottom: 10,
+    textTransform: 'uppercase',
+    letterSpacing: 2,
   },
   infoText: {
     textAlign: 'left',
-    fontSize: 20,
-    color: '#bdbdbd',
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: '500',
+    marginRight: 10,
+  },
+  priceText: {
+    color: '#fff',
+    fontSize: 32,
+    fontWeight: '700',
+  },
+  counterText: {
+    color: '#fff',
+    fontSize: 16,
     fontWeight: '400',
+    borderColor: 'rgba(255, 255, 255, 0.15)',
+    borderWidth: 1,
+    paddingVertical: 11.5,
+    paddingHorizontal: 14,
+    borderRadius: 4,
+  },
+  description: {
+    textAlign: 'left',
+    fontSize: 16,
+    color: 'rgba(255, 255, 255, 0.66)',
+    fontWeight: '400',
+    marginBottom: 20,
   },
   divider: {
     width: '100%',
-    backgroundColor: '#887bff',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
     height: 1,
-    marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 20,
   },
   infoContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 50,
+    marginBottom: 20,
   },
   badgeMark: {
-    position: 'absolute',
-    right: 15,
-    bottom: -5,
     backgroundColor: '#2f80ed',
     borderRadius: 20,
     borderColor: '#fff',
-    borderWidth: 2,
+    borderWidth: 1,
     width: 20,
     height: 20,
   },
   avatarImg: {
     position: 'relative',
-    width: 50,
-    height: 50,
+    width: 32,
+    height: 32,
     borderColor: '#6164ff',
-    marginRight: 20,
-    borderRadius: 10,
+    marginRight: 10,
+    borderRadius: 16,
   },
   input: {
     width: 350,
@@ -394,21 +460,23 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   text3: {
-    color: 'white',
-    fontSize: 20,
+    color: '#fff',
+    fontSize: 16,
     fontWeight: '700',
     textAlign: 'center',
     textTransform: 'uppercase',
     height: 40,
     width: '100%',
+    letterSpacing: 1.6,
   },
   button: {
-    marginTop: 10,
-    marginBottom: 50,
-    paddingTop: 10,
-    backgroundColor: '#6164ff',
-    borderRadius: 12,
-    width: 350,
+    flex: 1,
+    paddingTop: 12,
+    textAlignVertical: 'center',
+    height: 44,
+    backgroundColor: '#6a4dfd',
+    borderRadius: 4,
+    marginLeft: 20,
   },
   modalContainer: {
     backgroundColor: '#14142f',
@@ -441,10 +509,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   payButton: {
-    marginTop: 10,
-    marginBottom: 10,
-    paddingTop: 10,
-    backgroundColor: '#6164ff',
-    borderRadius: 12,
+    marginTop: 30,
+    paddingTop: 12,
+    textAlignVertical: 'center',
+    height: 44,
+    backgroundColor: '#6a4dfd',
+    borderRadius: 4,
+    width: '100%',
+  },
+  soldButton: {
+    flex: 1,
+    paddingTop: 12,
+    textAlignVertical: 'center',
+    height: 44,
+    backgroundColor: '#6a4dfd44',
+    borderRadius: 4,
+    marginLeft: 20,
   },
 });

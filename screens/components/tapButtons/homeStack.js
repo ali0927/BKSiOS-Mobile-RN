@@ -141,7 +141,30 @@ export const HomeStackScreen = () => {
           ),
         }}
       />
-      <HomeStack.Screen name="EventDetail" component={EventDetailsScreen} />
+      <HomeStack.Screen
+        name="EventDetail"
+        component={EventDetailsScreen}
+        options={{
+          headerTitle: () => (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text
+                style={{
+                  color: '#fff',
+                  fontSize: 16,
+                  marginLeft: 10,
+                  fontWeight: '600',
+                }}>
+                Item
+              </Text>
+            </View>
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image source={arrowLeft} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
       <HomeStack.Screen name="Privacy" component={PrivacyScreen} />
     </HomeStack.Navigator>
   );
