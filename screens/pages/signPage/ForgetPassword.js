@@ -11,6 +11,7 @@ import CheckBox from 'react-native-check-box';
 import imgLogo from '../../../assets/img/logo.png';
 import {forgetPassword} from '../../helper/auth';
 import {validateEmail} from '../../utils';
+import Toast from 'react-native-toast-message';
 
 export const ForgetPasswordScreen = ({navigation}) => {
   const [values, setValues] = useState({
@@ -45,15 +46,23 @@ export const ForgetPasswordScreen = ({navigation}) => {
     forgetPassword(values)
       .then(res => {
         if (res.success) {
-          alert(
-            'Email with reset password link was sent. please check your mailbox',
-          );
+          Toast.show({
+            type: 'success',
+            text1: 'Email with reset password link was sent. please check your mailbox',
+          });
         } else {
-          alert(res.message);
+          Toast.show({
+            type: 'success',
+            text1: res.message,
+          });
         }
       })
       .catch(error => {
-        alert('Failed...');
+        Toast.show({
+          type: 'success',
+          text1: 'Failed...',
+          text2: error
+        });
       });
   };
 

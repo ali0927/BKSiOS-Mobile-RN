@@ -13,6 +13,7 @@ import imgLogo from '../../../assets/img/logo.png';
 import {signup, verifyEmail} from '../../helper/auth';
 import {validateEmail} from '../../utils';
 import {useSelector} from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 export const SignUpScreen = ({navigation}) => {
   const [checked, setChecked] = useState(true);
@@ -68,16 +69,26 @@ export const SignUpScreen = ({navigation}) => {
       .then(res => {
         console.log('RREESS=> ', res);
         if (res.success) {
-          alert('Signup Success! Please Verify your email.');
+          Toast.show({
+            type: 'success',
+            text1: 'Signup Success! Please Verify your email.',
+          });
           // setModal({open: true, children: <SignupSuccessMoal />});
           return;
           // addToast('Register success. Email was sent. Please verify your email', {appearance: 'success', autoDismiss: true});
         } else {
-          alert(res.message);
+          Toast.show({
+            type: 'success',
+            text1: res.message,
+          });
         }
       })
       .catch(error => {
-        alert('Signup failed...', error);
+        Toast.show({
+          type: 'success',
+          text1: 'Signup failed...',
+          text2: error
+        });
       });
   };
 

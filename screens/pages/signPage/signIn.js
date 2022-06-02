@@ -9,6 +9,7 @@ import {
 import {login} from '../../helper/auth';
 import {validateEmail} from '../../utils';
 import {useDispatch} from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 export const SignInScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -53,12 +54,18 @@ export const SignInScreen = ({navigation}) => {
           dispatch({type: 'SET_USER_INFO', payload: JSON.stringify(res.data)});
           navigation.navigate('HomeMain');
         } else {
-          alert(res.message);
+          Toast.show({
+            type: 'success',
+            text1: res.message,
+          });
         }
       })
       .catch(error => {
-        alert('Login Failed...');
-        console.log('Login failed...', error);
+        Toast.show({
+          type: 'success',
+          text1: 'Login Failed...',
+          text2: error
+        });
       });
   };
 
