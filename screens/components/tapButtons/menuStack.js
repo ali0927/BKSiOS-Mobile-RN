@@ -107,6 +107,11 @@ export const MenuStackScreen = () => {
               </Text>
             </View>
           ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.navigate("MoreMain")}>
+              <Image source={arrowLeft} />
+            </TouchableOpacity>
+          ),
         }}/>
     </MenuStack.Navigator>
   );

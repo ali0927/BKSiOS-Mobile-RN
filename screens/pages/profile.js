@@ -787,11 +787,4 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 30,
   },
-  divider: {
-    width: '100%',
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    height: 1,
-    marginTop: 40,
-    marginBottom: 40,
-  },
 });
