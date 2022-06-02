@@ -7,6 +7,7 @@ import settingsImg from '../../assets/img/icons/settings2.png';
 import aboutImg from '../../assets/img/icons/about.png';
 import loginImg from '../../assets/img/icons/log-in.png';
 import logoutImg from '../../assets/img/icons/log-out.png';
+import likedImg from "../../assets/img/icons/liked.png";
 import {useSelector, useDispatch} from 'react-redux';
 
 export const MenuHomeScreen = ({navigation}) => {
@@ -41,6 +42,17 @@ export const MenuHomeScreen = ({navigation}) => {
           </View>
           <Image source={rightArrowImg} />
         </TouchableOpacity>
+        {userInfo && (
+          <TouchableOpacity
+            style={styles.listItem}
+            onPress={() => navigation.navigate('Settings')}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Image source={likedImg} style={{marginRight: 20}} />
+              <Text style={styles.title}>Liked</Text>
+            </View>
+            <Image source={rightArrowImg} />
+          </TouchableOpacity>
+        )}
         <TouchableOpacity
           style={styles.listItem}
           onPress={() => navigation.navigate('Settings')}>
@@ -62,20 +74,16 @@ export const MenuHomeScreen = ({navigation}) => {
       </View>
       <View style={{marginHorizontal: 20}}>
         {!userInfo ? (
-          <TouchableOpacity style={styles.button1}>
+          <TouchableOpacity
+            style={{...styles.button1, backgroundColor: '#6a4dfd'}}
+            onPress={() => navigation.navigate('SignIn')}>
             <Image source={loginImg} />
-            <Text
-              style={styles.text3}
-              onPress={() => navigation.navigate('SignIn')}>
-              Sign in
-            </Text>
+            <Text style={styles.text3}>Sign in</Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={styles.button1}>
+          <TouchableOpacity style={styles.button1} onPress={() => signOut()}>
             <Image source={logoutImg} />
-            <Text style={styles.text3} onPress={() => signOut()}>
-              Sign Out
-            </Text>
+            <Text style={styles.text3}>Sign Out</Text>
           </TouchableOpacity>
         )}
       </View>
