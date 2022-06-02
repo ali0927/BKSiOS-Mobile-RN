@@ -11,9 +11,9 @@ import HTMLView from 'react-native-htmlview';
 import axios from 'axios';
 import DateObject from 'react-date-object';
 import clockImg from '../../assets/img/icons/clock.png';
-import shareImg1 from '../../assets/img/icons/share1.png';
-import shareImg2 from '../../assets/img/icons/share2.png';
-import shareImg3 from '../../assets/img/icons/share3.png';
+import shareImg1 from '../../assets/img/icons/facebook.png';
+import shareImg2 from '../../assets/img/icons/twitter.png';
+import shareImg3 from '../../assets/img/icons/medium.png';
 
 // import {getArticleById} from "../helper/article";
 

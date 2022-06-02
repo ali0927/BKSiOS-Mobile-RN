@@ -199,10 +199,10 @@ const styles = StyleSheet.create({
   info: {
     width: '100%',
     textAlign: 'left',
-    fontSize: 12,
-    color: '#fff',
+    fontSize: 10,
+    color: 'rgba(255, 255, 255, 0.66)',
     fontWeight: '400',
-    letterSpacing: 1.6,
+    letterSpacing: 2,
     textTransform: 'uppercase',
   },
   infoVal: {

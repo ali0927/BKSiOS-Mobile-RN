@@ -386,9 +386,9 @@ const styles = StyleSheet.create({
     borderColor: '#6a4dfd',
   },
   text2: {
-    color: '#fff',
+    color: 'rgba(255, 255, 255, 0.66)',
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: '400',
     marginBottom: 10,
     textTransform: 'uppercase',
     letterSpacing: 2,

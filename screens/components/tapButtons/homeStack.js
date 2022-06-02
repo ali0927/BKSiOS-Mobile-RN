@@ -12,6 +12,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/core';
 import logoImg from '../../../assets/img/icons/logo.png';
 import arrowLeft from '../../../assets/img/icons/arrow-left.png';
+import {ProfileAuthorScreen} from '../../pages/profileAuthor';
 
 const HomeStack = createNativeStackNavigator();
 const THEME_COLOR = '#14142f';
@@ -155,6 +156,30 @@ export const HomeStackScreen = () => {
                   fontWeight: '600',
                 }}>
                 Item
+              </Text>
+            </View>
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image source={arrowLeft} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <HomeStack.Screen
+        name="AuthorProfile"
+        component={ProfileAuthorScreen}
+        options={{
+          headerTitle: () => (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text
+                style={{
+                  color: '#fff',
+                  fontSize: 16,
+                  marginLeft: 10,
+                  fontWeight: '600',
+                }}>
+                AuthorProfile
               </Text>
             </View>
           ),

@@ -6,45 +6,57 @@ import {
   Image,
   StyleSheet,
   ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import {getAllCollections} from '../../helper/event';
 import badgeMark from '../../../assets/img/icons/verified.png';
+import {useNavigation} from '@react-navigation/core';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.4);
 
-const renderItem = ({item}) => {
+const CollectionCard = ({item}) => {
+  const navigation = useNavigation();
   return (
-    <ImageBackground
-      style={styles.container}
-      source={{
-        uri:
-          'http://192.168.106.26:3000/api/upload/get_file?path=' +
-          item.picture_large,
-      }}
-      resizeMode="cover"
-      key={item.id}>
-      <View style={styles.collectionMeta}>
-        <View style={styles.collectionAvatar}>
-          <Image
-            source={{
-              uri:
-                'http://192.168.106.26:3000/api/upload/get_file?path=' +
-                item.picture_small,
-            }}
-            style={styles.avatarImg}
-          />
-          <Image source={badgeMark} style={styles.badgeMark} />
-        </View>
-        <Text style={styles.collectionName}>{item.name}</Text>
-        <Text style={styles.collectionNumber}>{item.category}</Text>
-      </View>
-    </ImageBackground>
+    <View>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('AuthorProfile', {item: item})}>
+        <ImageBackground
+          style={styles.container}
+          source={{
+            uri:
+              'http://192.168.106.26:3000/api/upload/get_file?path=' +
+              item.picture_large,
+          }}
+          resizeMode="cover"
+          key={item.id}>
+          <View style={styles.collectionMeta}>
+            <View style={styles.collectionAvatar}>
+              <Image
+                source={{
+                  uri:
+                    'http://192.168.106.26:3000/api/upload/get_file?path=' +
+                    item.picture_small,
+                }}
+                style={styles.avatarImg}
+              />
+              <Image source={badgeMark} style={styles.badgeMark} />
+            </View>
+            <Text style={styles.collectionName}>{item.name}</Text>
+            <Text style={styles.collectionNumber}>{item.category}</Text>
+          </View>
+        </ImageBackground>
+      </TouchableOpacity>
+    </View>
   );
 };
 
-const CollectionCarousel = () => {
+const renderItem = ({item, index}) => {
+  return <CollectionCard item={item} index={index} />;
+};
+
+const CollectionCarousel = ({navigation}) => {
   const [collections, setCollections] = useState([]);
 
   useEffect(() => {
@@ -124,7 +136,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#fff',
     marginVertical: 10,
-    fontWeight: "700"
+    fontWeight: '700',
   },
   collectionNumber: {
     width: '100%',
