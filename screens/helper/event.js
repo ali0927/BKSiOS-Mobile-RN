@@ -14,14 +14,14 @@ const getAllCollections = () => {
   });
 };
 
-const getCollectionById = (id) => {
+const getCollectionById = id => {
   return new Promise((resolve, reject) => {
     api
-      .get("/api/event/collection/" + id)
-      .then((response) => {
+      .get('/api/event/collection/' + id)
+      .then(response => {
         resolve(response.data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
         reject(error);
       });
@@ -57,19 +57,19 @@ const getAllEventCards = () => {
 };
 
 // Buy...
-const getBuyState = (id) => {
+const getBuyState = id => {
   return new Promise((resolve, reject) => {
     api
-      .get("/api/event/eventcard/buy_ticket/" + id)
-      .then((response) => {
+      .get('/api/event/eventcard/buy_ticket/' + id)
+      .then(response => {
         resolve(response.data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
         reject(error);
       });
   });
-}
+};
 
 const getEventCardById = id => {
   return new Promise((resolve, reject) => {
@@ -80,6 +80,23 @@ const getEventCardById = id => {
       })
       .catch(error => {
         console.log(error);
+        reject(error);
+      });
+  });
+};
+
+// Tickets
+const allTickets = data => {
+  console.log("Ticket is called", data);
+  return new Promise((resolve, reject) => {
+    api
+      .get('/api/event/eventcard_multi/tickets')
+      .then(response => {
+        console.log("Ticket Calling Res", response.data);
+        resolve(response.data);
+      })
+      .catch(error => {
+        console.log('Ticket Calling error', error);
         reject(error);
       });
   });
@@ -112,7 +129,7 @@ export {
   getBuyState,
   // userTickets,
   // updateUserTickets,
-  // allTickets,
+  allTickets,
   // getAvailableEvents,
   // deleteEventCardById,
 };

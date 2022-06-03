@@ -7,15 +7,19 @@ import settingsImg from '../../assets/img/icons/settings2.png';
 import aboutImg from '../../assets/img/icons/about.png';
 import loginImg from '../../assets/img/icons/log-in.png';
 import logoutImg from '../../assets/img/icons/log-out.png';
-import likedImg from "../../assets/img/icons/liked.png";
+import likedImg from '../../assets/img/icons/liked.png';
 import {useSelector, useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const MenuHomeScreen = ({navigation}) => {
   const userInfo = useSelector(state => state.userInfoReducer).userInfo;
 
   const dispatch = useDispatch();
-  const signOut = () => {
+  const signOut = async () => {
     if (userInfo) {
+      console.log('SignOut Function...', userInfo);
+      const keys = await AsyncStorage.getAllKeys();
+      await AsyncStorage.multiRemove(keys);
       dispatch({type: 'CLEAR_USER_INFO'});
     } else {
       navigation.navigate('SignIn');

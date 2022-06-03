@@ -10,6 +10,7 @@ import {login} from '../../helper/auth';
 import {validateEmail} from '../../utils';
 import {useDispatch} from 'react-redux';
 import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const SignInScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ export const SignInScreen = ({navigation}) => {
     login(values)
       .then(res => {
         if (res.success) {
+          AsyncStorage.setItem("userInfo", JSON.stringify(res.data))
           dispatch({type: 'SET_USER_INFO', payload: JSON.stringify(res.data)});
           navigation.navigate('HomeMain');
         } else {
