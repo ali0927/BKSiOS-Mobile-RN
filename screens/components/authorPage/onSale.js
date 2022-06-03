@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import CheckBox from 'react-native-check-box';
 import img1 from '../../../assets/img/cover/cover3.jpg';
 import img2 from '../../../assets/img/cover/cover4.jpg';
 import img3 from '../../../assets/img/cover/cover5.jpg';
@@ -137,15 +136,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textTransform: 'uppercase',
     textDecorationLine: 'underline',
-  },
-  checkBox: {
-    width: 350,
-    height: 30,
-    marginTop: 10,
-  },
-  checkBoxText: {
-    color: '#fff',
-    fontSize: 20,
   },
   container: {
     flex: 1,

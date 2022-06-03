@@ -3,13 +3,10 @@ import {
   View,
   TextInput,
   StyleSheet,
-  Image,
   TouchableOpacity,
   ScrollView,
   Text,
 } from 'react-native';
-import CheckBox from 'react-native-check-box';
-import imgLogo from '../../../assets/img/logo.png';
 import {signup, verifyEmail} from '../../helper/auth';
 import {validateEmail} from '../../utils';
 import {useSelector} from 'react-redux';

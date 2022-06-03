@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import {Banner} from '../components/authorPage/banner';
 import {Created} from '../components/authorPage/created';
-import {MyActivity} from '../components/authorPage/myActivity';
 import {OnSale} from '../components/authorPage/onSale';
 import {Overview} from '../components/authorPage/overview';
 import {Profile} from '../components/authorPage/profile';
@@ -80,7 +79,6 @@ export const AuthorScreen = ({navigation}) => {
       )}
       {selected === 1 && <Profile />}
       {selected === 2 && <Created />}
-      {selected === 3 && <MyActivity />}
       {selected === 4 && <OnSale />}
     </ScrollView>
   );

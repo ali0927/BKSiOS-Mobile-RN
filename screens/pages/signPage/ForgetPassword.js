@@ -7,8 +7,6 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import CheckBox from 'react-native-check-box';
-import imgLogo from '../../../assets/img/logo.png';
 import {forgetPassword} from '../../helper/auth';
 import {validateEmail} from '../../utils';
 import Toast from 'react-native-toast-message';
