@@ -65,7 +65,7 @@ const FilterModal = ({toggleModal}) => {
         </View>
         {checkList &&
           checkList.map(item => (
-            <TouchableOpacity onPress={() => handleChecked(item.id)}>
+            <TouchableOpacity onPress={() => handleChecked(item.id)} key={item.id}>
               <CheckBox
                 label={item.title}
                 value={checked[item.title]}

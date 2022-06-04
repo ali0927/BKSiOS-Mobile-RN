@@ -7,8 +7,6 @@ import {ForgetPasswordScreen} from '../../pages/signPage/ForgetPassword';
 import {PrivacyScreen} from '../../pages/signPage/privacy';
 import {HomeScreen} from '../../pages/home';
 import {EventDetailsScreen} from '../../pages/eventDetails';
-import {Button} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/core';
 import logoImg from '../../../assets/img/icons/logo.png';
 import arrowLeft from '../../../assets/img/icons/arrow-left.png';
@@ -16,21 +14,10 @@ import {ProfileAuthorScreen} from '../../pages/profileAuthor';
 
 const HomeStack = createNativeStackNavigator();
 const THEME_COLOR = '#14142f';
-const THEME_SEC_COLOR = '#887bff';
 
 export const HomeStackScreen = () => {
-  const userInfo = useSelector(state => state.userInfoReducer).userInfo;
-
-  const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const signOut = () => {
-    if (userInfo) {
-      dispatch({type: 'CLEAR_USER_INFO'});
-    } else {
-      navigation.navigate('SignIn');
-    }
-  };
   return (
     <HomeStack.Navigator
       initialRouteName="HomeMain"
@@ -133,13 +120,6 @@ export const HomeStackScreen = () => {
               </Text>
             </View>
           ),
-          headerRight: () => (
-            <Button
-              onPress={() => signOut()}
-              title={userInfo ? 'SignOut' : ''}
-              color="#fff"
-            />
-          ),
         }}
       />
       <HomeStack.Screen
@@ -179,7 +159,7 @@ export const HomeStackScreen = () => {
                   marginLeft: 10,
                   fontWeight: '600',
                 }}>
-                AuthorProfile
+                Profile
               </Text>
             </View>
           ),
