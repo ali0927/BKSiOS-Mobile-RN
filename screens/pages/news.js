@@ -56,9 +56,9 @@ export const NewsScreen = ({navigation}) => {
   }, []);
 
   return (
-    <View style={{backgroundColor: '#14142f'}}>
+    <View style={{backgroundColor: '#14142f', marginBottom: 50}}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <View style={{flexDirection: 'row', marginBottom: 30, marginTop: 10}}>
+        <View style={{flexDirection: 'row', marginBottom: 25, marginTop: 10}}>
           {categoryList &&
             categoryList.map(item => (
               <TouchableOpacity

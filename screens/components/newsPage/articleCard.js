@@ -55,8 +55,8 @@ export const ArticleCard = data => {
                 fontWeight: '500',
                 backgroundColor: 'rgba(255, 255, 255, 0.1)',
                 overflow: 'hidden',
-                borderRadius: 12,
-                paddingVertical: 6,
+                borderRadius: 11,
+                paddingVertical: 5,
                 paddingHorizontal: 10,
                 marginBottom: 5,
               }}>
