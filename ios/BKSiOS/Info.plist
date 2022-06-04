@@ -36,7 +36,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -51,5 +51,13 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array/>
+	<key>NSCameraUsageDescription</key>
+	<string>BKSbackstorage accesses your camera to upload images to customer avatar</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>BKSbackstorage accesses your camera to upload images to customer avatar</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>BKSbackstorage accesses your photos to upload the images.</string>
 </dict>
 </plist>
