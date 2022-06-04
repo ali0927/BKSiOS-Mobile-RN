@@ -59,16 +59,11 @@ export const NewsScreen = ({navigation}) => {
   return (
     <View style={{backgroundColor: '#14142f', marginBottom: 50}}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <View style={{flexDirection: 'row', marginBottom: 25, marginTop: 10}}>
+        <View style={styles.categoryContainer}>
           {categoryList &&
             categoryList.map(item => (
               <TouchableOpacity
-                style={{
-                  alignItems: 'flex-start',
-                  marginLeft: 10,
-                  height: 24,
-                  justifyContent: 'center',
-                }}
+                style={styles.categoryTitle}
                 onPress={() => setCurrentCategory(item.id)}>
                 <Text
                   style={
@@ -83,14 +78,7 @@ export const NewsScreen = ({navigation}) => {
         </View>
       </ScrollView>
       <ScrollView>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingBottom: 30,
-            paddingHorizontal: 20,
-          }}>
+        <View style={styles.articleContainer}>
           {articles &&
             articles.map(item => <ArticleCard item={item} key={item.id} />)}
         </View>
@@ -100,6 +88,13 @@ export const NewsScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  categoryContainer: {flexDirection: 'row', marginBottom: 25, marginTop: 10},
+  categoryTitle: {
+    alignItems: 'flex-start',
+    marginLeft: 10,
+    height: 24,
+    justifyContent: 'center',
+  },
   categoryItem: {
     fontSize: 12,
     fontWeight: '500',
@@ -122,5 +117,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 12,
     overflow: 'hidden',
+  },
+  articleContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 30,
+    paddingHorizontal: 20,
   },
 });

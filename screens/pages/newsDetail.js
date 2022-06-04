@@ -51,19 +51,9 @@ export const NewsDetailScreen = ({route, navigation}) => {
 
   return (
     <View style={{backgroundColor: '#14142f', flex: 1}}>
-      <ScrollView
-        contentContainerStyle={{
-          backgroundColor: '#14142f',
-          paddingHorizontal: 20,
-          alignItems: 'center',
-        }}>
+      <ScrollView contentContainerStyle={styles.scrollStyle}>
         {article && (
-          <View
-            style={{
-              width: '100%',
-              overflow: 'hidden',
-              margin: 20,
-            }}>
+          <View style={styles.innerContainer}>
             <Image
               source={{
                 uri:
@@ -71,83 +61,28 @@ export const NewsDetailScreen = ({route, navigation}) => {
                   '/api/upload/get_file?path=' +
                   article.image,
               }}
-              style={{
-                width: '100%',
-                height: 200,
-                borderTopLeftRadius: 12,
-                borderTopRightRadius: 12,
-                backgroundColor: 'pink',
-              }}
+              style={styles.mainImg}
             />
-            <View
-              style={{
-                flexDirection: 'row',
-                width: '100%',
-                justifyContent: 'space-between',
-                marginTop: 10,
-              }}>
+            <View style={styles.timeContainer}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Image source={clockImg} style={{marginRight: 10}} />
-                <Text
-                  style={{
-                    color: 'rgba(255, 255, 255, 0.66)',
-                    fontSize: 12,
-                    fontWeight: '400',
-                    letterSpacing: 1.05,
-                  }}>
+                <Text style={styles.timeText}>
                   {dateString(article.createdAt)}
                 </Text>
               </View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Image source={messageImg} style={{marginRight: 5}} />
-                <Text
-                  style={{
-                    color: 'rgba(255, 255, 255, 0.66)',
-                    fontSize: 12,
-                    fontWeight: '400',
-                  }}>
-                  0
-                </Text>
+                <Text style={styles.messageText}>0</Text>
               </View>
             </View>
             <TouchableOpacity
-              style={{
-                alignItems: 'flex-start',
-              }}
+              style={styles.newsButton}
               onPress={() => console.log('Clicked News Button')}>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: 'rgba(255,255,255,0.66)',
-                  fontWeight: '500',
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  overflow: 'hidden',
-                  borderRadius: 11,
-                  paddingVertical: 5,
-                  paddingHorizontal: 10,
-                  marginTop: 20,
-                }}>
-                News
-              </Text>
+              <Text style={styles.newsText}>News</Text>
             </TouchableOpacity>
-
-            <Text
-              style={{
-                fontSize: 24,
-                color: '#fff',
-                fontWeight: '700',
-                marginTop: 10,
-                marginBottom: 10,
-              }}>
-              {article.title}
-            </Text>
+            <Text style={styles.articleTitle}>{article.title}</Text>
             <HTMLView value={article.description} stylesheet={htmlStyleSheet} />
-            <View
-              style={{
-                flexDirection: 'row',
-                marginBottom: 10,
-                marginTop: 80,
-              }}>
+            <View style={styles.shareButtons}>
               <TouchableOpacity style={styles.shareButton}>
                 <Image source={shareImg1} style={{marginRight: 10}} />
                 <Text style={styles.shareButtonText}>share</Text>
@@ -170,6 +105,63 @@ export const NewsDetailScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  scrollStyle: {
+    backgroundColor: '#14142f',
+    paddingHorizontal: 20,
+    alignItems: 'center',
+  },
+  innerContainer: {
+    width: '100%',
+    overflow: 'hidden',
+    margin: 20,
+  },
+  mainImg: {
+    width: '100%',
+    height: 200,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    backgroundColor: 'pink',
+  },
+  timeContainer: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  timeText: {
+    color: 'rgba(255, 255, 255, 0.66)',
+    fontSize: 12,
+    fontWeight: '400',
+    letterSpacing: 1.05,
+  },
+  messageText: {
+    color: 'rgba(255, 255, 255, 0.66)',
+    fontSize: 12,
+    fontWeight: '400',
+  },
+  newsText: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.66)',
+    fontWeight: '500',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    overflow: 'hidden',
+    borderRadius: 11,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginTop: 20,
+  },
+  articleTitle: {
+    fontSize: 24,
+    color: '#fff',
+    fontWeight: '700',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  shareButtons: {
+    flexDirection: 'row',
+    marginBottom: 10,
+    marginTop: 80,
+  },
   shareButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -185,11 +177,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   newsButton: {
-    backgroundColor: '#6164ff',
-    borderRadius: 12,
-    width: 80,
-    alignItems: 'center',
-    paddingVertical: 5,
+    alignItems: 'flex-start',
   },
 });
 const htmlStyleSheet = StyleSheet.create({
@@ -207,11 +195,11 @@ const htmlStyleSheet = StyleSheet.create({
     marginBottom: -60,
   },
   ul: {
-    color: 'white',
+    color: '#fff',
     marginBottom: -40,
   },
   li: {
-    color: 'white',
+    color: '#fff',
     fontSize: 16,
   },
   ol: {
