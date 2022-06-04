@@ -4,6 +4,7 @@ import {TouchableOpacity, View, Text, Image} from 'react-native';
 import messageImg from '../../../assets/img/icons/message.png';
 import clockImg from '../../../assets/img/icons/clock.png';
 import {useNavigation} from '@react-navigation/core';
+import config from '../../helper/config';
 
 export const ArticleCard = data => {
   const navigation = useNavigation();
@@ -28,7 +29,7 @@ export const ArticleCard = data => {
         <Image
           source={{
             uri:
-              'http://192.168.106.26:3000/api/upload/get_file?path=' +
+            config.API_BASE_URL + '/api/upload/get_file?path=' +
               data.item.image,
           }}
           style={{width: '100%', height: 200, backgroundColor: 'pink'}}

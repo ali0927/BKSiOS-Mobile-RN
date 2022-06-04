@@ -5,6 +5,7 @@ import img1 from '../../../assets/img/cover/cover3.jpg';
 import img2 from '../../../assets/img/cover/cover4.jpg';
 import img3 from '../../../assets/img/cover/cover5.jpg';
 import {getAllEventCards} from '../../helper/event';
+import config from '../../helper/config';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
@@ -51,7 +52,7 @@ const renderItem = ({item}) => {
         <Image
           source={{
             uri:
-              'http://192.168.106.26:3000/api/upload/get_file?path=' +
+              config.API_BASE_URL + '/api/upload/get_file?path=' +
               item.picture_small,
           }}
           style={styles.img}

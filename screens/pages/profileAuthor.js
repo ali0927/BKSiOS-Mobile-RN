@@ -11,10 +11,7 @@ import {
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Clipboard from '@react-native-clipboard/clipboard';
-
 import Toast from 'react-native-toast-message';
-
-import imgAvatar from '../../assets/img/avatars/avatar.jpg';
 import badgeMark from '../../assets/img/icons/verified.png';
 import telegramImg from '../../assets/img/icons/telegram.png';
 import globalImg from '../../assets/img/icons/globe.png';
@@ -24,8 +21,7 @@ import facebookImg from '../../assets/img/icons/facebook.png';
 import instagramImg from '../../assets/img/icons/instagram.png';
 import copyImg from '../../assets/img/icons/copy.png';
 import CollectionCarousel from '../components/homePage/collectionCarousel';
-
-const SERVER_URL = 'http://localhost:3000';
+import config from '../helper/config';
 
 const createFormData = (photo, body = {}) => {
   const data = new FormData();
@@ -57,7 +53,7 @@ export const ProfileAuthorScreen = ({route}) => {
   };
 
   const handleUploadPhoto = () => {
-    fetch(`${SERVER_URL}/api/upload`, {
+    fetch(`${config.API_BASE_URL}/api/upload`, {
       method: 'POST',
       body: createFormData(photo, {userId: '123'}),
     })
@@ -101,11 +97,15 @@ export const ProfileAuthorScreen = ({route}) => {
             <View
               style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
               <View style={styles.avatarDiv}>
-                <Image source={{
-                  uri:
-                    'http://192.168.106.26:3000/api/upload/get_file?path=' +
-                    collectionData.picture_small,
-                }} style={styles.avatarImg} />
+                <Image
+                  source={{
+                    uri:
+                      config.API_BASE_URL +
+                      '/api/upload/get_file?path=' +
+                      collectionData.picture_small,
+                  }}
+                  style={styles.avatarImg}
+                />
               </View>
 
               {/* <TouchableOpacity

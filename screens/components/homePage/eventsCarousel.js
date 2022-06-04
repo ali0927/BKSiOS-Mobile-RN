@@ -11,6 +11,7 @@ import Carousel from 'react-native-snap-carousel';
 import {useNavigation} from '@react-navigation/core';
 import {getLatestEventCards} from '../../helper/event';
 import Countdown from 'react-countdown';
+import config from '../../helper/config';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
@@ -55,7 +56,7 @@ const EventCard = ({item}) => {
           <Image
             source={{
               uri:
-                'http://192.168.106.26:3000/api/upload/get_file?path=' +
+                config.API_BASE_URL + '/api/upload/get_file?path=' +
                 item.picture_small,
             }}
             style={styles.img}

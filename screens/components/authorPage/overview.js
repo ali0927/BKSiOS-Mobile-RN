@@ -22,8 +22,7 @@ import twitterImg from '../../../assets/img/icons/twitter.png';
 import facebookImg from '../../../assets/img/icons/facebook.png';
 import instagramImg from '../../../assets/img/icons/instagram.png';
 import copyImg from '../../../assets/img/icons/copy.png';
-
-const SERVER_URL = 'http://localhost:3000';
+import config from '../../helper/config';
 
 const createFormData = (photo, body = {}) => {
   const data = new FormData();
@@ -54,7 +53,7 @@ export const Overview = () => {
   };
 
   const handleUploadPhoto = () => {
-    fetch(`${SERVER_URL}/api/upload`, {
+    fetch(config.API_BASE_URL + `/api/upload`, {
       method: 'POST',
       body: createFormData(photo, {userId: '123'}),
     })
@@ -71,7 +70,7 @@ export const Overview = () => {
     Toast.show({
       type: 'success',
       text1: 'Copied',
-      text2: 'You can paste these characters...  👋'
+      text2: 'You can paste these characters...  👋',
     });
     if (key === 'wallet') {
       Clipboard.setString('XAVUW3sw3ZunitokcLtemEfX3tGuX2plateWdh');

@@ -2,13 +2,14 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {
   View,
-  ListView,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
 import {ArticleCard} from '../components/newsPage/articleCard';
+import config from '../helper/config';
+
 export const NewsScreen = ({navigation}) => {
   const [categoryList, setCategoryList] = useState([
     {
@@ -38,7 +39,7 @@ export const NewsScreen = ({navigation}) => {
   const getArticles = () => {
     console.log('GetArticles Function...', articles);
     axios
-      .get('http://192.168.106.26:3000/api/article')
+      .get(config.API_BASE_URL + '/api/article')
       .then(function (response) {
         console.log('Response Data: ', response.data.articles[6].image);
         setArticles(response.data.articles);

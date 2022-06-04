@@ -6,12 +6,9 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {eventData} from '../constant/eventData';
-import creatorImg from '../../assets/img/avatars/avatar.jpg';
-import collectionImg from '../../assets/img/avatars/avatar2.jpg';
 import clockImg from '../../assets/img/icons/clock.png';
 import addonsImg from '../../assets/img/avatars/avatar5.jpg';
 import badgeMark from '../../assets/img/icons/verified.png';
@@ -23,6 +20,7 @@ import {
 } from '../helper/event';
 import Countdown from 'react-countdown';
 import likeImg from '../../assets/img/icons/like-empty.png';
+import config from '../helper/config';
 
 export const EventDetailsScreen = ({route}) => {
   const id = route.params.item.id;
@@ -129,7 +127,8 @@ export const EventDetailsScreen = ({route}) => {
           <Image
             source={{
               uri:
-                'http://192.168.106.26:3000/api/upload/get_file?path=' +
+                config.API_BASE_URL +
+                '/api/upload/get_file?path=' +
                 tempData.picture_large,
             }}
             style={styles.eventImg}

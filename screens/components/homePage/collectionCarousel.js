@@ -12,6 +12,7 @@ import Carousel from 'react-native-snap-carousel';
 import {getAllCollections} from '../../helper/event';
 import badgeMark from '../../../assets/img/icons/verified.png';
 import {useNavigation} from '@react-navigation/core';
+import config from '../../helper/config';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.4);
@@ -26,7 +27,7 @@ const CollectionCard = ({item}) => {
           style={styles.container}
           source={{
             uri:
-              'http://192.168.106.26:3000/api/upload/get_file?path=' +
+              config.API_BASE_URL + '/api/upload/get_file?path=' +
               item.picture_large,
           }}
           resizeMode="cover"
@@ -36,7 +37,7 @@ const CollectionCard = ({item}) => {
               <Image
                 source={{
                   uri:
-                    'http://192.168.106.26:3000/api/upload/get_file?path=' +
+                    config.API_BASE_URL + '/api/upload/get_file?path=' +
                     item.picture_small,
                 }}
                 style={styles.avatarImg}

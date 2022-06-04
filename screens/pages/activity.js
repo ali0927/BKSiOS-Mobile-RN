@@ -4,17 +4,19 @@ import clockImg from '../../assets/img/icons/clock.png';
 import badgeMark from '../../assets/img/icons/verified.png';
 import ReactTimeAgo from 'react-native-timeago';
 import {allTickets} from '../helper/event';
+import config from '../helper/config';
 
 const ActivityCard = ({ticket}) => {
   console.log('Ticket', ticket.eventcard);
   return (
     <View style={styles.cardContainer}>
       <View style={styles.cardAvatar}>
-          {/* <Text style={{color: "#fff"}}>{ticket.eventcard.picture_small}</Text> */}
+        {/* <Text style={{color: "#fff"}}>{ticket.eventcard.picture_small}</Text> */}
         <Image
           source={{
             uri:
-              'http://192.168.106.26:3000/api/upload/get_file?path=' +
+              config.API_BASE_URL +
+              '/api/upload/get_file?path=' +
               ticket.eventcard?.picture_small,
           }}
           style={{width: '100%', height: '100%'}}
@@ -38,7 +40,9 @@ const ActivityCard = ({ticket}) => {
         </View>
         <View style={styles.timeDiv}>
           <Image source={clockImg} />
-          <Text style={styles.timeText}><ReactTimeAgo time={ticket.createdAt} locale="en-US"/></Text>
+          <Text style={styles.timeText}>
+            <ReactTimeAgo time={ticket.createdAt} locale="en-US" />
+          </Text>
         </View>
       </View>
     </View>

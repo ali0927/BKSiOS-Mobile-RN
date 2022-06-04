@@ -15,6 +15,7 @@ import messageImg from '../../assets/img/icons/message.png';
 import shareImg1 from '../../assets/img/icons/facebook.png';
 import shareImg2 from '../../assets/img/icons/twitter.png';
 import shareImg3 from '../../assets/img/icons/medium.png';
+import config from '../helper/config';
 
 // import {getArticleById} from "../helper/article";
 
@@ -31,7 +32,7 @@ export const NewsDetailScreen = ({route, navigation}) => {
   const getArticleById = e => {
     console.log('GetArticleById Function...', e);
     axios
-      .get('http://192.168.106.26:3000/api/article/' + e)
+      .get(config.API_BASE_URL + '/api/article/' + e)
       .then(function (response) {
         console.log('Response Data: ', response.data.article);
         setArticle(response.data.article);
@@ -49,7 +50,7 @@ export const NewsDetailScreen = ({route, navigation}) => {
   }, []);
 
   return (
-    <View style={{backgroundColor: "#14142f", flex: 1}}>
+    <View style={{backgroundColor: '#14142f', flex: 1}}>
       <ScrollView
         contentContainerStyle={{
           backgroundColor: '#14142f',
@@ -66,7 +67,8 @@ export const NewsDetailScreen = ({route, navigation}) => {
             <Image
               source={{
                 uri:
-                  'http://192.168.106.26:3000/api/upload/get_file?path=' +
+                  config.API_BASE_URL +
+                  '/api/upload/get_file?path=' +
                   article.image,
               }}
               style={{
