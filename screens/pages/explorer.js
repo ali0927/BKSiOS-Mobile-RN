@@ -26,6 +26,7 @@ import avaImg7 from '../../assets/img/avatars/avatar7.jpg';
 import avaImg8 from '../../assets/img/avatars/avatar8.jpg';
 import avaImg9 from '../../assets/img/avatars/avatar9.jpg';
 import badgeMark from '../../assets/img/icons/verified.png';
+import likedImg from '../../assets/img/icons/like-empty.png';
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
@@ -156,6 +157,7 @@ export const ExplorerScreen = () => {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
+                alignItems: "center",
                 width: '100%',
               }}>
               <View>
@@ -170,7 +172,8 @@ export const ExplorerScreen = () => {
                 </Text>
                 <Text style={styles.price}>{item.price} &#8364;</Text>
               </View>
-              <Text style={styles.price}>&#9825;</Text>
+              <Image source={likedImg} />
+              {/* <Text style={styles.price}>&#9825;</Text> */}
             </View>
           </View>
         </View>

@@ -17,6 +17,7 @@ import {AuthorScreen} from '../../pages/author';
 import homeImg from '../../../assets/img/icons/home.png';
 import homeActImg from '../../../assets/img/icons/home-act.png';
 import searchImg from '../../../assets/img/icons/search.png';
+import searchTopImg from '../../../assets/img/icons/search-top.png';
 import searchActImg from '../../../assets/img/icons/search-act.png';
 import menuImg from '../../../assets/img/icons/menu.png';
 import menuActImg from '../../../assets/img/icons/menu-act.png';
@@ -93,7 +94,7 @@ export default function MainTabs() {
                       autoCapitalize="none"
                       onChangeText={val => handleChange(val.toLowerCase())}
                     />
-                    <Image source={searchImg} style={styles.searchImage} />
+                    <Image source={searchTopImg} style={styles.searchImage} />
                   </View>
                 </View>
               ),
