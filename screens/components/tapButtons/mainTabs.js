@@ -13,7 +13,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {ExplorerScreen} from '../../pages/explorer';
 import {NewsStackScreen} from './newsStack';
 import {HomeStackScreen} from './homeStack';
-import {AuthorScreen} from '../../pages/author';
+import {SearchScreen} from '../../pages/search';
 import homeImg from '../../../assets/img/icons/home.png';
 import homeActImg from '../../../assets/img/icons/home-act.png';
 import searchImg from '../../../assets/img/icons/search.png';
@@ -66,13 +66,38 @@ export default function MainTabs() {
           />
           <Tab.Screen
             name="Search"
-            component={AuthorScreen}
+            component={SearchScreen}
             options={{
               tabBarLabel: 'Search',
+              headerTitle: () => (
+                <View style={{alignItems: 'center'}}>
+                  <Text style={styles.headerTitle}>Search</Text>
+                  <View style={styles.searchContainer}>
+                    <TextInput
+                      onFocus={() => setFocusedItem(true)}
+                      onBlur={() => setFocusedItem(false)}
+                      placeholder="Search collections, items or users"
+                      placeholderTextColor=" rgba(255, 255, 255, 0.33)"
+                      style={focusedItem ? styles.inputOnFocus : styles.input}
+                      value={searchValue}
+                      autoCapitalize="none"
+                      onChangeText={val => handleChange(val.toLowerCase())}
+                    />
+                    <Image source={searchTopImg} style={styles.searchImage} />
+                  </View>
+                </View>
+              ),
               tabBarIcon: status => (
                 <Image source={status.focused ? searchActImg : searchImg} />
               ),
-              headerShown: false,
+              headerStyle: {
+                height: 100,
+                backgroundColor: THEME_COLOR,
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
             }}
           />
           <Tab.Screen
