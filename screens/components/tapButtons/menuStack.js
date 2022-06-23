@@ -293,6 +293,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 1.03,
     textTransform: 'capitalize',
+    fontFamily: "SpaceGrotesk",
   },
   applyButton: {
     height: 60,
