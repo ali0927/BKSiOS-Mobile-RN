@@ -223,9 +223,9 @@ export const MenuStackScreen = () => {
               <Text
                 style={{
                   color: '#fff',
-                  fontSize: 16,
-                  marginLeft: 10,
-                  fontWeight: '600',
+                  fontSize: 20,
+                  fontWeight: '700',
+                  letterSpacing: 0.8
                 }}>
                 About
               </Text>

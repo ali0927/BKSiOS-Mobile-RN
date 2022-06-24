@@ -47,11 +47,11 @@ export const AboutScreen = ({submit}) => {
             color: '#fff',
             fontWeight: '700',
             letterSpacing: 1.2,
-            marginVertical: 20
+            marginVertical: 15,
           }}>
           Follow Us
         </Text>
-        <View style={styles.socialDiv}>
+          <View style={styles.socialDiv}>
             <TouchableOpacity style={styles.socialImg}>
               <Image source={globalImg} />
             </TouchableOpacity>
@@ -61,6 +61,8 @@ export const AboutScreen = ({submit}) => {
             <TouchableOpacity style={styles.socialImg}>
               <Image source={mediumImg} />
             </TouchableOpacity>
+          </View>
+          <View style={styles.socialDiv}>
             <TouchableOpacity style={styles.socialImg}>
               <Image source={twitterImg} />
             </TouchableOpacity>
@@ -111,15 +113,15 @@ const styles = StyleSheet.create({
   },
   socialDiv: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-    marginBottom: 20,
-    width: "100%"
+    justifyContent: 'center',
+    marginBottom: 15,
+    width: '100%',
   },
   socialImg: {
     backgroundColor: 'rgba(255, 255, 255, 0.06)',
     padding: 10,
     borderRadius: 4,
+    marginHorizontal: 8
   },
   backImage: {
     position: 'absolute',
