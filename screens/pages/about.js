@@ -4,10 +4,10 @@ import {
   Text,
   TouchableOpacity,
   View,
-  StatusBar,
   Image,
+  ScrollView,
+  Linking,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import logoImg from '../../assets/img/icons/logo.png';
 import backImg from '../../assets/img/icons/start-back.png';
 import telegramImg from '../../assets/img/icons/telegram.png';
@@ -19,64 +19,76 @@ import instagramImg from '../../assets/img/icons/instagram.png';
 
 const THEME_COLOR = '#14142f';
 
-export const AboutScreen = ({submit}) => {
+export const AboutScreen = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <View
-        style={{alignItems: 'center', zIndex: 30, padding: 25, width: '100%'}}>
-        <Image source={logoImg} style={{width: 60, height: 60}} />
-        <Text style={styles.text1}>BACKSTAGE</Text>
-        <Text style={styles.text2}>
-          Backstage is powering the crypto revolution in the events industry.
-          Through the BKS token and our blockchain ecosystem, Backstage aims to
-          solve the current challenges facing the events and entertainment
-          sectors.
-        </Text>
-        <Text style={styles.text2}>
-          From financing and payments to NFT ticketing and marketplaces,
-          Backstage $BKS will take the events industry toward a more
-          sustainable, profitable and fair future. Backstage has a very strong
-          and open community and everyone can join and contribute to the
-          platform's development by purchasing tokens and helping fund the
-          entertainment industry.
-        </Text>
-        <View style={styles.divider} />
-        <Text
-          style={{
-            fontSize: 16,
-            color: '#fff',
-            fontWeight: '700',
-            letterSpacing: 1.2,
-            marginVertical: 15,
-          }}>
-          Follow Us
-        </Text>
+    <View style={styles.container}>
+      <ScrollView>
+        <View style={styles.mainContainer}>
+          <Image source={logoImg} style={styles.logoImg} />
+          <Text style={styles.text1}>BACKSTAGE</Text>
+          <Text style={styles.text2}>
+            Backstage is powering the crypto revolution in the events industry.
+            Through the BKS token and our blockchain ecosystem, Backstage aims
+            to solve the current challenges facing the events and entertainment
+            sectors.
+          </Text>
+          <Text style={styles.text2}>
+            From financing and payments to NFT ticketing and marketplaces,
+            Backstage $BKS will take the events industry toward a more
+            sustainable, profitable and fair future. Backstage has a very strong
+            and open community and everyone can join and contribute to the
+            platform's development by purchasing tokens and helping fund the
+            entertainment industry.
+          </Text>
+          <View style={styles.divider} />
+          <Text style={styles.followText}>Follow Us</Text>
           <View style={styles.socialDiv}>
-            <TouchableOpacity style={styles.socialImg}>
+            <TouchableOpacity
+              style={styles.socialImg}
+              onPress={() => Linking.openURL('https://t.me/BKSBackstage')}>
               <Image source={globalImg} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.socialImg}>
+            <TouchableOpacity
+              style={styles.socialImg}
+              onPress={() => Linking.openURL('https://t.me/BKSBackstage')}>
               <Image source={telegramImg} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.socialImg}>
+            <TouchableOpacity
+              style={styles.socialImg}
+              onPress={() =>
+                Linking.openURL('https://medium.com/BackstageBks')
+              }>
               <Image source={mediumImg} />
             </TouchableOpacity>
           </View>
           <View style={styles.socialDiv}>
-            <TouchableOpacity style={styles.socialImg}>
+            <TouchableOpacity
+              style={styles.socialImg}
+              onPress={() =>
+                Linking.openURL('https://twitter.com/BackstageBks')
+              }>
               <Image source={twitterImg} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.socialImg}>
+            <TouchableOpacity
+              style={styles.socialImg}
+              onPress={() =>
+                Linking.openURL('https://www.facebook.com/BKSBackstage')
+              }>
               <Image source={facebookImg} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.socialImg}>
+            <TouchableOpacity
+              style={styles.socialImg}
+              onPress={() =>
+                Linking.openURL('https://www.instagram.com/bksbackstage/?hl=en')
+              }>
               <Image source={instagramImg} />
             </TouchableOpacity>
           </View>
-      </View>
-      <View style={styles.overlay}></View>
-      <Image source={backImg} style={styles.backImage} />
-    </SafeAreaView>
+        </View>
+        <View style={styles.overlay} />
+        <Image source={backImg} style={styles.backImage} />
+      </ScrollView>
+    </View>
   );
 };
 
@@ -87,6 +99,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: THEME_COLOR,
+    paddingTop: 20,
+  },
+  mainContainer: {
+    alignItems: 'center',
+    zIndex: 30,
+    padding: 25,
+    width: '100%',
+  },
+  logoImg: {
+    width: 60,
+    height: 60,
   },
   text1: {
     color: '#fff',
@@ -95,8 +118,10 @@ const styles = StyleSheet.create({
     letterSpacing: 1.8,
     fontWeight: 'bold',
     textAlign: 'center',
+    marginBottom: 8,
   },
   text2: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: 'rgba(255, 255, 255, 0.66)',
     fontSize: 16,
     fontWeight: '400',
@@ -111,6 +136,14 @@ const styles = StyleSheet.create({
     height: 1,
     marginVertical: 20,
   },
+  followText: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    fontSize: 20,
+    color: '#fff',
+    fontWeight: '700',
+    letterSpacing: 1.5,
+    marginVertical: 15,
+  },
   socialDiv: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -121,7 +154,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.06)',
     padding: 10,
     borderRadius: 4,
-    marginHorizontal: 8
+    marginHorizontal: 8,
   },
   backImage: {
     position: 'absolute',
@@ -134,6 +167,6 @@ const styles = StyleSheet.create({
     height: '100%',
     width: 500,
     zIndex: 20,
-    opacity: 0.8,
+    opacity: 0.85,
   },
 });

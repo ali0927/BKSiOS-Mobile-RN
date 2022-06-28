@@ -11,12 +11,13 @@ import Carousel from 'react-native-snap-carousel';
 import {useNavigation} from '@react-navigation/core';
 import {getLatestEventCards} from '../../helper/event';
 import Countdown from 'react-countdown';
+import likeImg from '../../../assets/img/icons/liked-white.png';
 import config from '../../helper/config';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 
-const CompletionList = () => <Text style={styles.leftTime}>Event Started</Text>;
+const CompletionList = () => <Text style={styles.leftTime}>EVENT STARTED</Text>;
 
 const pad = (num, size = 2) => {
   const s = '000000000' + num;
@@ -29,7 +30,7 @@ const renderer = ({days, hours, minutes, seconds, completed}) => {
   } else {
     return (
       <Text style={styles.leftTime}>
-        {days} days {pad(hours)}:{pad(minutes)}:{pad(seconds)}
+        {days} DAYS {pad(hours)}h {pad(minutes)}m {pad(seconds)}s
       </Text>
     );
   }
@@ -49,64 +50,43 @@ const EventCard = ({item}) => {
   });
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('EventDetail', {item: item})}>
-        <View style={styles.imageDiv}>
-          <Image
-            source={{
-              uri:
-                config.API_BASE_URL + '/api/upload/get_file?path=' +
-                item.picture_small,
-            }}
-            style={styles.img}
-          />
-        </View>
-        <View style={styles.collectionMeta}>
-          <View style={styles.detail}></View>
-          <Text style={styles.name}>{item.name}</Text>
-          <EventCountDown date={new Date(item.date).toISOString()} />
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginTop: 40,
-              marginBottom: 10,
-            }}>
-            <View style={{width: '50%'}}>
-              <Text style={styles.info}>Date </Text>
-              <Text style={styles.infoVal}>
-                {new Date(item.date).toISOString().toString().split('T')[0]}
-              </Text>
-            </View>
-            <View style={{width: '50%'}}>
-              <Text style={styles.info}>Location</Text>
-              <Text style={styles.infoVal}>{item.location}</Text>
-            </View>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('EventDetail', {item: item})}
+      style={styles.cardContainer}>
+      <Image
+        source={{
+          uri:
+            config.API_BASE_URL +
+            '/api/upload/get_file?path=' +
+            item.picture_small,
+        }}
+        style={styles.img}
+      />
+      <View style={styles.collectionMeta}>
+        <Text style={styles.name}>{item.name}</Text>
+        <EventCountDown date={new Date(item.date).toISOString()} />
+        <View style={styles.details}>
+          <View style={styles.detailContainer}>
+            <Text style={styles.info}>Date </Text>
+            <Text style={styles.infoVal}>
+              {new Date(item.date).toISOString().toString().split('T')[0]}
+            </Text>
           </View>
-          <View style={styles.divider}></View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: '100%',
-            }}>
-            <View>
-              <Text style={styles.info}>Current price</Text>
-              <Text style={styles.price}>{item.price + addonPrice} €</Text>
-            </View>
-            <View style={{flexDirection: 'row', alignItems: "center"}}>
-              <Text style={styles.like}>&#9825;</Text>
-              <Text style={{...styles.price, marginLeft: 10}}>
-                {item.likes_number ? item.likes_number : 0}
-              </Text>
-            </View>
+          <View style={styles.detailContainer}>
+            <Text style={styles.info}>Location</Text>
+            <Text style={styles.infoVal}>{item.location}</Text>
           </View>
         </View>
-      </TouchableOpacity>
-    </View>
+        <View style={styles.divider} />
+        <View style={styles.footerDetails}>
+          <View>
+            <Text style={styles.info}>Current price</Text>
+            <Text style={styles.price}>{item.price + addonPrice} €</Text>
+          </View>
+          <Image source={likeImg} />
+        </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -125,7 +105,7 @@ const EventsCarousel = () => {
     });
   }, []);
   return (
-    <View style={{marginVertical: 10}}>
+    <View style={styles.container}>
       {latestEvents && (
         <Carousel
           data={latestEvents}
@@ -141,34 +121,33 @@ export default EventsCarousel;
 
 const styles = StyleSheet.create({
   container: {
+    marginVertical: 10,
+  },
+  cardContainer: {
     flex: 1,
-    backgroundColor: '#fff1',
-    borderWidth: 1,
-    borderColor: '#887bff',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
     padding: 15,
     width: '100%',
     marginRight: 30,
     borderRadius: 12,
-    overflow: 'hidden',
   },
   img: {
     width: '100%',
     borderTopRightRadius: 8,
     borderTopLeftRadius: 8,
     height: 250,
-    backgroundColor: 'pink',
-  },
-  imageDiv: {
-    position: 'relative',
+    backgroundColor: 'rgba(255, 255, 255, 0.07)',
   },
   leftTime: {
-    textAlign: 'center',
-    fontSize: 12,
+    fontFamily: 'SpaceGrotesk-Medium',
+    fontSize: 10,
+    lineHeight: 16,
     color: '#fff',
+    fontWeight: '400',
+    letterSpacing: 2,
+    textAlign: 'center',
     borderWidth: 1,
     borderColor: '#6a4dfd',
-    fontWeight: '400',
-    letterSpacing: 1.6,
     paddingVertical: 5,
     paddingHorizontal: 15,
     borderRadius: 15,
@@ -182,59 +161,65 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 16,
     borderBottomLeftRadius: 16,
   },
+  details: {
+    flexDirection: 'row',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 40,
+    marginBottom: 10,
+  },
+  detailContainer: {
+    width: '50%',
+  },
   divider: {
     width: '100%',
-    backgroundColor: '#fff2',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
     height: 1,
     marginTop: 10,
     marginBottom: 20,
   },
+  footerDetails: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+  },
   name: {
+    fontFamily: 'SpaceGrotesk-Medium',
     width: '100%',
     textAlign: 'center',
-    fontSize: 24,
-    fontWeight: '600',
+    fontSize: 20,
+    lineHeight: 24,
+    fontWeight: '700',
     color: '#fff',
     marginBottom: 10,
   },
   info: {
+    fontFamily: 'SpaceGrotesk-Medium',
     width: '100%',
     textAlign: 'left',
     fontSize: 10,
+    lineHeight: 12,
     color: 'rgba(255, 255, 255, 0.66)',
     fontWeight: '400',
     letterSpacing: 2,
     textTransform: 'uppercase',
   },
   infoVal: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 16,
     fontWeight: '500',
     color: '#fff',
-    marginTop: 10,
-  },
-  date: {
-    textAlign: 'center',
-    fontSize: 12,
-    color: '#fff',
-    borderWidth: 1,
-    borderColor: '#6a4dfd',
-    fontWeight: '400',
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    borderRadius: 15,
+    marginTop: 7,
   },
   price: {
+    fontFamily: 'SpaceGrotesk-Medium',
     textAlign: 'left',
     fontSize: 24,
     marginTop: 5,
     color: '#fff',
-    fontWeight: '600',
-  },
-  like: {
-    textAlign: 'left',
-    fontSize: 24,
-    marginTop: 5,
-    color: '#fff',
-    fontWeight: '300',
+    letterSpacing: 1,
+    fontWeight: '700',
   },
 });

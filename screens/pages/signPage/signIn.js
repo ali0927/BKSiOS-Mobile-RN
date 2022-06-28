@@ -48,11 +48,13 @@ export const SignInScreen = ({navigation}) => {
   };
 
   const signIn = async () => {
-    if (!checkvalidations()) return;
+    if (!checkvalidations()) {
+      return;
+    }
     login(values)
       .then(res => {
         if (res.success) {
-          AsyncStorage.setItem("userInfo", JSON.stringify(res.data))
+          AsyncStorage.setItem('userInfo', JSON.stringify(res.data));
           dispatch({type: 'SET_USER_INFO', payload: JSON.stringify(res.data)});
           navigation.navigate('HomeMain');
         } else {
@@ -66,14 +68,14 @@ export const SignInScreen = ({navigation}) => {
         Toast.show({
           type: 'success',
           text1: 'Login Failed...',
-          text2: error
+          text2: error,
         });
       });
   };
 
   return (
     <View style={styles.container}>
-      <View style={{position: 'relative', width: '100%'}}>
+      <View style={styles.inputContainer}>
         <Text style={styles.subTitle}>Email</Text>
         <TextInput
           onFocus={() => setFocusedItem('TextInput2')}
@@ -85,18 +87,18 @@ export const SignInScreen = ({navigation}) => {
           autoCapitalize="none"
           onChangeText={val => handleChange('email', val.toLowerCase())}
         />
-        {validations.email == 'has-empty' ? (
+        {validations.email === 'has-empty' ? (
           <Text style={styles.errorText}>Email required</Text>
         ) : (
-          <Text style={styles.errorText}></Text>
+          <Text style={styles.errorText} />
         )}
-        {validations.email == 'has-danger' ? (
+        {validations.email === 'has-danger' ? (
           <Text style={styles.errorText}>Input Correct Format</Text>
         ) : (
-          <Text style={styles.errorText}></Text>
+          <Text style={styles.errorText} />
         )}
       </View>
-      <View style={{position: 'relative', width: '100%'}}>
+      <View style={styles.inputContainer}>
         <Text style={styles.subTitle}>Password</Text>
         <TextInput
           onFocus={() => setFocusedItem('TextInput1')}
@@ -109,10 +111,10 @@ export const SignInScreen = ({navigation}) => {
           autoCapitalize="none"
           onChangeText={val => handleChange('password', val)}
         />
-        {validations.password == 'has-empty' ? (
+        {validations.password === 'has-empty' ? (
           <Text style={styles.errorText}>Password required</Text>
         ) : (
-          <Text style={styles.errorText}></Text>
+          <Text style={styles.errorText} />
         )}
       </View>
       <TouchableOpacity style={styles.button} onPress={() => signIn()}>
@@ -123,28 +125,12 @@ export const SignInScreen = ({navigation}) => {
         onPress={() => navigation.navigate('ForgetPassword')}>
         Forgot password?
       </Text>
-      <View
-        style={{
-          flexDirection: 'row',
-          marginTop: 50,
-          marginBottom: 30,
-          alignItems: 'center',
-        }}>
-        <View
-          style={{
-            height: 1,
-            flex: 1,
-            backgroundColor: 'rgba(255, 255, 255, 0.33)',
-          }}></View>
+      <View style={styles.askContainer}>
+        <View style={styles.partLine} />
         <Text style={styles.text1}>Don't have an account?</Text>
-        <View
-          style={{
-            height: 1,
-            flex: 1,
-            backgroundColor: 'rgba(255, 255, 255, 0.33)',
-          }}></View>
+        <View style={styles.partLine} />
       </View>
-      <TouchableOpacity style={styles.button1} onPress={() => signIn()}>
+      <TouchableOpacity style={styles.button1}>
         <Text
           style={styles.text3}
           onPress={() => navigation.navigate('SignUp')}>
@@ -163,6 +149,10 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 50,
   },
+  inputContainer: {
+    position: 'relative',
+    width: '100%',
+  },
   input: {
     width: '100%',
     height: 44,
@@ -172,6 +162,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     color: 'white',
     borderRadius: 4,
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 18,
     fontWeight: '500',
   },
@@ -191,6 +182,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     color: 'white',
     borderRadius: 4,
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 18,
     fontWeight: '500',
   },
@@ -198,9 +190,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -20,
     left: 0,
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#b00020',
+    fontFamily: 'SpaceGrotesk-Medium',
+    fontSize: 12,
+    fontWeight: '400',
+    letterSpacing: 1,
+    color: '#ff4e4e',
   },
   img: {
     width: '70%',
@@ -208,22 +202,25 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   text1: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: 'rgba(255, 255, 255, 0.66)',
     fontSize: 14,
     fontWeight: '400',
     textAlign: 'center',
     marginHorizontal: 10,
-    letterSpacing: 1.6,
+    letterSpacing: 1,
   },
   text2: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: 'rgba(255, 255, 255, 0.66)',
     fontSize: 14,
     fontWeight: '400',
     textAlign: 'center',
     marginTop: 20,
-    letterSpacing: 1.6,
+    letterSpacing: 1,
   },
   text3: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 16,
     fontWeight: '700',
@@ -231,15 +228,27 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     height: 40,
     width: '100%',
-    letterSpacing: 1.6,
+    letterSpacing: 1.5,
   },
   subTitle: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 14,
     fontWeight: '400',
     marginTop: 30,
     marginBottom: 10,
     letterSpacing: 1.4,
+  },
+  askContainer: {
+    flexDirection: 'row',
+    marginTop: 50,
+    marginBottom: 30,
+    alignItems: 'center',
+  },
+  partLine: {
+    height: 1,
+    flex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.33)',
   },
   button: {
     marginTop: 30,
