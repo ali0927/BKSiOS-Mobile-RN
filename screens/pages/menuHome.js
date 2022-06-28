@@ -31,8 +31,8 @@ export const MenuHomeScreen = ({navigation}) => {
         <TouchableOpacity
           style={styles.listItem}
           onPress={() => navigation.navigate('Profile')}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image source={profileImg} style={{marginRight: 20}} />
+          <View style={styles.subContainer}>
+            <Image source={profileImg} />
             <Text style={styles.title}>Profile</Text>
           </View>
           <Image source={rightArrowImg} />
@@ -40,8 +40,8 @@ export const MenuHomeScreen = ({navigation}) => {
         <TouchableOpacity
           style={styles.listItem}
           onPress={() => navigation.navigate('Activity')}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image source={activityImg} style={{marginRight: 20}} />
+          <View style={styles.subContainer}>
+            <Image source={activityImg} />
             <Text style={styles.title}>Activity</Text>
           </View>
           <Image source={rightArrowImg} />
@@ -50,8 +50,8 @@ export const MenuHomeScreen = ({navigation}) => {
           <TouchableOpacity
             style={styles.listItem}
             onPress={() => navigation.navigate('Settings')}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Image source={likedImg} style={{marginRight: 20}} />
+            <View style={styles.subContainer}>
+              <Image source={likedImg} />
               <Text style={styles.title}>Liked</Text>
             </View>
             <Image source={rightArrowImg} />
@@ -60,8 +60,8 @@ export const MenuHomeScreen = ({navigation}) => {
         <TouchableOpacity
           style={styles.listItem}
           onPress={() => navigation.navigate('Settings')}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image source={settingsImg} style={{marginRight: 20}} />
+          <View style={styles.subContainer}>
+            <Image source={settingsImg} />
             <Text style={styles.title}>App Settings</Text>
           </View>
           <Image source={rightArrowImg} />
@@ -69,17 +69,17 @@ export const MenuHomeScreen = ({navigation}) => {
         <TouchableOpacity
           style={styles.listItem}
           onPress={() => navigation.navigate('About')}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image source={aboutImg} style={{marginRight: 20}} />
+          <View style={styles.subContainer}>
+            <Image source={aboutImg} />
             <Text style={styles.title}>About</Text>
           </View>
           <Image source={rightArrowImg} />
         </TouchableOpacity>
       </View>
-      <View style={{marginHorizontal: 20}}>
+      <View style={styles.btnContainer}>
         {!userInfo ? (
           <TouchableOpacity
-            style={{...styles.button1, backgroundColor: '#6a4dfd'}}
+            style={styles.button2}
             onPress={() => navigation.navigate('SignIn')}>
             <Image source={loginImg} />
             <Text style={styles.text3}>Sign in</Text>
@@ -105,18 +105,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderColor: 'rgba(121, 126, 137, 0.5)',
-    borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
     padding: 20,
   },
+  subContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   title: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 16,
     fontWeight: '700',
     textTransform: 'uppercase',
     letterSpacing: 1.4,
+    marginLeft: 20,
   },
   text3: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 16,
     fontWeight: '700',
@@ -126,6 +132,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1.6,
     marginLeft: 10,
   },
+  btnContainer: {marginHorizontal: 20},
   button1: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -133,6 +140,19 @@ const styles = StyleSheet.create({
     height: 44,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.33)',
+    padding: 12,
+    borderRadius: 4,
+    fontSize: 18,
+    fontWeight: '500',
+    marginBottom: 50,
+  },
+  button2: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+    height: 44,
+    borderWidth: 1,
+    backgroundColor: '#6a4dfd',
     padding: 12,
     borderRadius: 4,
     fontSize: 18,
