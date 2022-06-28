@@ -40,19 +40,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   subtitle: {
-    color: 'white',
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: '#fff',
     fontSize: 24,
     lineHeight: 32,
     fontWeight: '700',
     textAlign: 'left',
     marginTop: 30,
     paddingLeft: 20,
-  },
-  divider: {
-    width: '100%',
-    backgroundColor: '#887bff',
-    height: 2,
-    marginTop: 50,
-    marginBottom: 20,
   },
 });

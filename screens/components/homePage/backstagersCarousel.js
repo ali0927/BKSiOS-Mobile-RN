@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     margin: 20,
     marginTop: 10,
-    marginBottom: 100,
+    marginBottom: 300,
   },
   extraBtn: {
     position: 'absolute',
