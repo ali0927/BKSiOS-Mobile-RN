@@ -7,13 +7,12 @@ import {
   ScrollView,
   Text,
 } from 'react-native';
-import {signup, verifyEmail} from '../../helper/auth';
+import {signup} from '../../helper/auth';
 import {validateEmail} from '../../utils';
 import {useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 
 export const SignUpScreen = ({navigation}) => {
-  const [checked, setChecked] = useState(true);
   const [values, setValues] = useState({
     name: '',
     email: '',

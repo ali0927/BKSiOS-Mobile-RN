@@ -48,7 +48,9 @@ export const SignInScreen = ({navigation}) => {
   };
 
   const signIn = async () => {
-    if (!checkvalidations()) return;
+    if (!checkvalidations()) {
+      return;
+    }
     login(values)
       .then(res => {
         if (res.success) {

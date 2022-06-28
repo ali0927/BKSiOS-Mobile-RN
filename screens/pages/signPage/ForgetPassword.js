@@ -10,7 +10,7 @@ import {forgetPassword} from '../../helper/auth';
 import {validateEmail} from '../../utils';
 import Toast from 'react-native-toast-message';
 
-export const ForgetPasswordScreen = ({navigation}) => {
+export const ForgetPasswordScreen = () => {
   const [values, setValues] = useState({
     email: '',
   });
