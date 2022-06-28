@@ -23,31 +23,39 @@ const CollectionCard = ({item}) => {
     <View>
       <TouchableOpacity
         onPress={() => navigation.navigate('AuthorProfile', {item: item})}>
-        <ImageBackground
-          style={styles.container}
-          source={{
-            uri:
-              config.API_BASE_URL + '/api/upload/get_file?path=' +
-              item.picture_large,
-          }}
-          resizeMode="cover"
-          key={item.id}>
+        <View style={styles.container}>
+          <Image
+            style={styles.collectionImg}
+            source={{
+              uri:
+                config.API_BASE_URL +
+                '/api/upload/get_file?path=' +
+                item.picture_large,
+            }}
+            key={item.id}
+          />
           <View style={styles.collectionMeta}>
             <View style={styles.collectionAvatar}>
               <Image
                 source={{
                   uri:
-                    config.API_BASE_URL + '/api/upload/get_file?path=' +
+                    config.API_BASE_URL +
+                    '/api/upload/get_file?path=' +
                     item.picture_small,
                 }}
                 style={styles.avatarImg}
               />
               <Image source={badgeMark} style={styles.badgeMark} />
             </View>
-            <Text style={styles.collectionName}>{item.name}</Text>
+            <Text
+              style={styles.collectionName}
+              ellipsizeMode="tail"
+              numberOfLines={1}>
+              {item.name}
+            </Text>
             <Text style={styles.collectionNumber}>{item.category}</Text>
           </View>
-        </ImageBackground>
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -92,7 +100,11 @@ const styles = StyleSheet.create({
     marginRight: 5,
     height: 140,
     borderRadius: 12,
+    backgroundColor: 'pink',
     overflow: 'hidden',
+  },
+  collectionImg: {
+    height: 80,
   },
   collectionMeta: {
     display: 'flex',
@@ -103,8 +115,8 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     backgroundColor: '#14142f',
     borderWidth: 1,
-    borderBottomRightRadius: 16,
-    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 12,
+    borderBottomLeftRadius: 12,
     borderColor: '#ffffff44',
   },
   collectionAvatar: {
@@ -129,10 +141,10 @@ const styles = StyleSheet.create({
     borderColor: '#14142f',
     borderWidth: 1,
     borderRadius: 20,
-    backgroundColor: 'red',
+    backgroundColor: '#d878e1',
   },
   collectionName: {
-    width: '100%',
+    width: '80%',
     textAlign: 'center',
     fontSize: 16,
     color: '#fff',

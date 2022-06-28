@@ -1,71 +1,63 @@
 import React from 'react';
-import {
-  ImageBackground,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-} from 'react-native';
-import homeBackImg from '../../../assets/img/home/home-hero.png';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
-
-const THEME_COLOR = '#14142f';
 
 export const HomeHero = ({navigation}) => {
   const userInfo = useSelector(state => state.userInfoReducer).userInfo;
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        style={styles.imgBackground}
-        source={homeBackImg}
-        resizeMode="cover">
-        {/* <TouchableOpacity
+      <View style={styles.homeTitleContainer}>
+        <Text style={styles.homeTitle}>Welcome to the</Text>
+        <Text style={styles.homeTitle}>Backstage events NFT</Text>
+        <Text style={styles.homeTitle}>marketplace</Text>
+      </View>
+      <View style={styles.homeTitleContainer}>
+        <Text style={styles.homeDesc}>A decentralized Ecosystem powering</Text>
+        <Text style={styles.homeDesc}>the events industry</Text>
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('Explorer')}>
-          <Text style={styles.text3}>Explored</Text>
-        </TouchableOpacity> */}
-        {/* <Image
-          source={{
-            uri: 'https://w7.pngwing.com/pngs/58/482/png-transparent-computer-icons-user-login-icon-miscellaneous-monochrome-black.png',
-          }}
-          style={{width: 100, height: 100, backgroundColor: "none"}}
-        /> */}
-       {!userInfo && (<><View
-          style={{
-            width: 100,
-            height: 100,
-            borderRadius: 50,
-            backgroundColor: 'pink',
-            zIndex: 10
-          }}></View>
-        <Text style={styles.text1}>Sign in to explore and buy!</Text>
-        
+          <Text style={styles.buttonText}>Explore</Text>
+        </TouchableOpacity>
+        {!userInfo && (
           <TouchableOpacity
-            style={styles.button}
+            style={styles.signButton}
             onPress={() => navigation.navigate('SignIn')}>
-            <Text style={styles.text3}>Sign In</Text>
+            <Text style={styles.buttonText}>Sign In</Text>
           </TouchableOpacity>
-          </> 
         )}
-        <View
-          style={{
-            position: 'absolute',
-            backgroundColor: THEME_COLOR,
-            width: '100%',
-            height: '100%',
-            opacity: 0.7
-          }}></View>
-      </ImageBackground>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    display: 'flex',
+    justifyContent: 'center',
     flex: 1,
-    minHeight: 400,
+    minHeight: 330,
+  },
+  homeTitleContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  homeTitle: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#fff',
+  },
+  homeDesc: {
+    fontSize: 14,
+    lineHeight: 18,
+    fontWeight: '400',
+    color: 'rgba(255, 255, 255, 0.66)',
+    fontFamily: 'SpaceGrotesk-Medium',
   },
   imgBackground: {
     width: '100%',
@@ -83,7 +75,7 @@ const styles = StyleSheet.create({
     lineHeight: 50,
     fontWeight: '500',
     textAlign: 'center',
-    zIndex: 10
+    zIndex: 10,
   },
   text2: {
     color: 'white',
@@ -92,22 +84,39 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     textAlign: 'center',
   },
-  text3: {
-    color: 'white',
+  buttonText: {
+    color: '#fff',
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: '700',
+    lineHeight: 20,
     textAlign: 'center',
     textTransform: 'uppercase',
-    minWidth: 140,
-    height: 40,
+    letterSpacing: 0.15,
+  },
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 30,
   },
   button: {
-    width: 173,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 124,
     height: 44,
-    marginTop: 30,
-    paddingTop: 12,
     backgroundColor: '#6a4dfd',
     borderRadius: 4,
-    zIndex: 10
+  },
+  signButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 124,
+    height: 44,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.66)',
+    borderRadius: 4,
+    marginLeft: 10,
   },
 });
