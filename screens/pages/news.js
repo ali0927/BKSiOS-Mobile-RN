@@ -37,11 +37,9 @@ export const NewsScreen = ({navigation}) => {
   const [articles, setArticles] = useState([]);
 
   const getArticles = () => {
-    console.log('GetArticles Function...', articles);
     axios
       .get(config.API_BASE_URL + '/api/article')
       .then(function (response) {
-        console.log('Response Data: ', response.data.articles[6].image);
         setArticles(response.data.articles);
       })
       .catch(function (error) {
@@ -88,7 +86,7 @@ export const NewsScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  categoryContainer: {flexDirection: 'row', marginBottom: 25, marginTop: 10},
+  categoryContainer: {flexDirection: 'row', marginBottom: 25, marginTop: 10, paddingLeft: 10},
   categoryTitle: {
     alignItems: 'flex-start',
     marginLeft: 10,

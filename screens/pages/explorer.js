@@ -16,23 +16,24 @@ import img6 from '../../assets/img/cover/cover8.jpg';
 import img7 from '../../assets/img/cover/cover3.jpg';
 import img8 from '../../assets/img/cover/cover4.jpg';
 import img9 from '../../assets/img/cover/cover5.jpg';
-import avaImg1 from "../../assets/img/avatars/avatar.jpg";
-import avaImg2 from "../../assets/img/avatars/avatar2.jpg";
-import avaImg3 from "../../assets/img/avatars/avatar3.jpg";
-import avaImg4 from "../../assets/img/avatars/avatar4.jpg";
-import avaImg5 from "../../assets/img/avatars/avatar5.jpg";
-import avaImg6 from "../../assets/img/avatars/avatar6.jpg";
-import avaImg7 from "../../assets/img/avatars/avatar7.jpg";
-import avaImg8 from "../../assets/img/avatars/avatar8.jpg";
-import avaImg9 from "../../assets/img/avatars/avatar9.jpg";
-
+import avaImg1 from '../../assets/img/avatars/avatar.jpg';
+import avaImg2 from '../../assets/img/avatars/avatar2.jpg';
+import avaImg3 from '../../assets/img/avatars/avatar3.jpg';
+import avaImg4 from '../../assets/img/avatars/avatar4.jpg';
+import avaImg5 from '../../assets/img/avatars/avatar5.jpg';
+import avaImg6 from '../../assets/img/avatars/avatar6.jpg';
+import avaImg7 from '../../assets/img/avatars/avatar7.jpg';
+import avaImg8 from '../../assets/img/avatars/avatar8.jpg';
+import avaImg9 from '../../assets/img/avatars/avatar9.jpg';
+import badgeMark from '../../assets/img/icons/verified.png';
+import likedImg from '../../assets/img/icons/like-empty.png';
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
 const data = [
   {
     id: 1,
-    img: img1,
+    img: img4,
     avatar: avaImg1,
     name: 'Fed3',
     owner: 'Admin',
@@ -87,7 +88,7 @@ const data = [
     price: 3,
   },
   {
-    id:8,
+    id: 8,
     img: img8,
     avatar: avaImg8,
     name: 'Fed3',
@@ -107,7 +108,7 @@ const data = [
 export const ExplorerScreen = () => {
   return (
     <ScrollView style={styles.container}>
-      {data.map((item) => (
+      {data.map(item => (
         <View style={styles.itemContainer} key={item.id}>
           <View style={styles.imageDiv}>
             <Image source={item.img} style={styles.img} />
@@ -115,15 +116,64 @@ export const ExplorerScreen = () => {
           <View style={styles.collectionMeta}>
             <View style={styles.detail}></View>
             <Text style={styles.name}>{item.name}</Text>
-            <View style={{flexDirection: "row", alignItems: "center", width: "100%"}}>
-              <Image source={item.avatar} style={styles.avatar} />
-            <Text style={styles.owner}>{item.owner}</Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                width: '100%',
+              }}>
+              <View>
+                <Text style={styles.info}>Collection</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    marginRight: 40,
+                  }}>
+                  <Image source={item.avatar} style={styles.avatar} />
+                  <Text style={styles.owner}>{item.owner}</Text>
+                </View>
+              </View>
+              <View>
+                <Text style={styles.info}>Creator</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                  }}>
+                  <Image source={avaImg6} style={styles.avatar} />
+                  <Text style={styles.owner}>Antonio</Text>
+                  <Image source={badgeMark} style={styles.badgeMark} />
+                </View>
+              </View>
             </View>
+
             <View style={styles.divider}></View>
-            <Text style={styles.info}>Reserve Price</Text>
-            <View style={{flexDirection: "row", justifyContent: "space-between", width: "100%"}}>
-              <Text style={styles.price}>{item.price} &#8364;</Text>
-              <Text style={styles.price}>&#9825;</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: "center",
+                width: '100%',
+              }}>
+              <View>
+                <Text
+                  style={{
+                    ...styles.info,
+                    marginBottom: 0,
+                    marginTop: 0,
+                    width: '100%',
+                  }}>
+                  Reserve Price
+                </Text>
+                <Text style={styles.price}>{item.price} &#8364;</Text>
+              </View>
+              <Image source={likedImg} />
+              {/* <Text style={styles.price}>&#9825;</Text> */}
             </View>
           </View>
         </View>
@@ -141,15 +191,11 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   itemContainer: {
-    flex: 1,
     marginTop: 30,
-    backgroundColor: '#14142f',
-    margin: 'auto',
-    borderWidth: 1,
-    borderColor: '#887bff',
-    padding: 25,
-    borderRadius: 16,
+    height: 440,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
     overflow: 'hidden',
+    borderRadius: 12,
   },
   img: {
     width: '100%',
@@ -157,20 +203,21 @@ const styles = StyleSheet.create({
   },
   imageDiv: {
     position: 'relative',
+    height: 220,
+    overflow: 'hidden',
   },
   collectionMeta: {
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
     width: '100%',
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 0,
-    borderBottomRightRadius: 16,
-    borderBottomLeftRadius: 16,
+    paddingTop: 15,
+    paddingBottom: 15,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
   divider: {
     width: '100%',
-    backgroundColor: '#887bff',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
     height: 2,
     marginTop: 20,
     marginBottom: 20,
@@ -179,33 +226,50 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'left',
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: '700',
+    lineHeight: 24,
+    letterSpacing: 0.5,
     color: '#fff',
     marginBottom: 10,
   },
   info: {
-    width: '100%',
-    textAlign: 'left',
-    fontSize: 20,
-    color: '#bdbdbd',
+    color: 'rgba(255, 255, 255, 0.66)',
+    fontSize: 12,
     fontWeight: '400',
+    lineHeight: 12,
+    textTransform: 'uppercase',
+    letterSpacing: 2,
+    marginBottom: 8,
+    marginTop: 15,
   },
   owner: {
     textAlign: 'left',
-    fontSize: 20,
-    color: '#bdbdbd',
-    fontWeight: '400',
+    fontSize: 16,
+    lineHeight: 20,
+    color: '#fff',
+    fontWeight: '700',
   },
   avatar: {
-    width: 50,
-    height: 50,
-    marginRight: 20
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    marginRight: 10,
   },
   price: {
     textAlign: 'left',
-    fontSize: 26,
-    marginTop: 20,
+    fontSize: 24,
+    marginTop: 0,
     color: '#fff',
-    fontWeight: '600',
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  badgeMark: {
+    backgroundColor: '#2f80ed',
+    borderRadius: 20,
+    borderColor: '#fff',
+    borderWidth: 1,
+    width: 16,
+    height: 16,
+    marginLeft: 10,
   },
 });

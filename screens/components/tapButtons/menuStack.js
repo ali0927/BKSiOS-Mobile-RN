@@ -65,7 +65,9 @@ const FilterModal = ({toggleModal}) => {
         </View>
         {checkList &&
           checkList.map(item => (
-            <TouchableOpacity onPress={() => handleChecked(item.id)} key={item.id}>
+            <TouchableOpacity
+              onPress={() => handleChecked(item.id)}
+              key={item.id}>
               <CheckBox
                 label={item.title}
                 value={checked[item.title]}
@@ -223,9 +225,9 @@ export const MenuStackScreen = () => {
               <Text
                 style={{
                   color: '#fff',
-                  fontSize: 16,
-                  marginLeft: 10,
-                  fontWeight: '600',
+                  fontSize: 20,
+                  fontWeight: '700',
+                  letterSpacing: 0.8,
                 }}>
                 About
               </Text>
@@ -293,6 +295,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 1.03,
     textTransform: 'capitalize',
+    fontFamily: 'SpaceGrotesk-Medium',
   },
   applyButton: {
     height: 60,

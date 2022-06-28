@@ -1,16 +1,23 @@
-import * as React from 'react';
-import {Image, StatusBar, SafeAreaView, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  StatusBar,
+  SafeAreaView,
+  StyleSheet,
+  TextInput,
+} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {ExplorerScreen} from '../../pages/explorer';
-import {NewsScreen} from '../../pages/news';
 import {NewsStackScreen} from './newsStack';
 import {HomeStackScreen} from './homeStack';
-import {AuthorScreen} from '../../pages/author';
-import asdf from '../../../assets/img/avatars/avatar.jpg';
+import {SearchScreen} from '../../pages/search';
 import homeImg from '../../../assets/img/icons/home.png';
 import homeActImg from '../../../assets/img/icons/home-act.png';
 import searchImg from '../../../assets/img/icons/search.png';
+import searchTopImg from '../../../assets/img/icons/search-top.png';
 import searchActImg from '../../../assets/img/icons/search-act.png';
 import menuImg from '../../../assets/img/icons/menu.png';
 import menuActImg from '../../../assets/img/icons/menu-act.png';
@@ -18,14 +25,20 @@ import moveImg from '../../../assets/img/icons/move.png';
 import moveActImg from '../../../assets/img/icons/move-act.png';
 import bookImg from '../../../assets/img/icons/book-open.png';
 import bookActImg from '../../../assets/img/icons/book-open-act.png';
-import {useNavigation} from '@react-navigation/core';
-import { MenuStackScreen } from './menuStack';
+import {MenuStackScreen} from './menuStack';
 
 const Tab = createBottomTabNavigator();
 const THEME_COLOR = '#14142f';
 const THEME_SEC_COLOR = '#887bff';
 
 export default function MainTabs() {
+  const [focusedItem, setFocusedItem] = useState(true);
+  const [searchValue, setSearchValue] = useState('');
+  const [searchValidation, setSearchValidation] = useState('');
+  const handleChange = value => {
+    setSearchValue(value);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
@@ -37,7 +50,7 @@ export default function MainTabs() {
               backgroundColor: THEME_COLOR,
               paddingBottom: 30,
               marginBottom: -35,
-              height: 80
+              height: 80,
             },
           }}>
           <Tab.Screen
@@ -45,17 +58,46 @@ export default function MainTabs() {
             component={HomeStackScreen}
             options={{
               tabBarLabel: 'Home',
-              tabBarIcon: status =><Image source={status.focused ? homeActImg : homeImg} />,
+              tabBarIcon: status => (
+                <Image source={status.focused ? homeActImg : homeImg} />
+              ),
               headerShown: false,
             }}
           />
           <Tab.Screen
             name="Search"
-            component={AuthorScreen}
+            component={SearchScreen}
             options={{
               tabBarLabel: 'Search',
-              tabBarIcon: (status) => <Image source={status.focused ? searchActImg : searchImg} />,
-              headerShown: false,
+              headerTitle: () => (
+                <View style={{alignItems: 'center'}}>
+                  <Text style={styles.headerTitle}>Search</Text>
+                  <View style={styles.searchContainer}>
+                    <TextInput
+                      onFocus={() => setFocusedItem(true)}
+                      onBlur={() => setFocusedItem(false)}
+                      placeholder="Search collections, items or users"
+                      placeholderTextColor=" rgba(255, 255, 255, 0.33)"
+                      style={focusedItem ? styles.inputOnFocus : styles.input}
+                      value={searchValue}
+                      autoCapitalize="none"
+                      onChangeText={val => handleChange(val.toLowerCase())}
+                    />
+                    <Image source={searchTopImg} style={styles.searchImage} />
+                  </View>
+                </View>
+              ),
+              tabBarIcon: status => (
+                <Image source={status.focused ? searchActImg : searchImg} />
+              ),
+              headerStyle: {
+                height: 100,
+                backgroundColor: THEME_COLOR,
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
             }}
           />
           <Tab.Screen
@@ -63,8 +105,35 @@ export default function MainTabs() {
             component={ExplorerScreen}
             options={{
               tabBarLabel: 'Explore',
-              tabBarIcon: (status) => <Image source={status.focused ? moveActImg : moveImg} />,
-              headerShown: false,
+              headerTitle: () => (
+                <View style={{alignItems: 'center'}}>
+                  <Text style={styles.headerTitle}>Explore</Text>
+                  <View style={styles.searchContainer}>
+                    <TextInput
+                      onFocus={() => setFocusedItem(true)}
+                      onBlur={() => setFocusedItem(false)}
+                      placeholder="Search collections, items or users"
+                      placeholderTextColor=" rgba(255, 255, 255, 0.33)"
+                      style={focusedItem ? styles.inputOnFocus : styles.input}
+                      value={searchValue}
+                      autoCapitalize="none"
+                      onChangeText={val => handleChange(val.toLowerCase())}
+                    />
+                    <Image source={searchTopImg} style={styles.searchImage} />
+                  </View>
+                </View>
+              ),
+              tabBarIcon: status => (
+                <Image source={status.focused ? moveActImg : moveImg} />
+              ),
+              headerStyle: {
+                height: 100,
+                backgroundColor: THEME_COLOR,
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
             }}
           />
           <Tab.Screen
@@ -72,7 +141,9 @@ export default function MainTabs() {
             component={NewsStackScreen}
             options={{
               tabBarLabel: 'News',
-              tabBarIcon: status => <Image source={status.focused ? bookActImg : bookImg} />,
+              tabBarIcon: status => (
+                <Image source={status.focused ? bookActImg : bookImg} />
+              ),
               headerShown: false,
             }}
           />
@@ -81,7 +152,9 @@ export default function MainTabs() {
             component={MenuStackScreen}
             options={{
               tabBarLabel: 'More',
-              tabBarIcon: (status) => <Image source={status.focused ? menuActImg : menuImg} />,
+              tabBarIcon: status => (
+                <Image source={status.focused ? menuActImg : menuImg} />
+              ),
               headerShown: false,
             }}
           />
@@ -98,5 +171,60 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // backgroundColor: THEME_COLOR,
     backgroundColor: THEME_COLOR,
+  },
+  headerTitle: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: '700',
+    lineHeight: 26,
+    marginBottom: 10,
+    letterSpacing: 2,
+  },
+  searchContainer: {
+    position: 'relative',
+    borderRadius: 4,
+    height: 36,
+    width: '100%',
+  },
+  input: {
+    width: 350,
+    height: 36,
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    padding: 8,
+    paddingLeft: 45,
+    color: 'white',
+    borderRadius: 4,
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  inputOnFocus: {
+    // shadowColor: '#6a4dfd',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 0,
+    // },
+    // shadowOpacity: 0.8,
+    // shadowRadius: 5,
+    // borderColor: '#6a4dfd',
+    border: 'none',
+    borderColor: 'transparent',
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    width: 350,
+    height: 36,
+    borderWidth: 1,
+    padding: 8,
+    paddingLeft: 45,
+    color: 'white',
+    borderRadius: 4,
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  inputText: {
+    color: '#fff',
+  },
+  searchImage: {
+    position: 'absolute',
+    top: 5,
+    left: 10,
   },
 });
