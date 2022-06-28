@@ -214,6 +214,7 @@ const styles = StyleSheet.create({
     marginTop: 7,
   },
   price: {
+    fontFamily: 'SpaceGrotesk-Medium',
     textAlign: 'left',
     fontSize: 24,
     marginTop: 5,
