@@ -1,6 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, Dimensions, Image, StyleSheet} from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+import {
+  Text,
+  View,
+  Dimensions,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import img1 from '../../../assets/img/avatars/avatar2.jpg';
 import img2 from '../../../assets/img/avatars/avatar4.jpg';
 import img3 from '../../../assets/img/avatars/avatar5.jpg';
@@ -13,6 +19,8 @@ import img9 from '../../../assets/img/avatars/avatar14.jpg';
 import img10 from '../../../assets/img/avatars/avatar15.jpg';
 
 import badgeMark from '../../../assets/img/icons/verified.png';
+import arrowRight from '../../../assets/img/icons/arrow-right.png';
+import arrowLeft from '../../../assets/img/icons/arrow-left.png';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
@@ -78,26 +86,31 @@ const BackstagersCarousel = () => {
       setViewData(data);
     } else {
       let tempData = data;
-      setViewData(tempData.slice(0,4));
+      setViewData(tempData.slice(0, 4));
     }
-  }, [isViewAll])
+  }, [isViewAll]);
   return (
-    <View style={{position: 'relative', margin: 20, marginBottom: 100}}>
-      <View style={{position: 'absolute', right: 0, top: -30}}>
-        <Text style={{color: '#fff'}} onPress={() => setViewAll(!isViewAll)}>
-          {!isViewAll ? 'View All ->' : 'View Less <-'}
+    <View style={styles.container}>
+      <View style={styles.extraBtn}>
+        <Text style={styles.extraText} onPress={() => setViewAll(!isViewAll)}>
+          {!isViewAll ? 'View All' : 'View Less'}
         </Text>
+        <Image
+          source={!isViewAll ? arrowRight : arrowLeft}
+          width={16}
+          height={16}
+          style={styles.arrowImg}
+        />
       </View>
+
       {viewData &&
         viewData.map((item, i) => (
-          <View style={styles.container} key={item.id}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.index}>{i + 1}</Text>
-              <Image source={item.img} style={styles.img} />
-            </View>
+          <TouchableOpacity style={styles.cardContainer} key={item.id}>
+            <Text style={styles.index}>{i + 1}</Text>
+            <Image source={item.img} style={styles.img} />
             <Text style={styles.name}>@ {item.name}</Text>
             <Image source={badgeMark} style={styles.badgeMark} />
-          </View>
+          </TouchableOpacity>
         ))}
     </View>
   );
@@ -106,6 +119,28 @@ export default BackstagersCarousel;
 
 const styles = StyleSheet.create({
   container: {
+    position: 'relative',
+    margin: 20,
+    marginTop: 10,
+    marginBottom: 100,
+  },
+  extraBtn: {
+    position: 'absolute',
+    right: 0,
+    top: -30,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  extraText: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    fontSize: 12,
+    fontWeight: '400',
+    color: '#fff',
+    letterSpacing: 2,
+    textTransform: 'uppercase',
+  },
+  cardContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -117,6 +152,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
   },
+  arrowImg: {
+    width: 16,
+    height: 16,
+    marginLeft: 8,
+  },
   img: {
     width: 40,
     height: 40,
@@ -124,16 +164,17 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   name: {
-    textAlign: 'right',
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 16,
     fontWeight: '700',
     color: '#fff',
     marginRight: 10,
   },
   index: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: '400',
     marginRight: 20,
   },
   badgeMark: {
