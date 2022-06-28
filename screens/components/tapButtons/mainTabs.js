@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
     backgroundColor: THEME_COLOR,
   },
   headerTitle: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 20,
     fontWeight: '700',

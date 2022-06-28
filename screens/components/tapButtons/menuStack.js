@@ -122,38 +122,14 @@ export const MenuStackScreen = () => {
         name="MoreMain"
         component={MenuHomeScreen}
         options={{
-          headerTitle: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 16,
-                  marginLeft: 10,
-                  fontWeight: '600',
-                }}>
-                More
-              </Text>
-            </View>
-          ),
+          headerTitle: () => <Text style={styles.headerTitle}>More</Text>,
         }}
       />
       <MenuStack.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
-          headerTitle: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 16,
-                  marginLeft: 10,
-                  fontWeight: '600',
-                }}>
-                Profile
-              </Text>
-            </View>
-          ),
+          headerTitle: () => <Text style={styles.headerTitle}>Profile</Text>,
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.navigate('MoreMain')}>
               <Image source={arrowLeft} />
@@ -166,16 +142,8 @@ export const MenuStackScreen = () => {
         component={ActivityScreen}
         options={{
           headerTitle: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 16,
-                  marginLeft: 10,
-                  fontWeight: '600',
-                }}>
-                Activity
-              </Text>
+            <View>
+              <Text style={styles.headerTitle}>Activity</Text>
               <Modal
                 isVisible={isModalVisible}
                 backdropOpacity={0}
@@ -198,21 +166,28 @@ export const MenuStackScreen = () => {
         }}
       />
       <MenuStack.Screen
+        name="Liked"
+        component={ActivityScreen}
+        options={{
+          headerTitle: () => <Text style={styles.headerTitle}>Liked</Text>,
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.navigate('MoreMain')}>
+              <Image source={arrowLeft} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <MenuStack.Screen
         name="Settings"
         component={AppSettingScreen}
         options={{
           headerTitle: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 16,
-                  marginLeft: 10,
-                  fontWeight: '600',
-                }}>
-                App Settings
-              </Text>
-            </View>
+            <Text style={styles.headerTitle}>App Settings</Text>
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.navigate('MoreMain')}>
+              <Image source={arrowLeft} />
+            </TouchableOpacity>
           ),
         }}
       />
@@ -220,19 +195,7 @@ export const MenuStackScreen = () => {
         name="About"
         component={AboutScreen}
         options={{
-          headerTitle: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 20,
-                  fontWeight: '700',
-                  letterSpacing: 0.8,
-                }}>
-                About
-              </Text>
-            </View>
-          ),
+          headerTitle: () => <Text style={styles.headerTitle}>About</Text>,
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.navigate('MoreMain')}>
               <Image source={arrowLeft} />
@@ -245,6 +208,14 @@ export const MenuStackScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  headerTitle: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: '#fff',
+    fontSize: 20,
+    marginLeft: 10,
+    fontWeight: '700',
+    letterSpacing: 2,
+  },
   modalContainer: {
     flex: 1,
     backgroundColor: '#09091a',
