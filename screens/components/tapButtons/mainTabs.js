@@ -21,10 +21,10 @@ import searchTopImg from '../../../assets/img/icons/search-top.png';
 import searchActImg from '../../../assets/img/icons/search-act.png';
 import menuImg from '../../../assets/img/icons/menu.png';
 import menuActImg from '../../../assets/img/icons/menu-act.png';
-import moveImg from '../../../assets/img/icons/move.png';
-import moveActImg from '../../../assets/img/icons/move-act.png';
-import bookImg from '../../../assets/img/icons/book-open.png';
-import bookActImg from '../../../assets/img/icons/book-open-act.png';
+import exploreImg from '../../../assets/img/icons/explore.png';
+import exploreActImg from '../../../assets/img/icons/explore-act.png';
+import newsImg from '../../../assets/img/icons/news.png';
+import newsActImg from '../../../assets/img/icons/news-act.png';
 import {MenuStackScreen} from './menuStack';
 
 const Tab = createBottomTabNavigator();
@@ -124,7 +124,7 @@ export default function MainTabs() {
                 </View>
               ),
               tabBarIcon: status => (
-                <Image source={status.focused ? moveActImg : moveImg} />
+                <Image source={status.focused ? exploreActImg : exploreImg} />
               ),
               headerStyle: {
                 height: 100,
@@ -142,7 +142,7 @@ export default function MainTabs() {
             options={{
               tabBarLabel: 'News',
               tabBarIcon: status => (
-                <Image source={status.focused ? bookActImg : bookImg} />
+                <Image source={status.focused ? newsActImg : newsImg} />
               ),
               headerShown: false,
             }}
