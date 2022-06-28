@@ -19,7 +19,7 @@ export const HomeHero = ({navigation}) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Explorer')}>
+          onPress={() => navigation.navigate('Explore')}>
           <Text style={styles.buttonText}>Explore</Text>
         </TouchableOpacity>
         {!userInfo && (
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   homeTitle: {
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
+    lineHeight: 28,
     fontWeight: '700',
     color: '#fff',
   },
@@ -59,39 +60,15 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.66)',
     fontFamily: 'SpaceGrotesk-Medium',
   },
-  imgBackground: {
-    width: '100%',
-    height: '100%',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderBottomColor: '#887bff',
-    borderBottomWidth: 2,
-  },
-  text1: {
-    // fontFamily: "SpaceGrotesk-Light.ttf",
-    color: '#fff',
-    fontSize: 26,
-    lineHeight: 50,
-    fontWeight: '500',
-    textAlign: 'center',
-    zIndex: 10,
-  },
-  text2: {
-    color: 'white',
-    fontSize: 20,
-    lineHeight: 30,
-    fontWeight: 'normal',
-    textAlign: 'center',
-  },
   buttonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '700',
+    fontFamily: 'SpaceGrotesk-Medium',
     lineHeight: 20,
     textAlign: 'center',
     textTransform: 'uppercase',
-    letterSpacing: 0.15,
+    letterSpacing: 2.0,
   },
   buttonContainer: {
     display: 'flex',

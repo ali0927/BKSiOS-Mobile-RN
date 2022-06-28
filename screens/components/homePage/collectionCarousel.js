@@ -5,12 +5,11 @@ import {
   Dimensions,
   Image,
   StyleSheet,
-  ImageBackground,
   TouchableOpacity,
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import {getAllCollections} from '../../helper/event';
-import badgeMark from '../../../assets/img/icons/verified.png';
+// import badgeMark from '../../../assets/img/icons/verified.png';
 import {useNavigation} from '@react-navigation/core';
 import config from '../../helper/config';
 
@@ -20,44 +19,41 @@ export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.4);
 const CollectionCard = ({item}) => {
   const navigation = useNavigation();
   return (
-    <View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('AuthorProfile', {item: item})}>
-        <View style={styles.container}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('AuthorProfile', {item: item})}
+      style={styles.cardContainer}>
+      <Image
+        style={styles.collectionImg}
+        source={{
+          uri:
+            config.API_BASE_URL +
+            '/api/upload/get_file?path=' +
+            item.picture_large,
+        }}
+        key={item.id}
+      />
+      <View style={styles.collectionMeta}>
+        <View style={styles.collectionAvatar}>
           <Image
-            style={styles.collectionImg}
             source={{
               uri:
                 config.API_BASE_URL +
                 '/api/upload/get_file?path=' +
-                item.picture_large,
+                item.picture_small,
             }}
-            key={item.id}
+            style={styles.avatarImg}
           />
-          <View style={styles.collectionMeta}>
-            <View style={styles.collectionAvatar}>
-              <Image
-                source={{
-                  uri:
-                    config.API_BASE_URL +
-                    '/api/upload/get_file?path=' +
-                    item.picture_small,
-                }}
-                style={styles.avatarImg}
-              />
-              <Image source={badgeMark} style={styles.badgeMark} />
-            </View>
-            <Text
-              style={styles.collectionName}
-              ellipsizeMode="tail"
-              numberOfLines={1}>
-              {item.name}
-            </Text>
-            <Text style={styles.collectionNumber}>{item.category}</Text>
-          </View>
+          {/* <Image source={badgeMark} style={styles.badgeMark} /> */}
         </View>
-      </TouchableOpacity>
-    </View>
+        <Text
+          style={styles.collectionName}
+          ellipsizeMode="tail"
+          numberOfLines={1}>
+          {item.name}
+        </Text>
+        <Text style={styles.collectionNumber}>{item.category}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -78,7 +74,7 @@ const CollectionCarousel = ({navigation}) => {
     });
   }, []);
   return (
-    <View style={{marginVertical: 10}}>
+    <View style={styles.container}>
       {collections.length > 0 && (
         <Carousel
           data={collections}
@@ -94,6 +90,9 @@ export default CollectionCarousel;
 
 const styles = StyleSheet.create({
   container: {
+    marginVertical: 10,
+  },
+  cardContainer: {
     flex: 1,
     justifyContent: 'flex-end',
     width: 140,
@@ -104,24 +103,23 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   collectionImg: {
-    height: 80,
+    height: 60,
   },
   collectionMeta: {
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    paddingBottom: 10,
-    paddingLeft: 0,
+    height: 80,
     backgroundColor: '#14142f',
     borderWidth: 1,
     borderBottomRightRadius: 12,
     borderBottomLeftRadius: 12,
-    borderColor: '#ffffff44',
+    borderColor: 'rgba(255, 255, 255, 0.15)',
   },
   collectionAvatar: {
     borderRadius: 12,
-    marginTop: -25,
+    marginTop: -20,
     position: 'relative',
   },
   badgeMark: {
@@ -138,8 +136,6 @@ const styles = StyleSheet.create({
   avatarImg: {
     width: 40,
     height: 40,
-    borderColor: '#14142f',
-    borderWidth: 1,
     borderRadius: 20,
     backgroundColor: '#d878e1',
   },
@@ -148,14 +144,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     color: '#fff',
-    marginVertical: 10,
+    lineHeight: 20,
     fontWeight: '700',
+    marginVertical: 7,
+    fontFamily: 'SpaceGrotesk-Medium',
   },
   collectionNumber: {
-    width: '100%',
     textAlign: 'center',
     fontSize: 10,
-    color: '#bdbdbd',
-    fontWeight: '500',
+    lineHeight: 13,
+    color: 'rgba(255, 255, 255, 0.66)',
+    fontWeight: '400',
+    fontFamily: 'SpaceGrotesk-Medium',
   },
 });
