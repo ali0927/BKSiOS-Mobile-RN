@@ -3,7 +3,6 @@ import {
   View,
   TextInput,
   StyleSheet,
-  Image,
   TouchableOpacity,
   Text,
 } from 'react-native';
@@ -40,13 +39,16 @@ export const ForgetPasswordScreen = ({navigation}) => {
   };
 
   const send = async () => {
-    if (!checkvalidations()) return;
+    if (!checkvalidations()) {
+      return;
+    }
     forgetPassword(values)
       .then(res => {
         if (res.success) {
           Toast.show({
             type: 'success',
-            text1: 'Email with reset password link was sent. please check your mailbox',
+            text1:
+              'Email with reset password link was sent. please check your mailbox',
           });
         } else {
           Toast.show({
@@ -59,14 +61,14 @@ export const ForgetPasswordScreen = ({navigation}) => {
         Toast.show({
           type: 'success',
           text1: 'Failed...',
-          text2: error
+          text2: error,
         });
       });
   };
 
   return (
     <View style={styles.container}>
-      <View style={{position: 'relative', width: '100%'}}>
+      <View style={styles.inputContainer}>
         <Text style={styles.subTitle}>Email</Text>
         <TextInput
           onFocus={() => setFocusedItem('TextInput1')}
@@ -78,15 +80,15 @@ export const ForgetPasswordScreen = ({navigation}) => {
           autoCapitalize="none"
           onChangeText={val => handleChange('email', val.toLowerCase())}
         />
-        {validations.email == 'has-empty' ? (
+        {validations.email === 'has-empty' ? (
           <Text style={styles.errorText}>Email required</Text>
         ) : (
-          <Text style={styles.errorText}></Text>
+          <Text style={styles.errorText} />
         )}
-        {validations.email == 'has-danger' ? (
+        {validations.email === 'has-danger' ? (
           <Text style={styles.errorText}>Input Correct Format</Text>
         ) : (
-          <Text style={styles.errorText}></Text>
+          <Text style={styles.errorText} />
         )}
       </View>
       <TouchableOpacity style={styles.button} onPress={() => send()}>
@@ -104,6 +106,10 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 50,
   },
+  inputContainer: {
+    position: 'relative',
+    width: '100%',
+  },
   input: {
     width: '100%',
     height: 44,
@@ -113,6 +119,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     color: 'white',
     borderRadius: 4,
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 18,
     fontWeight: '500',
   },
@@ -132,6 +139,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     color: 'white',
     borderRadius: 4,
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 18,
     fontWeight: '500',
   },
@@ -139,11 +147,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -20,
     left: 0,
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#b00020',
+    fontFamily: 'SpaceGrotesk-Medium',
+    fontSize: 12,
+    fontWeight: '400',
+    letterSpacing: 1,
+    color: '#ff4e4e',
   },
   text3: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 16,
     fontWeight: '700',
@@ -151,9 +162,10 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     height: 40,
     width: '100%',
-    letterSpacing: 1.6,
+    letterSpacing: 1.5,
   },
   subTitle: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 14,
     fontWeight: '400',
