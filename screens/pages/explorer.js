@@ -13,6 +13,7 @@ import {getEventPrice, getAllEventCards} from '../helper/event';
 import config from '../helper/config';
 import badgeMark from '../../assets/img/icons/verified.png';
 import likedImg from '../../assets/img/icons/like-empty.png';
+import collectionAvatar from '../../assets/img/avatars/avatar2.jpg';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
@@ -71,7 +72,7 @@ export const ExplorerScreen = () => {
             <View style={styles.collectionContainer}>
               <Text style={styles.info}>Collection</Text>
               <View style={styles.collectionSub}>
-                <Image source={item.avatar} style={styles.avatar} />
+                <Image source={collectionAvatar} style={styles.avatar} />
                 <Text style={styles.owner}>cName</Text>
               </View>
             </View>
