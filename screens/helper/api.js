@@ -4,23 +4,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector} from 'react-redux';
 const api = axios.create();
 
-api.interceptors.request.use(
-  async request => {
-    let baseURL = config.API_BASE_URL || '';
-    request.url = baseURL + request.url;
-    // const userInfo = useSelector(state => state.userInfoReducer).userInfo;
-    // console.log("Userinfo ---->", userInfo);
+api.interceptors.request.use(async request => {
+  let baseURL = config.API_BASE_URL || '';
+  request.url = baseURL + request.url;
+  // const userInfo = useSelector(state => state.userInfoReducer).userInfo;
+  // console.log("Userinfo ---->", userInfo);
 
-    const result = await AsyncStorage.getItem('userInfo');
-    console.log('getItem-userInfo', JSON.parse(result)?.accessToken);
-    let token = result ? JSON.parse(result).accessToken : '';
-    request.headers = {
-      Authorization: `Bearer ${token}`,
-      Accept: '*/*',
-    };
-    return request;
-  }
-);
+  const result = await AsyncStorage.getItem('userInfo');
+  console.log('getItem-userInfo', JSON.parse(result)?.accessToken);
+  let token = result ? JSON.parse(result).accessToken : '';
+  request.headers = {
+    Authorization: `Bearer ${token}`,
+    Accept: '*/*',
+  };
+  return request;
+});
 
 api.interceptors.response.use(
   response => response,
