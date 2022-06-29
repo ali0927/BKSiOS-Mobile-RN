@@ -12,9 +12,9 @@ import axios from 'axios';
 import DateObject from 'react-date-object';
 import clockImg from '../../assets/img/icons/clock.png';
 import messageImg from '../../assets/img/icons/message.png';
-import shareImg1 from '../../assets/img/icons/facebook.png';
-import shareImg2 from '../../assets/img/icons/twitter.png';
-import shareImg3 from '../../assets/img/icons/medium.png';
+// import shareImg1 from '../../assets/img/icons/facebook.png';
+// import shareImg2 from '../../assets/img/icons/twitter.png';
+// import shareImg3 from '../../assets/img/icons/medium.png';
 import config from '../helper/config';
 
 // import {getArticleById} from "../helper/article";
@@ -30,15 +30,13 @@ export const NewsDetailScreen = ({route, navigation}) => {
   };
 
   const getArticleById = e => {
-    console.log('GetArticleById Function...', e);
     axios
       .get(config.API_BASE_URL + '/api/article/' + e)
       .then(function (response) {
-        console.log('Response Data: ', response.data.article);
         setArticle(response.data.article);
       })
       .catch(function (error) {
-        console.log('Response Data: ', response);
+        console.log('Response Data: ', error);
       })
       .finally(function () {
         console.log('arrived there');
@@ -47,10 +45,10 @@ export const NewsDetailScreen = ({route, navigation}) => {
 
   useEffect(() => {
     getArticleById(route.params.id);
-  }, []);
+  }, [route.params.id]);
 
   return (
-    <View style={{backgroundColor: '#14142f', flex: 1}}>
+    <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollStyle}>
         {article && (
           <View style={styles.innerContainer}>
@@ -64,15 +62,15 @@ export const NewsDetailScreen = ({route, navigation}) => {
               style={styles.mainImg}
             />
             <View style={styles.timeContainer}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image source={clockImg} style={{marginRight: 10}} />
+              <View style={styles.flexRow}>
+                <Image source={clockImg} style={styles.msgImg} />
                 <Text style={styles.timeText}>
                   {dateString(article.createdAt)}
                 </Text>
               </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image source={messageImg} style={{marginRight: 5}} />
-                <Text style={styles.messageText}>0</Text>
+              <View style={styles.flexRow}>
+                <Image source={messageImg} style={styles.msgImg} />
+                <Text style={styles.timeText}>0</Text>
               </View>
             </View>
             <TouchableOpacity
@@ -82,21 +80,20 @@ export const NewsDetailScreen = ({route, navigation}) => {
             </TouchableOpacity>
             <Text style={styles.articleTitle}>{article.title}</Text>
             <HTMLView value={article.description} stylesheet={htmlStyleSheet} />
-            <View style={styles.shareButtons}>
+            {/* <View style={styles.shareButtons}>
               <TouchableOpacity style={styles.shareButton}>
-                <Image source={shareImg1} style={{marginRight: 10}} />
+                <Image source={shareImg1} style={styles.msgImg} />
                 <Text style={styles.shareButtonText}>share</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={{...styles.shareButton, backgroundColor: '#57aef5'}}>
-                <Image source={shareImg2} style={{marginRight: 10}} />
+              <TouchableOpacity style={styles.tweetButton}>
+                <Image source={shareImg2} style={styles.msgImg} />
                 <Text style={styles.shareButtonText}>tweet</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.shareButton}>
-                <Image source={shareImg3} style={{marginRight: 10}} />
+                <Image source={shareImg3} style={styles.msgImg} />
                 <Text style={styles.shareButtonText}>share</Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         )}
       </ScrollView>
@@ -105,6 +102,10 @@ export const NewsDetailScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#14142f',
+    flex: 1,
+  },
   scrollStyle: {
     backgroundColor: '#14142f',
     paddingHorizontal: 20,
@@ -120,7 +121,14 @@ const styles = StyleSheet.create({
     height: 200,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
-    backgroundColor: 'pink',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+  },
+  flexRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  msgImg: {
+    marginRight: 10,
   },
   timeContainer: {
     flexDirection: 'row',
@@ -129,17 +137,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   timeText: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: 'rgba(255, 255, 255, 0.66)',
     fontSize: 12,
     fontWeight: '400',
-    letterSpacing: 1.05,
-  },
-  messageText: {
-    color: 'rgba(255, 255, 255, 0.66)',
-    fontSize: 12,
-    fontWeight: '400',
+    letterSpacing: 0.5,
   },
   newsText: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 12,
     color: 'rgba(255,255,255,0.66)',
     fontWeight: '500',
@@ -151,65 +156,82 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   articleTitle: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
+    lineHeight: 26,
     color: '#fff',
     fontWeight: '700',
     marginTop: 10,
     marginBottom: 10,
+    letterSpacing: 0.5,
   },
-  shareButtons: {
-    flexDirection: 'row',
-    marginBottom: 10,
-    marginTop: 80,
-  },
-  shareButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#3d6199',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 15,
-    marginRight: 10,
-  },
-  shareButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '700',
-  },
+  // shareButtons: {
+  //   flexDirection: 'row',
+  //   marginBottom: 10,
+  //   marginTop: 80,
+  // },
+  // shareButton: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   backgroundColor: '#3d6199',
+  //   paddingVertical: 5,
+  //   paddingHorizontal: 10,
+  //   borderRadius: 15,
+  //   marginRight: 10,
+  // },
+  // tweetButton: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   backgroundColor: '#57aef5',
+  //   paddingVertical: 5,
+  //   paddingHorizontal: 10,
+  //   borderRadius: 15,
+  //   marginRight: 10,
+  // },
+  // shareButtonText: {
+  //   color: '#fff',
+  //   fontSize: 16,
+  //   fontWeight: '700',
+  // },
   newsButton: {
     alignItems: 'flex-start',
   },
 });
 const htmlStyleSheet = StyleSheet.create({
   h1: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
+    lineHeight: 26,
     color: '#fff',
     fontWeight: '700',
     marginBottom: -50,
   },
   p: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 16,
-    color: '#fff',
+    color: 'rgba(255, 255, 255, 0.66)',
     lineHeight: 20,
     fontWeight: '400',
     marginBottom: -60,
   },
   ul: {
-    color: '#fff',
+    color: 'rgba(255, 255, 255, 0.66)',
     marginBottom: -40,
   },
   li: {
-    color: '#fff',
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: 'rgba(255, 255, 255, 0.66)',
     fontSize: 16,
   },
   ol: {
-    color: '#fff',
+    color: 'rgba(255, 255, 255, 0.66)',
     fontSize: 16,
     marginTop: -20,
     marginBottom: -50,
   },
   blockquote: {
-    color: '#fff',
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: 'rgba(255, 255, 255, 0.66)',
     fontSize: 16,
   },
 });

@@ -10,27 +10,11 @@ import {
 import {ArticleCard} from '../components/newsPage/articleCard';
 import config from '../helper/config';
 
-export const NewsScreen = ({navigation}) => {
+export const NewsScreen = () => {
   const [categoryList, setCategoryList] = useState([
     {
       id: 0,
       title: 'All',
-    },
-    {
-      id: 1,
-      title: 'News',
-    },
-    {
-      id: 2,
-      title: 'Category1',
-    },
-    {
-      id: 3,
-      title: 'Category2',
-    },
-    {
-      id: 4,
-      title: 'Category3',
     },
   ]);
   const [currentCategory, setCurrentCategory] = useState(0);
@@ -43,7 +27,7 @@ export const NewsScreen = ({navigation}) => {
         setArticles(response.data.articles);
       })
       .catch(function (error) {
-        console.log('Response Data: ', response);
+        console.log('error Data: ', error);
       })
       .finally(function () {
         console.log('arrived there');
@@ -55,7 +39,7 @@ export const NewsScreen = ({navigation}) => {
   }, []);
 
   return (
-    <View style={{backgroundColor: '#14142f', marginBottom: 50}}>
+    <View style={styles.container}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View style={styles.categoryContainer}>
           {categoryList &&
@@ -86,7 +70,15 @@ export const NewsScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  categoryContainer: {flexDirection: 'row', marginBottom: 25, marginTop: 10, paddingLeft: 10},
+  container: {
+    backgroundColor: '#14142f',
+  },
+  categoryContainer: {
+    flexDirection: 'row',
+    marginBottom: 25,
+    marginTop: 10,
+    paddingLeft: 10,
+  },
   categoryTitle: {
     alignItems: 'flex-start',
     marginLeft: 10,
@@ -94,6 +86,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   categoryItem: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 12,
     fontWeight: '500',
     color: '#fff',
@@ -105,6 +98,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   categoryActive: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 12,
     fontWeight: '500',
     color: '#fff',
@@ -120,7 +114,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 30,
+    paddingBottom: 100,
     paddingHorizontal: 20,
   },
 });
