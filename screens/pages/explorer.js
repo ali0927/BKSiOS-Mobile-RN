@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
   Text,
@@ -6,177 +6,100 @@ import {
   Dimensions,
   Image,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
-import img1 from '../../assets/img/cover/cover3.jpg';
-import img2 from '../../assets/img/cover/cover4.jpg';
-import img3 from '../../assets/img/cover/cover5.jpg';
-import img4 from '../../assets/img/cover/cover6.jpg';
-import img5 from '../../assets/img/cover/cover7.jpg';
-import img6 from '../../assets/img/cover/cover8.jpg';
-import img7 from '../../assets/img/cover/cover3.jpg';
-import img8 from '../../assets/img/cover/cover4.jpg';
-import img9 from '../../assets/img/cover/cover5.jpg';
-import avaImg1 from '../../assets/img/avatars/avatar.jpg';
-import avaImg2 from '../../assets/img/avatars/avatar2.jpg';
-import avaImg3 from '../../assets/img/avatars/avatar3.jpg';
-import avaImg4 from '../../assets/img/avatars/avatar4.jpg';
-import avaImg5 from '../../assets/img/avatars/avatar5.jpg';
-import avaImg6 from '../../assets/img/avatars/avatar6.jpg';
-import avaImg7 from '../../assets/img/avatars/avatar7.jpg';
-import avaImg8 from '../../assets/img/avatars/avatar8.jpg';
-import avaImg9 from '../../assets/img/avatars/avatar9.jpg';
+import {useNavigation} from '@react-navigation/core';
+import {getEventPrice, getAllEventCards} from '../helper/event';
+import config from '../helper/config';
 import badgeMark from '../../assets/img/icons/verified.png';
 import likedImg from '../../assets/img/icons/like-empty.png';
+
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
-const data = [
-  {
-    id: 1,
-    img: img4,
-    avatar: avaImg1,
-    name: 'Fed3',
-    owner: 'Admin',
-    price: 3,
-  },
-  {
-    id: 2,
-    img: img2,
-    avatar: avaImg2,
-    name: 'Fed3',
-    owner: 'Admin',
-    price: 2,
-  },
-  {
-    id: 3,
-    img: img3,
-    avatar: avaImg3,
-    name: 'Fed3',
-    owner: 'Admin',
-    price: 4,
-  },
-  {
-    id: 4,
-    img: img4,
-    avatar: avaImg4,
-    name: 'Fed3',
-    owner: 'Admin',
-    price: 3,
-  },
-  {
-    id: 5,
-    img: img5,
-    avatar: avaImg5,
-    name: 'Fed3',
-    owner: 'Admin',
-    price: 2,
-  },
-  {
-    id: 6,
-    img: img6,
-    avatar: avaImg6,
-    name: 'Fed3',
-    owner: 'Admin',
-    price: 4,
-  },
-  {
-    id: 7,
-    img: img7,
-    avatar: avaImg7,
-    name: 'Fed3',
-    owner: 'Admin',
-    price: 3,
-  },
-  {
-    id: 8,
-    img: img8,
-    avatar: avaImg8,
-    name: 'Fed3',
-    owner: 'Admin',
-    price: 1,
-  },
-  {
-    id: 9,
-    img: img9,
-    avatar: avaImg9,
-    name: 'Fed3',
-    owner: 'Admin',
-    price: 2,
-  },
-];
-
 export const ExplorerScreen = () => {
-  return (
-    <ScrollView style={styles.container}>
-      {data.map(item => (
-        <View style={styles.itemContainer} key={item.id}>
-          <View style={styles.imageDiv}>
-            <Image source={item.img} style={styles.img} />
-          </View>
-          <View style={styles.collectionMeta}>
-            <View style={styles.detail}></View>
-            <Text style={styles.name}>{item.name}</Text>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-                width: '100%',
-              }}>
-              <View>
-                <Text style={styles.info}>Collection</Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    marginRight: 40,
-                  }}>
-                  <Image source={item.avatar} style={styles.avatar} />
-                  <Text style={styles.owner}>{item.owner}</Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.info}>Creator</Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                  }}>
-                  <Image source={avaImg6} style={styles.avatar} />
-                  <Text style={styles.owner}>Antonio</Text>
-                  <Image source={badgeMark} style={styles.badgeMark} />
-                </View>
-              </View>
-            </View>
+  const [events, setEvents] = useState([]);
 
-            <View style={styles.divider}></View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: "center",
-                width: '100%',
-              }}>
-              <View>
-                <Text
-                  style={{
-                    ...styles.info,
-                    marginBottom: 0,
-                    marginTop: 0,
-                    width: '100%',
-                  }}>
-                  Reserve Price
-                </Text>
-                <Text style={styles.price}>{item.price} &#8364;</Text>
+  useEffect(() => {
+    getAllEventCards().then(res => {
+      if (res.success) {
+        setEvents(res.eventcards);
+      }
+    });
+  }, []);
+  const Card = ({item}) => {
+    const navigation = useNavigation();
+    const creatorAvatar = () => {
+      if (item.creator.avatar === '/img/avatars/avatar.jpg') {
+        return require('../../assets/img/avatars/avatar.jpg');
+      } else if (item.creator.avatar === '/img/avatars/avatar2.jpg') {
+        return require('../../assets/img/avatars/avatar2.jpg');
+      } else if (item.creator.avatar === '/img/avatars/avatar3.jpg') {
+        return require('../../assets/img/avatars/avatar3.jpg');
+      } else if (item.creator.avatar === '/img/avatars/avatar4.jpg') {
+        return require('../../assets/img/avatars/avatar4.jpg');
+      } else if (item.creator.avatar === '/img/avatars/avatar5.jpg') {
+        return require('../../assets/img/avatars/avatar5.jpg');
+      } else if (item.creator.avatar === '/img/avatars/avatar6.jpg') {
+        return require('../../assets/img/avatars/avatar6.jpg');
+      } else if (item.creator.avatar === '/img/avatars/avatar7.jpg') {
+        return require('../../assets/img/avatars/avatar7.jpg');
+      } else if (item.creator.avatar === '/img/avatars/avatar8.jpg') {
+        return require('../../assets/img/avatars/avatar8.jpg');
+      }
+    };
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate('EventDetail', {item: item})}
+        style={styles.cardContainer}
+        key={item.id}>
+        <View style={styles.imageDiv}>
+          <Image
+            source={{
+              uri:
+                config.API_BASE_URL +
+                '/api/upload/get_file?path=' +
+                item.picture_small,
+            }}
+            style={styles.img}
+            resizeMode="stretch"
+          />
+        </View>
+        <View style={styles.cardMeta}>
+          <Text style={styles.name}>{item.name}</Text>
+          <View style={styles.detailContainer}>
+            <View style={styles.collectionContainer}>
+              <Text style={styles.info}>Collection</Text>
+              <View style={styles.collectionSub}>
+                <Image source={item.avatar} style={styles.avatar} />
+                <Text style={styles.owner}>cName</Text>
               </View>
-              <Image source={likedImg} />
-              {/* <Text style={styles.price}>&#9825;</Text> */}
             </View>
+            <View>
+              <Text style={styles.info}>Creator</Text>
+              <View style={styles.creatorContainer}>
+                <Image source={creatorAvatar()} style={styles.avatar} />
+                <Text style={styles.owner}>{item.creator.name}</Text>
+                <Image source={badgeMark} style={styles.badgeMark} />
+              </View>
+            </View>
+          </View>
+          <View style={styles.divider} />
+          <View style={styles.footerContainer}>
+            <View>
+              <Text style={styles.info}>Reserve Price</Text>
+              <Text style={styles.price}>{getEventPrice(item)} &#8364;</Text>
+            </View>
+            <Image source={likedImg} />
           </View>
         </View>
+      </TouchableOpacity>
+    );
+  };
+  return (
+    <ScrollView style={styles.container}>
+      {events.map(item => (
+        <Card item={item} />
       ))}
     </ScrollView>
   );
@@ -190,7 +113,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     padding: 20,
   },
-  itemContainer: {
+  cardContainer: {
     marginTop: 30,
     height: 440,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
@@ -199,14 +122,15 @@ const styles = StyleSheet.create({
   },
   img: {
     width: '100%',
-    borderRadius: 16,
+    height: '100%',
   },
   imageDiv: {
     position: 'relative',
     height: 220,
     overflow: 'hidden',
+    backgroundColor: 'rgba(255, 255, 255, 0.07)',
   },
-  collectionMeta: {
+  cardMeta: {
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
     width: '100%',
@@ -215,34 +139,62 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
+  detailContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    width: '100%',
+  },
+  collectionContainer: {
+    width: '50%',
+  },
+  collectionSub: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    marginTop: 8,
+  },
+  creatorContainer: {
+    marginTop: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
   divider: {
     width: '100%',
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    height: 2,
-    marginTop: 20,
-    marginBottom: 20,
+    height: 1,
+    marginVertical: 20,
+  },
+  footerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
   },
   name: {
-    width: '100%',
-    textAlign: 'left',
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
     fontWeight: '700',
-    lineHeight: 24,
-    letterSpacing: 0.5,
     color: '#fff',
-    marginBottom: 10,
+    lineHeight: 24,
+    width: '100%',
+    textAlign: 'left',
+    letterSpacing: 0.5,
+    marginBottom: 20,
   },
   info: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: 'rgba(255, 255, 255, 0.66)',
     fontSize: 12,
     fontWeight: '400',
     lineHeight: 12,
     textTransform: 'uppercase',
     letterSpacing: 2,
-    marginBottom: 8,
-    marginTop: 15,
   },
   owner: {
+    fontFamily: 'SpaceGrotesk-Medium',
     textAlign: 'left',
     fontSize: 16,
     lineHeight: 20,
@@ -254,13 +206,16 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
     marginRight: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
   },
   price: {
-    textAlign: 'left',
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
-    marginTop: 0,
-    color: '#fff',
     fontWeight: '700',
+    color: '#fff',
+    lineHeight: 28,
+    textAlign: 'left',
+    marginTop: 5,
     letterSpacing: 0.5,
   },
   badgeMark: {
