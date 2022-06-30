@@ -25,7 +25,7 @@ import instagramImg from '../../assets/img/icons/instagram.png';
 import copyImg from '../../assets/img/icons/copy.png';
 import editImg from '../../assets/img/icons/edit.png';
 import uploadImg from '../../assets/img/icons/upload.png';
-import CollectionCarousel from '../components/homePage/collectionCarousel';
+import Modal from 'react-native-modal';
 
 const SERVER_URL = 'http://localhost:3000';
 
@@ -46,6 +46,8 @@ const createFormData = (photo, body = {}) => {
 };
 
 export const ProfileScreen = () => {
+  const [backModalVisible, setBackModalVisible] = useState(false);
+  const [avatarModalVisible, setAvatarModalVisible] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [backgroundPhoto, setBackgroundPhoto] = useState(null);
   const [focusedItem, setFocusedItem] = useState('');
@@ -87,38 +89,6 @@ export const ProfileScreen = () => {
     setValues({...values, [prop]: value});
   };
 
-  const handleChoosePhoto = async () => {
-    const result = await launchImageLibrary({mediaType: 'photo'}, response => {
-      console.log('ResponseImage', response);
-      if (response) {
-        setPhoto(response.assets[0]);
-      }
-    });
-  };
-
-  const handleChooseBackgroundPhoto = async () => {
-    const result = await launchImageLibrary({mediaType: 'photo'}, response => {
-      console.log('ResponseImage', response);
-      if (response) {
-        setBackgroundPhoto(response.assets[0]);
-      }
-    });
-  };
-
-  const handleUploadPhoto = () => {
-    fetch(`${SERVER_URL}/api/upload`, {
-      method: 'POST',
-      body: createFormData(photo, {userId: '123'}),
-    })
-      .then(response => response.json())
-      .then(response => {
-        console.log('response', response);
-      })
-      .catch(error => {
-        console.log('Error', error);
-      });
-  };
-
   const copyToClipboard = key => {
     Toast.show({
       type: 'success',
@@ -132,43 +102,66 @@ export const ProfileScreen = () => {
     }
   };
 
+  const avatarImgModal = () => {
+    return (
+      <Modal
+        isVisible={avatarModalVisible}
+        onBackdropPress={() => setAvatarModalVisible(false)}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalTitleContainer}>
+            <Text style={styles.modalTitle}>Select Avatar Image</Text>
+            <Text style={styles.modalClose}>&times;</Text>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
+  const backgroundImgModal = () => {
+    return (
+      <Modal
+        isVisible={backModalVisible}
+        onBackdropPress={() => setBackModalVisible(false)}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalTitleContainer}>
+            <Text style={styles.modalTitle}>Proceed to Pay</Text>
+            <Text style={styles.modalClose}>&times;</Text>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
-        <View
-          style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.15)',
-            height: 224,
-          }}>
+        <View style={styles.mainBackgroundImg}>
           {backgroundPhoto ? (
-            <Image source={{uri: backgroundPhoto.uri}} style={styles.backgroundImg} />
+            <Image
+              source={{uri: backgroundPhoto.uri}}
+              style={styles.backgroundImg}
+            />
           ) : (
-            <Text></Text>
+            <></>
           )}
         </View>
-        <View style={{paddingHorizontal: 20, paddingBottom: 50}}>
-          <View
-            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <TouchableOpacity
-              onPress={handleChoosePhoto}
-              style={styles.avatarDiv}>
+        <View style={styles.mainContainer}>
+          <View style={styles.avatarContainer}>
+            <View style={styles.avatarDiv}>
               {photo ? (
                 <Image source={{uri: photo.uri}} style={styles.avatarImg} />
               ) : (
                 <Image source={imgAvatar} style={styles.avatarImg} />
               )}
-              <View style={styles.editImgDiv}>
+              <TouchableOpacity
+                style={styles.editImgDiv}
+                onPress={() => setAvatarModalVisible(true)}>
                 <Image source={editImg} />
-              </View>
-            </TouchableOpacity>
-            {/* <Button title="Save" onPress={handleUploadPhoto} /> */}
+              </TouchableOpacity>
+            </View>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
+          {avatarImgModal()}
+          <View style={styles.flexCenter}>
             <Text style={styles.text1}>Mislan</Text>
             <Image source={badgeMark} style={styles.badgeMark} />
           </View>
@@ -211,36 +204,16 @@ export const ProfileScreen = () => {
               <Image source={instagramImg} />
             </TouchableOpacity>
           </View>
-          <Text
-            style={{
-              fontSize: 24,
-              color: '#fff',
-              fontWeight: '700',
-              letterSpacing: 1.02,
-              marginVertical: 30,
-            }}>
-            Profile Settings
-          </Text>
+          <Text style={styles.title}>Profile Settings</Text>
           {/* General Settings */}
           <View>
             {/* separate title View */}
-            <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: '700',
-                  letterSpacing: 2,
-                  color: 'rgba(255, 255, 255, 0.66)',
-                  textTransform: 'uppercase',
-                  marginRight: 10,
-                }}>
-                General
-              </Text>
-              <View
-                style={{height: 0.5, backgroundColor: '#fff', flex: 1}}></View>
+            <View style={styles.flexBase}>
+              <Text style={styles.categoryTitle}>General</Text>
+              <View style={styles.restLine} />
             </View>
             {/* General Forms */}
-            <View style={{position: 'relative', width: '100%'}}>
+            <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>Name</Text>
               <TextInput
                 onFocus={() => setFocusedItem('nameInput')}
@@ -254,13 +227,13 @@ export const ProfileScreen = () => {
                 autoCapitalize="none"
                 onChangeText={val => handleChange('name', val)}
               />
-              {validations.name == 'has-empty' ? (
+              {validations.name === 'has-empty' ? (
                 <Text style={styles.errorText}>Name required*</Text>
               ) : (
-                <Text style={styles.errorText}></Text>
+                <Text style={styles.errorText} />
               )}
             </View>
-            <View style={{position: 'relative', width: '100%'}}>
+            <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>Email</Text>
               <TextInput
                 onFocus={() => setFocusedItem('emailInput')}
@@ -274,13 +247,13 @@ export const ProfileScreen = () => {
                 autoCapitalize="none"
                 onChangeText={val => handleChange('email', val)}
               />
-              {validations.name == 'has-empty' ? (
+              {validations.name === 'has-empty' ? (
                 <Text style={styles.errorText}>Email required*</Text>
               ) : (
-                <Text style={styles.errorText}></Text>
+                <Text style={styles.errorText} />
               )}
             </View>
-            <View style={{position: 'relative', width: '100%'}}>
+            <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>Mobile Number</Text>
               <TextInput
                 onFocus={() => setFocusedItem('mobileInput')}
@@ -294,13 +267,13 @@ export const ProfileScreen = () => {
                 autoCapitalize="none"
                 onChangeText={val => handleChange('mobileNumber', val)}
               />
-              {validations.name == 'has-empty' ? (
+              {validations.name === 'has-empty' ? (
                 <Text style={styles.errorText}>Name required*</Text>
               ) : (
-                <Text style={styles.errorText}></Text>
+                <Text style={styles.errorText} />
               )}
             </View>
-            <View style={{position: 'relative', width: '100%'}}>
+            <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>Website</Text>
               <TextInput
                 onFocus={() => setFocusedItem('websiteInput')}
@@ -314,13 +287,13 @@ export const ProfileScreen = () => {
                 autoCapitalize="none"
                 onChangeText={val => handleChange('website', val)}
               />
-              {validations.name == 'has-empty' ? (
+              {validations.name === 'has-empty' ? (
                 <Text style={styles.errorText}>Name required*</Text>
               ) : (
-                <Text style={styles.errorText}></Text>
+                <Text style={styles.errorText} />
               )}
             </View>
-            <View style={{position: 'relative', width: '100%'}}>
+            <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>BSC Wallet Address</Text>
               <TextInput
                 onFocus={() => setFocusedItem('walletInput')}
@@ -334,75 +307,39 @@ export const ProfileScreen = () => {
                 autoCapitalize="none"
                 onChangeText={val => handleChange('walletAddress', val)}
               />
-              {validations.name == 'has-empty' ? (
+              {validations.name === 'has-empty' ? (
                 <Text style={styles.errorText}>Name required*</Text>
               ) : (
-                <Text style={styles.errorText}></Text>
+                <Text style={styles.errorText} />
               )}
             </View>
-            <View style={{position: 'relative', width: '100%'}}>
+            <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>Background Image</Text>
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '100%',
-                }}>
+              <View style={styles.backImgUploadContiner}>
                 <TouchableOpacity
-                  onPress={handleChooseBackgroundPhoto}
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: 44,
-                    backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                    marginTop: 10,
-                    width: '100%',
-                    borderRadius: 4,
-                  }}>
+                  onPress={() => setBackModalVisible(true)}
+                  style={styles.backImgUpload}>
                   <Image source={uploadImg} />
-                  <Text
-                    style={{
-                      color: '#fff',
-                      textTransform: 'uppercase',
-                      marginLeft: 10,
-                      fontSize: 16,
-                      fontWeight: '700',
-                      letterSpacing: 1.15,
-                    }}>
-                    Upload
-                  </Text>
+                  <Text style={styles.backImgUploadTxt}>Upload</Text>
                 </TouchableOpacity>
+                {backgroundImgModal()}
                 {/* <Button title="Save" onPress={handleUploadPhoto} /> */}
               </View>
-              {validations.name == 'has-empty' ? (
+              {validations.name === 'has-empty' ? (
                 <Text style={styles.errorText}>Name required*</Text>
               ) : (
-                <Text style={styles.errorText}></Text>
+                <Text style={styles.errorText} />
               )}
             </View>
-            <View style={{position: 'relative', width: '100%'}}>
+            <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>Description</Text>
               <TextInput
                 onFocus={() => setFocusedItem('DescriptionInput')}
                 onBlur={() => setFocusedItem('')}
                 style={
                   focusedItem === 'DescriptionInput'
-                    ? {
-                        ...styles.inputOnFocus,
-                        height: 88,
-                        fontSize: 14,
-                        fontWeight: '400',
-                        padding: 15,
-                      }
-                    : {
-                        ...styles.input,
-                        height: 88,
-                        fontSize: 14,
-                        fontWeight: '400',
-                        padding: 15,
-                      }
+                    ? styles.multiInputOnFocus
+                    : styles.multiInput
                 }
                 value={values.description}
                 multiline
@@ -410,10 +347,10 @@ export const ProfileScreen = () => {
                 autoCapitalize="none"
                 onChangeText={val => handleChange('description', val)}
               />
-              {validations.name == 'has-empty' ? (
+              {validations.name === 'has-empty' ? (
                 <Text style={styles.errorText}>Name required*</Text>
               ) : (
-                <Text style={styles.errorText}></Text>
+                <Text style={styles.errorText} />
               )}
             </View>
             <TouchableOpacity
@@ -425,24 +362,13 @@ export const ProfileScreen = () => {
           {/* Social Media */}
           <View>
             {/* separate title View */}
-            <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: '700',
-                  letterSpacing: 2,
-                  color: 'rgba(255, 255, 255, 0.66)',
-                  textTransform: 'uppercase',
-                  marginRight: 10,
-                }}>
-                Social Media
-              </Text>
-              <View
-                style={{height: 0.5, backgroundColor: '#fff', flex: 1}}></View>
+            <View style={styles.flexBase}>
+              <Text style={styles.categoryTitle}>Social Media</Text>
+              <View style={styles.restLine} />
             </View>
             {/* General Forms */}
-            <View style={{position: 'relative', width: '100%'}}>
-              <Text style={styles.subTitle}>Name</Text>
+            <View style={styles.inputContainer}>
+              <Text style={styles.subTitle}>Facebook</Text>
               <TextInput
                 onFocus={() => setFocusedItem('FacebookInput')}
                 onBlur={() => setFocusedItem('')}
@@ -455,13 +381,13 @@ export const ProfileScreen = () => {
                 autoCapitalize="none"
                 onChangeText={val => handleChange('facebook', val)}
               />
-              {validations.name == 'has-empty' ? (
+              {validations.name === 'has-empty' ? (
                 <Text style={styles.errorText}>Name required*</Text>
               ) : (
-                <Text style={styles.errorText}></Text>
+                <Text style={styles.errorText} />
               )}
             </View>
-            <View style={{position: 'relative', width: '100%'}}>
+            <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>Instagram</Text>
               <TextInput
                 onFocus={() => setFocusedItem('InstagramInput')}
@@ -475,13 +401,13 @@ export const ProfileScreen = () => {
                 autoCapitalize="none"
                 onChangeText={val => handleChange('instagram', val)}
               />
-              {validations.name == 'has-empty' ? (
+              {validations.name === 'has-empty' ? (
                 <Text style={styles.errorText}>Email required*</Text>
               ) : (
-                <Text style={styles.errorText}></Text>
+                <Text style={styles.errorText} />
               )}
             </View>
-            <View style={{position: 'relative', width: '100%'}}>
+            <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>Twitter</Text>
               <TextInput
                 onFocus={() => setFocusedItem('TwitterInput')}
@@ -495,13 +421,13 @@ export const ProfileScreen = () => {
                 autoCapitalize="none"
                 onChangeText={val => handleChange('twitter', val)}
               />
-              {validations.name == 'has-empty' ? (
+              {validations.name === 'has-empty' ? (
                 <Text style={styles.errorText}>Name required*</Text>
               ) : (
-                <Text style={styles.errorText}></Text>
+                <Text style={styles.errorText} />
               )}
             </View>
-            <View style={{position: 'relative', width: '100%'}}>
+            <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>Medium</Text>
               <TextInput
                 onFocus={() => setFocusedItem('MediumInput')}
@@ -515,10 +441,10 @@ export const ProfileScreen = () => {
                 autoCapitalize="none"
                 onChangeText={val => handleChange('medium', val)}
               />
-              {validations.name == 'has-empty' ? (
+              {validations.name === 'has-empty' ? (
                 <Text style={styles.errorText}>Name required*</Text>
               ) : (
-                <Text style={styles.errorText}></Text>
+                <Text style={styles.errorText} />
               )}
             </View>
             <TouchableOpacity
@@ -530,23 +456,12 @@ export const ProfileScreen = () => {
           {/* Change Password */}
           <View>
             {/* separate title View */}
-            <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: '700',
-                  letterSpacing: 2,
-                  color: 'rgba(255, 255, 255, 0.66)',
-                  textTransform: 'uppercase',
-                  marginRight: 10,
-                }}>
-                Change Password
-              </Text>
-              <View
-                style={{height: 0.5, backgroundColor: '#fff', flex: 1}}></View>
+            <View style={styles.flexBase}>
+              <Text style={styles.categoryTitle}>Change Password</Text>
+              <View style={styles.restLine} />
             </View>
             {/* Change Password Forms */}
-            <View style={{position: 'relative', width: '100%'}}>
+            <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>Old Password</Text>
               <TextInput
                 onFocus={() => setFocusedItem('oldPwdInput')}
@@ -560,13 +475,13 @@ export const ProfileScreen = () => {
                 autoCapitalize="none"
                 onChangeText={val => handleChange('oldPassword', val)}
               />
-              {validations.name == 'has-empty' ? (
+              {validations.name === 'has-empty' ? (
                 <Text style={styles.errorText}>Name required*</Text>
               ) : (
-                <Text style={styles.errorText}></Text>
+                <Text style={styles.errorText} />
               )}
             </View>
-            <View style={{position: 'relative', width: '100%'}}>
+            <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>New Password</Text>
               <TextInput
                 onFocus={() => setFocusedItem('newPwdInput')}
@@ -580,13 +495,13 @@ export const ProfileScreen = () => {
                 autoCapitalize="none"
                 onChangeText={val => handleChange('newPassword', val)}
               />
-              {validations.name == 'has-empty' ? (
+              {validations.name === 'has-empty' ? (
                 <Text style={styles.errorText}>Email required*</Text>
               ) : (
-                <Text style={styles.errorText}></Text>
+                <Text style={styles.errorText} />
               )}
             </View>
-            <View style={{position: 'relative', width: '100%'}}>
+            <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>Confirm Password</Text>
               <TextInput
                 onFocus={() => setFocusedItem('confirmPwdInput')}
@@ -600,10 +515,10 @@ export const ProfileScreen = () => {
                 autoCapitalize="none"
                 onChangeText={val => handleChange('confirmPassword', val)}
               />
-              {validations.name == 'has-empty' ? (
+              {validations.name === 'has-empty' ? (
                 <Text style={styles.errorText}>Name required*</Text>
               ) : (
-                <Text style={styles.errorText}></Text>
+                <Text style={styles.errorText} />
               )}
             </View>
             <TouchableOpacity
@@ -623,6 +538,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#14142f',
   },
+  mainBackgroundImg: {
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    height: 224,
+  },
+  mainContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 50,
+  },
+  avatarContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   avatarDiv: {
     position: 'relative',
     width: 140,
@@ -641,6 +569,11 @@ const styles = StyleSheet.create({
     borderColor: '#ee4f77',
     borderWidth: 3,
   },
+  flexCenter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   badgeMark: {
     backgroundColor: '#2f80ed',
     borderRadius: 8,
@@ -648,6 +581,60 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 16,
     height: 16,
+  },
+  backImgUploadContiner: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  backImgUpload: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 44,
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    marginTop: 10,
+    width: '100%',
+    borderRadius: 4,
+  },
+  backImgUploadTxt: {
+    color: '#fff',
+    textTransform: 'uppercase',
+    marginLeft: 10,
+    fontSize: 16,
+    fontWeight: '700',
+    letterSpacing: 1.15,
+  },
+  modalContainer: {
+    backgroundColor: '#14142f',
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: '#887bff',
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingRight: 10,
+    paddingLeft: 10,
+  },
+  modalTitleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  modalTitle: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: '600',
+  },
+  modalClose: {
+    color: '#fff',
+    width: 25,
+    margin: 0,
+    textAlign: 'center',
+    fontSize: 20,
+    borderRadius: 8,
+    borderColor: '#fff',
+    borderWidth: 1,
   },
   clipboardDiv: {
     position: 'relative',
@@ -667,6 +654,34 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 10,
     top: 20,
+  },
+  title: {
+    fontSize: 24,
+    color: '#fff',
+    fontWeight: '700',
+    letterSpacing: 1.02,
+    marginVertical: 30,
+  },
+  categoryTitle: {
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 2,
+    color: 'rgba(255, 255, 255, 0.66)',
+    textTransform: 'uppercase',
+    marginRight: 10,
+  },
+  restLine: {
+    height: 0.5,
+    backgroundColor: '#fff',
+    flex: 1,
+  },
+  flexBase: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+  },
+  inputContainer: {
+    position: 'relative',
+    width: '100%',
   },
   input: {
     height: 44,
@@ -699,6 +714,38 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     fontSize: 18,
     fontWeight: '500',
+  },
+  multiInput: {
+    height: 88,
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    marginTop: 10,
+    padding: 15,
+    paddingRight: 50,
+    paddingLeft: 20,
+    color: 'white',
+    borderRadius: 4,
+    fontSize: 14,
+    fontWeight: '400',
+  },
+  multiInputOnFocus: {
+    shadowColor: '#6a4dfd',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.8,
+    shadowRadius: 5,
+    borderColor: '#6a4dfd',
+    marginTop: 10,
+    width: '100%',
+    height: 88,
+    borderWidth: 1,
+    padding: 15,
+    paddingLeft: 20,
+    color: 'white',
+    borderRadius: 4,
+    fontSize: 14,
+    fontWeight: '400',
   },
   errorText: {
     position: 'absolute',
