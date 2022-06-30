@@ -362,7 +362,10 @@ export const ProfileScreen = () => {
               <TouchableOpacity
                 style={styles.modalAvatarItem}
                 key={index}
-                onPress={() => setSelectedAvatar(icon.src)}>
+                onPress={() => {
+                  setSelectedAvatar(icon.src);
+                  setAvatarModalVisible(false);
+                }}>
                 <Image source={imageUrl(icon.src)} />
               </TouchableOpacity>
             ))}
@@ -387,6 +390,7 @@ export const ProfileScreen = () => {
                 onPress={() => {
                   setGeneralValues({...generalValues, backgroundImg: icon.src});
                   setSelectedBackground(icon.src);
+                  setBackModalVisible(false);
                 }}>
                 <Image source={imageUrl(icon.src)} />
               </TouchableOpacity>
