@@ -51,7 +51,7 @@ export const ProfileScreen = () => {
   const [photo, setPhoto] = useState(null);
   const [backgroundPhoto, setBackgroundPhoto] = useState(null);
   const [focusedItem, setFocusedItem] = useState('');
-  const [values, setValues] = useState({
+  const [generalValues, setGeneralValues] = useState({
     name: '',
     email: '',
     mobileNumber: '',
@@ -59,15 +59,19 @@ export const ProfileScreen = () => {
     walletAddress: '',
     backgroundImg: '',
     description: '',
+  });
+  const [socialValues, setSocialValues] = useState({
     facebook: '',
     instagram: '',
     twitter: '',
     medium: '',
+  });
+  const [pwdValues, setPwdValues] = useState({
     oldPassword: '',
     newPassword: '',
     confirmPassword: '',
   });
-  const [validations, setValidations] = useState({
+  const [generalValidations, setGeneralValidations] = useState({
     name: '',
     email: '',
     mobileNumber: '',
@@ -75,18 +79,30 @@ export const ProfileScreen = () => {
     walletAddress: '',
     backgroundImg: '',
     description: '',
+  });
+  const [socialValidations, setSocialValidations] = useState({
     facebook: '',
     instagram: '',
     twitter: '',
     medium: '',
+  });
+  const [pwdValidations, setPwdValidations] = useState({
     oldPassword: '',
     newPassword: '',
     confirmPassword: '',
   });
 
-  const handleChange = (prop, value) => {
-    setValidations(prevState => ({...prevState, [prop]: ''}));
-    setValues({...values, [prop]: value});
+  const handleGeneralChange = (prop, value) => {
+    setGeneralValidations(prevState => ({...prevState, [prop]: ''}));
+    setGeneralValues({...generalValues, [prop]: value});
+  };
+  const handleSocialChange = (prop, value) => {
+    setSocialValidations(prevState => ({...prevState, [prop]: ''}));
+    setSocialValues({...socialValues, [prop]: value});
+  };
+  const handlePwdChange = (prop, value) => {
+    setPwdValidations(prevState => ({...prevState, [prop]: ''}));
+    setPwdValues({...pwdValues, [prop]: value});
   };
 
   const copyToClipboard = key => {
@@ -223,11 +239,11 @@ export const ProfileScreen = () => {
                     ? styles.inputOnFocus
                     : styles.input
                 }
-                value={values.name}
+                value={generalValues.name}
                 autoCapitalize="none"
-                onChangeText={val => handleChange('name', val)}
+                onChangeText={val => handleGeneralChange('name', val)}
               />
-              {validations.name === 'has-empty' ? (
+              {generalValidations.name === 'has-empty' ? (
                 <Text style={styles.errorText}>Name required*</Text>
               ) : (
                 <Text style={styles.errorText} />
@@ -243,11 +259,11 @@ export const ProfileScreen = () => {
                     ? styles.inputOnFocus
                     : styles.input
                 }
-                value={values.email}
+                value={generalValues.email}
                 autoCapitalize="none"
-                onChangeText={val => handleChange('email', val)}
+                onChangeText={val => handleGeneralChange('email', val)}
               />
-              {validations.name === 'has-empty' ? (
+              {generalValidations.email === 'has-empty' ? (
                 <Text style={styles.errorText}>Email required*</Text>
               ) : (
                 <Text style={styles.errorText} />
@@ -263,12 +279,12 @@ export const ProfileScreen = () => {
                     ? styles.inputOnFocus
                     : styles.input
                 }
-                value={values.mobileNumber}
+                value={generalValues.mobileNumber}
                 autoCapitalize="none"
-                onChangeText={val => handleChange('mobileNumber', val)}
+                onChangeText={val => handleGeneralChange('mobileNumber', val)}
               />
-              {validations.name === 'has-empty' ? (
-                <Text style={styles.errorText}>Name required*</Text>
+              {generalValidations.mobileNumber === 'has-empty' ? (
+                <Text style={styles.errorText}>Mobile Number required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -283,12 +299,12 @@ export const ProfileScreen = () => {
                     ? styles.inputOnFocus
                     : styles.input
                 }
-                value={values.website}
+                value={generalValues.website}
                 autoCapitalize="none"
-                onChangeText={val => handleChange('website', val)}
+                onChangeText={val => handleGeneralChange('website', val)}
               />
-              {validations.name === 'has-empty' ? (
-                <Text style={styles.errorText}>Name required*</Text>
+              {generalValidations.website === 'has-empty' ? (
+                <Text style={styles.errorText}>Website required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -303,12 +319,12 @@ export const ProfileScreen = () => {
                     ? styles.inputOnFocus
                     : styles.input
                 }
-                value={values.walletAddress}
+                value={generalValues.walletAddress}
                 autoCapitalize="none"
-                onChangeText={val => handleChange('walletAddress', val)}
+                onChangeText={val => handleGeneralChange('walletAddress', val)}
               />
-              {validations.name === 'has-empty' ? (
-                <Text style={styles.errorText}>Name required*</Text>
+              {generalValidations.walletAddress === 'has-empty' ? (
+                <Text style={styles.errorText}>Wallet Address required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -325,8 +341,8 @@ export const ProfileScreen = () => {
                 {backgroundImgModal()}
                 {/* <Button title="Save" onPress={handleUploadPhoto} /> */}
               </View>
-              {validations.name === 'has-empty' ? (
-                <Text style={styles.errorText}>Name required*</Text>
+              {generalValidations.backgroundImg === 'has-empty' ? (
+                <Text style={styles.errorText}>Background Image required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -341,14 +357,14 @@ export const ProfileScreen = () => {
                     ? styles.multiInputOnFocus
                     : styles.multiInput
                 }
-                value={values.description}
+                value={generalValues.description}
                 multiline
                 numberOfLines={4}
                 autoCapitalize="none"
-                onChangeText={val => handleChange('description', val)}
+                onChangeText={val => handleGeneralChange('description', val)}
               />
-              {validations.name === 'has-empty' ? (
-                <Text style={styles.errorText}>Name required*</Text>
+              {generalValidations.description === 'has-empty' ? (
+                <Text style={styles.errorText}>Description required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -377,12 +393,12 @@ export const ProfileScreen = () => {
                     ? styles.inputOnFocus
                     : styles.input
                 }
-                value={values.facebook}
+                value={socialValues.facebook}
                 autoCapitalize="none"
-                onChangeText={val => handleChange('facebook', val)}
+                onChangeText={val => handleSocialChange('facebook', val)}
               />
-              {validations.name === 'has-empty' ? (
-                <Text style={styles.errorText}>Name required*</Text>
+              {socialValidations.facebook === 'has-empty' ? (
+                <Text style={styles.errorText}>Facebook required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -397,12 +413,12 @@ export const ProfileScreen = () => {
                     ? styles.inputOnFocus
                     : styles.input
                 }
-                value={values.instagram}
+                value={socialValues.instagram}
                 autoCapitalize="none"
-                onChangeText={val => handleChange('instagram', val)}
+                onChangeText={val => handleSocialChange('instagram', val)}
               />
-              {validations.name === 'has-empty' ? (
-                <Text style={styles.errorText}>Email required*</Text>
+              {socialValidations.instagram === 'has-empty' ? (
+                <Text style={styles.errorText}>Instagram required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -417,12 +433,12 @@ export const ProfileScreen = () => {
                     ? styles.inputOnFocus
                     : styles.input
                 }
-                value={values.twitter}
+                value={socialValues.twitter}
                 autoCapitalize="none"
-                onChangeText={val => handleChange('twitter', val)}
+                onChangeText={val => handleSocialChange('twitter', val)}
               />
-              {validations.name === 'has-empty' ? (
-                <Text style={styles.errorText}>Name required*</Text>
+              {socialValidations.twitter === 'has-empty' ? (
+                <Text style={styles.errorText}>Twitter required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -437,12 +453,12 @@ export const ProfileScreen = () => {
                     ? styles.inputOnFocus
                     : styles.input
                 }
-                value={values.medium}
+                value={socialValues.medium}
                 autoCapitalize="none"
-                onChangeText={val => handleChange('medium', val)}
+                onChangeText={val => handleSocialChange('medium', val)}
               />
-              {validations.name === 'has-empty' ? (
-                <Text style={styles.errorText}>Name required*</Text>
+              {socialValidations.medium === 'has-empty' ? (
+                <Text style={styles.errorText}>Medium required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -471,12 +487,12 @@ export const ProfileScreen = () => {
                     ? styles.inputOnFocus
                     : styles.input
                 }
-                value={values.oldPassword}
+                value={pwdValues.oldPassword}
                 autoCapitalize="none"
-                onChangeText={val => handleChange('oldPassword', val)}
+                onChangeText={val => handlePwdChange('oldPassword', val)}
               />
-              {validations.name === 'has-empty' ? (
-                <Text style={styles.errorText}>Name required*</Text>
+              {pwdValidations.oldPassword === 'has-empty' ? (
+                <Text style={styles.errorText}>Old Password required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -491,12 +507,12 @@ export const ProfileScreen = () => {
                     ? styles.inputOnFocus
                     : styles.input
                 }
-                value={values.newPassword}
+                value={pwdValues.newPassword}
                 autoCapitalize="none"
-                onChangeText={val => handleChange('newPassword', val)}
+                onChangeText={val => handlePwdChange('newPassword', val)}
               />
-              {validations.name === 'has-empty' ? (
-                <Text style={styles.errorText}>Email required*</Text>
+              {pwdValidations.newPassword === 'has-empty' ? (
+                <Text style={styles.errorText}>New Password required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -511,12 +527,12 @@ export const ProfileScreen = () => {
                     ? styles.inputOnFocus
                     : styles.input
                 }
-                value={values.confirmPassword}
+                value={pwdValues.confirmPassword}
                 autoCapitalize="none"
-                onChangeText={val => handleChange('confirmPassword', val)}
+                onChangeText={val => handlePwdChange('confirmPassword', val)}
               />
-              {validations.name === 'has-empty' ? (
-                <Text style={styles.errorText}>Name required*</Text>
+              {pwdValidations.confirmPassword === 'has-empty' ? (
+                <Text style={styles.errorText}>Confirm Password required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
