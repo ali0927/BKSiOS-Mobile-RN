@@ -8,6 +8,7 @@ import {
   Platform,
   TouchableOpacity,
   ScrollView,
+  Linking,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -201,22 +202,42 @@ export const ProfileScreen = () => {
           </View>
           <Text style={styles.subTitle}>Links</Text>
           <View style={styles.socialDiv}>
-            <TouchableOpacity style={styles.socialImg}>
+            <TouchableOpacity
+              style={styles.socialImg}
+              onPress={() => Linking.openURL('https://t.me/BKSBackstage')}>
               <Image source={globalImg} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.socialImg}>
+            <TouchableOpacity
+              style={styles.socialImg}
+              onPress={() => Linking.openURL('https://t.me/BKSBackstage')}>
               <Image source={telegramImg} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.socialImg}>
+            <TouchableOpacity
+              style={styles.socialImg}
+              onPress={() =>
+                Linking.openURL('https://medium.com/BackstageBks')
+              }>
               <Image source={mediumImg} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.socialImg}>
+            <TouchableOpacity
+              style={styles.socialImg}
+              onPress={() =>
+                Linking.openURL('https://twitter.com/BackstageBks')
+              }>
               <Image source={twitterImg} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.socialImg}>
+            <TouchableOpacity
+              style={styles.socialImg}
+              onPress={() =>
+                Linking.openURL('https://www.facebook.com/BKSBackstage')
+              }>
               <Image source={facebookImg} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.socialImg}>
+            <TouchableOpacity
+              style={styles.socialImg}
+              onPress={() =>
+                Linking.openURL('https://www.instagram.com/bksbackstage/?hl=en')
+              }>
               <Image source={instagramImg} />
             </TouchableOpacity>
           </View>
