@@ -34,12 +34,10 @@ const SERVER_URL = 'http://localhost:3000';
 export const ProfileScreen = () => {
   const [backModalVisible, setBackModalVisible] = useState(false);
   const [avatarModalVisible, setAvatarModalVisible] = useState(false);
-  const [photo, setPhoto] = useState(null);
   const [userAvatars, setUserAvatars] = useState([]);
   const [selectedAvatar, setSelectedAvatar] = useState('');
   const [userBackgrounds, setUserBackgrounds] = useState([]);
   const [selectedBackground, setSelectedBackground] = useState('');
-  const [backgroundPhoto, setBackgroundPhoto] = useState(null);
   const [focusedItem, setFocusedItem] = useState('');
   const [generalValues, setGeneralValues] = useState({
     name: '',
@@ -237,7 +235,7 @@ export const ProfileScreen = () => {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </Text>
-          <Text style={styles.subTitle}>Wallet</Text>
+          <Text style={styles.walletTitle}>Wallet</Text>
           <View style={styles.clipboardDiv}>
             <TextInput
               style={styles.input}
@@ -250,7 +248,7 @@ export const ProfileScreen = () => {
               <Image source={copyImg} />
             </TouchableOpacity>
           </View>
-          <Text style={styles.subTitle}>Links</Text>
+          <Text style={styles.walletTitle}>Links</Text>
           <View style={styles.socialDiv}>
             <TouchableOpacity
               style={styles.socialImg}
@@ -653,8 +651,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: 70,
-    borderColor: '#ee4f77',
-    borderWidth: 3,
+    borderColor: '#ededed',
+    borderWidth: 1,
   },
   flexCenter: {
     flexDirection: 'row',
@@ -680,12 +678,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 44,
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.33)',
     marginTop: 10,
     width: '100%',
     borderRadius: 4,
   },
   backImgUploadTxt: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     textTransform: 'uppercase',
     marginLeft: 10,
@@ -704,6 +704,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   modalTitle: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 24,
     fontWeight: '700',
@@ -728,7 +729,7 @@ const styles = StyleSheet.create({
   },
   editImgDiv: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 5,
     right: 0,
     backgroundColor: '#6a4dfd',
     width: 36,
@@ -743,6 +744,7 @@ const styles = StyleSheet.create({
     top: 20,
   },
   title: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
     color: '#fff',
     fontWeight: '700',
@@ -750,6 +752,7 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   categoryTitle: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 2,
@@ -771,18 +774,21 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   input: {
+    fontFamily: 'SpaceGrotesk-Medium',
     height: 44,
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.33)',
     marginTop: 10,
     padding: 8,
     paddingRight: 50,
     paddingLeft: 20,
-    color: 'white',
+    color: '#fff',
     borderRadius: 4,
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '400',
   },
   inputOnFocus: {
+    fontFamily: 'SpaceGrotesk-Medium',
     shadowColor: '#6a4dfd',
     shadowOffset: {
       width: 0,
@@ -797,14 +803,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 8,
     paddingLeft: 20,
-    color: 'white',
+    color: '#fff',
     borderRadius: 4,
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '400',
   },
   multiInput: {
+    fontFamily: 'SpaceGrotesk-Medium',
     height: 88,
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.33)',
     marginTop: 10,
     padding: 15,
     paddingRight: 50,
@@ -815,6 +823,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   multiInputOnFocus: {
+    fontFamily: 'SpaceGrotesk-Medium',
     shadowColor: '#6a4dfd',
     shadowOffset: {
       width: 0,
@@ -835,6 +844,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   errorText: {
+    fontFamily: 'SpaceGrotesk-Medium',
     position: 'absolute',
     bottom: -20,
     left: 0,
@@ -843,18 +853,14 @@ const styles = StyleSheet.create({
     color: '#b00020',
   },
   text1: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 24,
     fontWeight: '700',
     marginRight: 10,
   },
-  text2: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 30,
-  },
   text31: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 16,
     fontWeight: '700',
@@ -863,6 +869,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   text3: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: 'rgba(255, 255, 255, 0.33)',
     fontSize: 16,
     fontWeight: '700',
@@ -871,21 +878,36 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   idText: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#6a4dfd',
     fontSize: 16,
+    fontWeight: '400',
     textAlign: 'center',
     marginVertical: 10,
   },
   description: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 16,
+    fontWeight: '400',
     color: 'rgba(255, 255, 255, 0.66)',
     marginTop: 10,
-    letterSpacing: 1.2,
+    letterSpacing: 0.5,
+  },
+  walletTitle: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    fontSize: 12,
+    color: 'rgba(255, 255, 255, 0.66)',
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginTop: 30,
   },
   subTitle: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 14,
     color: '#fff',
     fontWeight: '400',
+    letterSpacing: 1.05,
     marginTop: 30,
   },
   button: {
@@ -911,6 +933,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   socialImg: {
+    width: 44,
+    height: 44,
     backgroundColor: 'rgba(255, 255, 255, 0.06)',
     padding: 10,
     borderRadius: 4,
