@@ -222,7 +222,9 @@ export const EventDetailsScreen = ({route}) => {
                 })}
             </View>
           </View>
-          <Modal isVisible={isAddonModalVisible}>
+          <Modal
+            isVisible={isAddonModalVisible}
+            onBackdropPress={() => setAddonModalVisible(false)}>
             <View style={styles.modalContainer}>
               <View style={styles.modalTitleContainer}>
                 <View>
@@ -307,7 +309,9 @@ export const EventDetailsScreen = ({route}) => {
             </View>
           )}
 
-          <Modal isVisible={isModalVisible}>
+          <Modal
+            isVisible={isModalVisible}
+            onBackdropPress={() => setModalVisible(false)}>
             <View style={styles.modalContainer}>
               <View style={styles.modalTitleContainer}>
                 <Text style={styles.modalTitle}>Proceed to Pay</Text>
