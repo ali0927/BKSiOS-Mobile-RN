@@ -5,12 +5,10 @@ import {
   StyleSheet,
   TextInput,
   Image,
-  Platform,
   TouchableOpacity,
   ScrollView,
   Linking,
 } from 'react-native';
-import {launchImageLibrary} from 'react-native-image-picker';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import Toast from 'react-native-toast-message';

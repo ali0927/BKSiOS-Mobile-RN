@@ -37,19 +37,19 @@ const FilterModal = ({toggleModal}) => {
     {id: 6, title: 'follows'},
   ];
   const handleChecked = item => {
-    if (item == 0) {
+    if (item === 0) {
       setChecked({...checked, listings: !checked.listings});
-    } else if (item == 1) {
+    } else if (item === 1) {
       setChecked({...checked, purchases: !checked.purchases});
-    } else if (item == 2) {
+    } else if (item === 2) {
       setChecked({...checked, sales: !checked.sales});
-    } else if (item == 3) {
+    } else if (item === 3) {
       setChecked({...checked, transfers: !checked.transfers});
-    } else if (item == 4) {
+    } else if (item === 4) {
       setChecked({...checked, bids: !checked.bids});
-    } else if (item == 5) {
+    } else if (item === 5) {
       setChecked({...checked, likes: !checked.likes});
-    } else if (item == 6) {
+    } else if (item === 6) {
       setChecked({...checked, follows: !checked.follows});
     }
   };

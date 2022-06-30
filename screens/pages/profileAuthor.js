@@ -1,15 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   Image,
-  Platform,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {launchImageLibrary} from 'react-native-image-picker';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from 'react-native-toast-message';
 import badgeMark from '../../assets/img/icons/verified.png';
@@ -23,48 +21,8 @@ import copyImg from '../../assets/img/icons/copy.png';
 import CollectionCarousel from '../components/homePage/collectionCarousel';
 import config from '../helper/config';
 
-const createFormData = (photo, body = {}) => {
-  const data = new FormData();
-
-  data.append('photo', {
-    name: photo.fileName,
-    type: photo.type,
-    uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
-  });
-
-  Object.keys(body).forEach(key => {
-    data.append(key, body[key]);
-  });
-
-  return data;
-};
-
 export const ProfileAuthorScreen = ({route}) => {
-  const [collectionData, setCollectionData] = useState();
-  const [photo, setPhoto] = useState(null);
-
-  const handleChoosePhoto = async () => {
-    const result = await launchImageLibrary({mediaType: 'photo'}, response => {
-      console.log('ResponseImage', response);
-      if (response) {
-        setPhoto(response.assets[0]);
-      }
-    });
-  };
-
-  const handleUploadPhoto = () => {
-    fetch(`${config.API_BASE_URL}/api/upload`, {
-      method: 'POST',
-      body: createFormData(photo, {userId: '123'}),
-    })
-      .then(response => response.json())
-      .then(response => {
-        console.log('response', response);
-      })
-      .catch(error => {
-        console.log('Error', error);
-      });
-  };
+  const collectionData = route.params.item;
 
   const copyToClipboard = key => {
     Toast.show({
@@ -73,29 +31,34 @@ export const ProfileAuthorScreen = ({route}) => {
       text2: 'You can paste these characters...  👋',
     });
     if (key === 'wallet') {
-      Clipboard.setString('XAVUW3sw3ZunitokcLtemEfX3tGuX2plateWdh');
+      Clipboard.setString(collectionData.creator.wallet_address);
     } else {
       Clipboard.setString('https://bksbackstage.io');
     }
   };
 
-  useEffect(() => {
-    console.log('PPPP', route.params.item);
-    setCollectionData(route.params.item);
-  });
   return (
     <View style={styles.container}>
       <ScrollView>
-        <View
-          style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.15)',
-            height: 224,
-          }}
-        />
+        <View style={styles.backgroundImgContainer}>
+          <Image
+            source={{
+              uri:
+                config.API_BASE_URL +
+                '/api/upload/get_file?path=' +
+                collectionData.picture_large,
+            }}
+            resizeMode="stretch"
+            style={styles.backgroundImg}
+          />
+        </View>
         {collectionData && (
-          <View style={{paddingHorizontal: 20, paddingBottom: 50}}>
-            <View
-              style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <View
+            style={{
+              paddingHorizontal: 20,
+              paddingBottom: 50,
+            }}>
+            <View style={styles.avatarContainer}>
               <View style={styles.avatarDiv}>
                 <Image
                   source={{
@@ -104,27 +67,12 @@ export const ProfileAuthorScreen = ({route}) => {
                       '/api/upload/get_file?path=' +
                       collectionData.picture_small,
                   }}
+                  resizeMode="contain"
                   style={styles.avatarImg}
                 />
               </View>
-
-              {/* <TouchableOpacity
-              onPress={handleChoosePhoto}
-              style={styles.avatarDiv}>
-              {photo ? (
-                <Image source={{uri: photo.uri}} style={styles.avatarImg} />
-              ) : (
-                <Image source={imgAvatar} style={styles.avatarImg} />
-              )}
-            </TouchableOpacity> */}
-              {/* <Button title="Save" onPress={handleUploadPhoto} /> */}
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+            <View style={styles.flexRow}>
               <Text style={styles.text1}>{collectionData.name}</Text>
               <Image source={badgeMark} style={styles.badgeMark} />
             </View>
@@ -138,7 +86,7 @@ export const ProfileAuthorScreen = ({route}) => {
               <TextInput
                 style={styles.input}
                 editable={false}
-                value="XAVUW3sw3ZunitokcLtemEfX3tGuX2plateWdh"
+                value={collectionData?.creator.wallet_address}
               />
               <TouchableOpacity
                 style={styles.copyImg}
@@ -182,7 +130,7 @@ export const ProfileAuthorScreen = ({route}) => {
                 <Text style={styles.text3}>Follow</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.divider}></View>
+            <View style={styles.divider} />
             <Text style={styles.subtitle}>Hot Collections</Text>
             <CollectionCarousel />
           </View>
@@ -197,6 +145,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#14142f',
   },
+  flexRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  backgroundImgContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    height: 224,
+  },
+  backgroundImg: {
+    width: '100%',
+    height: '100%',
+  },
+  avatarContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   avatarDiv: {
     position: 'relative',
     width: 140,
@@ -208,8 +174,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: 70,
-    borderColor: '#ee4f77',
-    borderWidth: 3,
+    borderColor: '#ededed',
+    borderWidth: 1,
+    backgroundColor: 'pink',
   },
   badgeMark: {
     backgroundColor: '#2f80ed',
