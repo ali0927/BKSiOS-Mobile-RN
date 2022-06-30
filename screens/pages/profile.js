@@ -27,7 +27,11 @@ import copyImg from '../../assets/img/icons/copy.png';
 import editImg from '../../assets/img/icons/edit.png';
 import uploadImg from '../../assets/img/icons/upload.png';
 import Modal from 'react-native-modal';
-import {getAllUserAvatars, getAllUserBackgrounds} from '../helper/user';
+import {
+  changeAvatar,
+  getAllUserAvatars,
+  getAllUserBackgrounds,
+} from '../helper/user';
 import {validateEmail} from '../utils';
 
 const SERVER_URL = 'http://localhost:3000';
@@ -37,6 +41,7 @@ export const ProfileScreen = () => {
   const [avatarModalVisible, setAvatarModalVisible] = useState(false);
   const [userAvatars, setUserAvatars] = useState([]);
   const [selectedAvatar, setSelectedAvatar] = useState('');
+  const [avatarChanged, setAvatarChanged] = useState(false);
   const [userBackgrounds, setUserBackgrounds] = useState([]);
   const [selectedBackground, setSelectedBackground] = useState('');
   const [focusedItem, setFocusedItem] = useState('');
@@ -350,6 +355,31 @@ export const ProfileScreen = () => {
       return require('../../assets/img/bg/bg-small6.png');
     }
   };
+
+  const saveAvatar = () => {
+    const fd = {path: selectedAvatar};
+    changeAvatar(fd)
+      .then(res => {
+        if (res.success) {
+          setAvatarChanged(false);
+          Toast.show({
+            type: 'success',
+            text1: 'Avatar has changed!',
+          });
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'Failed one Avatar uploading...!',
+          });
+        }
+      })
+      .catch(error => {
+        Toast.show({
+          type: 'error',
+          text1: 'Failed two Avatar uploading...!',
+        });
+      });
+  };
   const avatarImgModal = () => {
     return (
       <Modal
@@ -364,6 +394,7 @@ export const ProfileScreen = () => {
                 key={index}
                 onPress={() => {
                   setSelectedAvatar(icon.src);
+                  setAvatarChanged(true);
                   setAvatarModalVisible(false);
                 }}>
                 <Image source={imageUrl(icon.src)} />
@@ -445,6 +476,13 @@ export const ProfileScreen = () => {
               </TouchableOpacity>
             </View>
           </View>
+          {avatarChanged && (
+            <TouchableOpacity
+              style={styles.button1}
+              onPress={() => saveAvatar()}>
+              <Text style={styles.text31}>Save</Text>
+            </TouchableOpacity>
+          )}
           {avatarImgModal()}
           <View style={styles.flexCenter}>
             <Text style={styles.text1}>Mislan</Text>
