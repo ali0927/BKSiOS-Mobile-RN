@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -27,29 +27,18 @@ import copyImg from '../../assets/img/icons/copy.png';
 import editImg from '../../assets/img/icons/edit.png';
 import uploadImg from '../../assets/img/icons/upload.png';
 import Modal from 'react-native-modal';
+import {getAllUserAvatars, getAllUserBackgrounds} from '../helper/user';
 
 const SERVER_URL = 'http://localhost:3000';
-
-const createFormData = (photo, body = {}) => {
-  const data = new FormData();
-
-  data.append('photo', {
-    name: photo.fileName,
-    type: photo.type,
-    uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
-  });
-
-  Object.keys(body).forEach(key => {
-    data.append(key, body[key]);
-  });
-
-  return data;
-};
 
 export const ProfileScreen = () => {
   const [backModalVisible, setBackModalVisible] = useState(false);
   const [avatarModalVisible, setAvatarModalVisible] = useState(false);
   const [photo, setPhoto] = useState(null);
+  const [userAvatars, setUserAvatars] = useState([]);
+  const [selectedAvatar, setSelectedAvatar] = useState('');
+  const [userBackgrounds, setUserBackgrounds] = useState([]);
+  const [selectedBackground, setSelectedBackground] = useState('');
   const [backgroundPhoto, setBackgroundPhoto] = useState(null);
   const [focusedItem, setFocusedItem] = useState('');
   const [generalValues, setGeneralValues] = useState({
@@ -119,15 +108,53 @@ export const ProfileScreen = () => {
     }
   };
 
+  const imageUrl = src => {
+    if (src === '/img/avatars/avatar.jpg') {
+      return require('../../assets/img/avatars/avatar.jpg');
+    } else if (src === '/img/avatars/avatar2.jpg') {
+      return require('../../assets/img/avatars/avatar2.jpg');
+    } else if (src === '/img/avatars/avatar3.jpg') {
+      return require('../../assets/img/avatars/avatar3.jpg');
+    } else if (src === '/img/avatars/avatar4.jpg') {
+      return require('../../assets/img/avatars/avatar4.jpg');
+    } else if (src === '/img/avatars/avatar5.jpg') {
+      return require('../../assets/img/avatars/avatar5.jpg');
+    } else if (src === '/img/avatars/avatar6.jpg') {
+      return require('../../assets/img/avatars/avatar6.jpg');
+    } else if (src === '/img/avatars/avatar7.jpg') {
+      return require('../../assets/img/avatars/avatar7.jpg');
+    } else if (src === '/img/avatars/avatar8.jpg') {
+      return require('../../assets/img/avatars/avatar8.jpg');
+    } else if (src === '/img/bg/bg-small.png') {
+      return require('../../assets/img/bg/bg-small.png');
+    } else if (src === '/img/bg/bg-small2.png') {
+      return require('../../assets/img/bg/bg-small2.png');
+    } else if (src === '/img/bg/bg-small3.png') {
+      return require('../../assets/img/bg/bg-small3.png');
+    } else if (src === '/img/bg/bg-small4.png') {
+      return require('../../assets/img/bg/bg-small4.png');
+    } else if (src === '/img/bg/bg-small5.png') {
+      return require('../../assets/img/bg/bg-small5.png');
+    } else if (src === '/img/bg/bg-small6.png') {
+      return require('../../assets/img/bg/bg-small6.png');
+    }
+  };
   const avatarImgModal = () => {
     return (
       <Modal
         isVisible={avatarModalVisible}
         onBackdropPress={() => setAvatarModalVisible(false)}>
         <View style={styles.modalContainer}>
-          <View style={styles.modalTitleContainer}>
-            <Text style={styles.modalTitle}>Select Avatar Image</Text>
-            <Text style={styles.modalClose}>&times;</Text>
+          <Text style={styles.modalTitle}>Select User Avatar</Text>
+          <View style={styles.modalAvatarContainer}>
+            {userAvatars.map((icon, index) => (
+              <TouchableOpacity
+                style={styles.modalAvatarItem}
+                key={index}
+                onPress={() => setSelectedAvatar(icon.src)}>
+                <Image source={imageUrl(icon.src)} />
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
       </Modal>
@@ -140,22 +167,42 @@ export const ProfileScreen = () => {
         isVisible={backModalVisible}
         onBackdropPress={() => setBackModalVisible(false)}>
         <View style={styles.modalContainer}>
-          <View style={styles.modalTitleContainer}>
-            <Text style={styles.modalTitle}>Proceed to Pay</Text>
-            <Text style={styles.modalClose}>&times;</Text>
+          <Text style={styles.modalTitle}>Select User Background</Text>
+          <View style={styles.modalAvatarContainer}>
+            {userBackgrounds.map((icon, index) => (
+              <TouchableOpacity
+                style={styles.modalAvatarItem}
+                key={index}
+                onPress={() => setSelectedBackground(icon.src)}>
+                <Image source={imageUrl(icon.src)} />
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
       </Modal>
     );
   };
 
+  useEffect(() => {
+    getAllUserAvatars().then(res => {
+      if (res.success) {
+        setUserAvatars(res.useravatars);
+      }
+    });
+    getAllUserBackgrounds().then(res => {
+      if (res.success) {
+        setUserBackgrounds(res.userbackgrounds);
+        console.log('userAvatars:::', res.userbackgrounds);
+      }
+    });
+  }, []);
   return (
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.mainBackgroundImg}>
-          {backgroundPhoto ? (
+          {selectedBackground ? (
             <Image
-              source={{uri: backgroundPhoto.uri}}
+              source={imageUrl(selectedBackground)}
               style={styles.backgroundImg}
             />
           ) : (
@@ -165,8 +212,11 @@ export const ProfileScreen = () => {
         <View style={styles.mainContainer}>
           <View style={styles.avatarContainer}>
             <View style={styles.avatarDiv}>
-              {photo ? (
-                <Image source={{uri: photo.uri}} style={styles.avatarImg} />
+              {selectedAvatar ? (
+                <Image
+                  source={imageUrl(selectedAvatar)}
+                  style={styles.avatarImg}
+                />
               ) : (
                 <Image source={imgAvatar} style={styles.avatarImg} />
               )}
@@ -653,25 +703,25 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingLeft: 10,
   },
-  modalTitleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-  },
   modalTitle: {
     color: '#fff',
-    fontSize: 20,
-    fontWeight: '600',
+    fontSize: 24,
+    fontWeight: '700',
   },
-  modalClose: {
-    color: '#fff',
-    width: 25,
-    margin: 0,
-    textAlign: 'center',
-    fontSize: 20,
-    borderRadius: 8,
-    borderColor: '#fff',
-    borderWidth: 1,
+  modalAvatarContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    flexWrap: 'wrap',
+    marginTop: 10,
+  },
+  modalAvatarItem: {
+    width: 60,
+    height: 60,
+    marginBottom: 15,
+    marginHorizontal: 5,
+    borderRadius: 12,
+    overflow: 'hidden',
   },
   clipboardDiv: {
     position: 'relative',
