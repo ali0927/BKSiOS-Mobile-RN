@@ -33,6 +33,7 @@ import {
   getAllUserBackgrounds,
 } from '../helper/user';
 import {validateEmail} from '../utils';
+import {useSelector} from 'react-redux';
 
 const SERVER_URL = 'http://localhost:3000';
 
@@ -85,16 +86,24 @@ export const ProfileScreen = () => {
     newPassword: '',
     confirmPassword: '',
   });
+  const [generalChanged, setGeneralChanged] = useState(false);
+  const [socialChanged, setSocialChanged] = useState(false);
+  const [pwdChanged, setPwdChanged] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const userInfo = useSelector(state => state.userInfoReducer).userInfo;
 
   const handleGeneralChange = (prop, value) => {
+    setGeneralChanged(true);
     setGeneralValidations(prevState => ({...prevState, [prop]: ''}));
     setGeneralValues({...generalValues, [prop]: value});
   };
   const handleSocialChange = (prop, value) => {
+    setSocialChanged(true);
     setSocialValidations(prevState => ({...prevState, [prop]: ''}));
     setSocialValues({...socialValues, [prop]: value});
   };
   const handlePwdChange = (prop, value) => {
+    setPwdChanged(true);
     setPwdValidations(prevState => ({...prevState, [prop]: ''}));
     setPwdValues({...pwdValues, [prop]: value});
   };
@@ -318,7 +327,7 @@ export const ProfileScreen = () => {
       text2: 'You can paste these characters...  👋',
     });
     if (key === 'wallet') {
-      Clipboard.setString('XAVUW3sw3ZunitokcLtemEfX3tGuX2plateWdh');
+      Clipboard.setString(currentUser?.wallet_address);
     } else {
       Clipboard.setString('https://bksbackstage.io');
     }
@@ -433,6 +442,8 @@ export const ProfileScreen = () => {
   };
 
   useEffect(() => {
+    console.log('UserInfos>>>', JSON.parse(userInfo).user);
+    setCurrentUser(JSON.parse(userInfo).user);
     getAllUserAvatars().then(res => {
       if (res.success) {
         setUserAvatars(res.useravatars);
@@ -441,10 +452,9 @@ export const ProfileScreen = () => {
     getAllUserBackgrounds().then(res => {
       if (res.success) {
         setUserBackgrounds(res.userbackgrounds);
-        console.log('userAvatars:::', res.userbackgrounds);
       }
     });
-  }, []);
+  }, [userInfo]);
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -485,10 +495,10 @@ export const ProfileScreen = () => {
           )}
           {avatarImgModal()}
           <View style={styles.flexCenter}>
-            <Text style={styles.text1}>Mislan</Text>
+            <Text style={styles.text1}>{currentUser?.name}</Text>
             <Image source={badgeMark} style={styles.badgeMark} />
           </View>
-          <Text style={styles.idText}>@mislan</Text>
+          <Text style={styles.idText}>@{currentUser?.name}</Text>
           <Text style={styles.description}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -498,7 +508,7 @@ export const ProfileScreen = () => {
             <TextInput
               style={styles.input}
               editable={false}
-              value="XAVUW3sw3ZunitokcLtemEfX3tGuX2plateWdh"
+              value={currentUser?.wallet_address}
             />
             <TouchableOpacity
               style={styles.copyImg}
@@ -702,9 +712,15 @@ export const ProfileScreen = () => {
               )}
             </View>
             <TouchableOpacity
-              style={styles.button}
-              onPress={() => saveGeneral()}>
-              <Text style={styles.text3}>Save</Text>
+              style={generalChanged ? styles.button1 : styles.button}
+              onPress={() => {
+                generalChanged
+                  ? saveGeneral()
+                  : console.log('there is nothing to save');
+              }}>
+              <Text style={generalChanged ? styles.text31 : styles.text3}>
+                Save
+              </Text>
             </TouchableOpacity>
           </View>
           {/* Social Media */}
@@ -796,9 +812,15 @@ export const ProfileScreen = () => {
               )}
             </View>
             <TouchableOpacity
-              style={styles.button}
-              onPress={() => saveSocial()}>
-              <Text style={styles.text3}>Save</Text>
+              style={socialChanged ? styles.button1 : styles.button}
+              onPress={() => {
+                socialChanged
+                  ? saveSocial()
+                  : console.log('there is nothing to save');
+              }}>
+              <Text style={socialChanged ? styles.text31 : styles.text3}>
+                Save
+              </Text>
             </TouchableOpacity>
           </View>
           {/* Change Password */}
@@ -874,8 +896,16 @@ export const ProfileScreen = () => {
                 <Text style={styles.errorText} />
               )}
             </View>
-            <TouchableOpacity style={styles.button} onPress={() => savePwd()}>
-              <Text style={styles.text3}>Change Password</Text>
+            <TouchableOpacity
+              style={pwdChanged ? styles.button1 : styles.button}
+              onPress={() => {
+                pwdChanged
+                  ? savePwd()
+                  : console.log('There is nothing to save');
+              }}>
+              <Text style={pwdChanged ? styles.text31 : styles.text3}>
+                Change Password
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -1150,6 +1180,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     textAlign: 'center',
     marginVertical: 10,
+    textTransform: 'lowercase',
   },
   description: {
     fontFamily: 'SpaceGrotesk-Medium',
