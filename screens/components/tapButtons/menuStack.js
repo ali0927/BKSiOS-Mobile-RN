@@ -129,7 +129,9 @@ export const MenuStackScreen = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
-          headerTitle: () => <Text style={styles.headerTitle}>Profile</Text>,
+          headerTitle: () => (
+            <Text style={styles.headerTitle}>Your Profile</Text>
+          ),
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.navigate('MoreMain')}>
               <Image source={arrowLeft} />

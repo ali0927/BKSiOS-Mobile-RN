@@ -56,6 +56,16 @@ const getAllEventCards = () => {
   });
 };
 
+const getEventPrice = eventCard => {
+  const addons = eventCard.addons === '' ? [] : JSON.parse(eventCard.addons);
+  let addonPrice = 0;
+  const len = addons.length;
+  for (let i = 0; i < len; i++) {
+    addonPrice += Number(addons[i].price);
+  }
+  return eventCard.price + addonPrice;
+};
+
 // Buy...
 const getBuyState = id => {
   return new Promise((resolve, reject) => {
@@ -87,12 +97,12 @@ const getEventCardById = id => {
 
 // Tickets
 const allTickets = data => {
-  console.log("Ticket is called", data);
+  console.log('Ticket is called', data);
   return new Promise((resolve, reject) => {
     api
       .get('/api/event/eventcard_multi/tickets')
       .then(response => {
-        console.log("Ticket Calling Res", response.data);
+        console.log('Ticket Calling Res', response.data);
         resolve(response.data);
       })
       .catch(error => {
@@ -124,6 +134,7 @@ export {
   // createEventCard,
   getEventCardById,
   getAllEventCards,
+  getEventPrice,
   getLatestEventCards,
   // buyTicket,
   getBuyState,

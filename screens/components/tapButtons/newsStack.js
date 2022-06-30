@@ -1,17 +1,16 @@
 import React from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/core';
+import {useNavigation} from '@react-navigation/core';
 import {NewsScreen} from '../../pages/news';
 import {NewsDetailScreen} from '../../pages/newsDetail';
-import shareImg from "../../../assets/img/icons/share.png";
+import shareImg from '../../../assets/img/icons/share.png';
 import arrowLeft from '../../../assets/img/icons/arrow-left.png';
 
 const NewsStack = createNativeStackNavigator();
 const THEME_COLOR = '#14142f';
 
 export const NewsStackScreen = () => {
-
   const navigation = useNavigation();
   return (
     <NewsStack.Navigator
@@ -29,45 +28,22 @@ export const NewsStackScreen = () => {
         name="NewsHome"
         component={NewsScreen}
         options={{
-          headerTitle: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 16,
-                  marginLeft: 10,
-                  fontWeight: '600',
-                }}>
-                News
-              </Text>
-            </View>
-          ),
+          headerTitle: () => <Text style={styles.headerTitle}>News</Text>,
         }}
       />
       <NewsStack.Screen
         name="NewsDetail"
         component={NewsDetailScreen}
         options={{
-          headerTitle: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 16,
-                  marginLeft: 10,
-                  fontWeight: '600',
-                }}>
-                Article
-              </Text>
-            </View>
-          ),
+          headerTitle: () => <Text style={styles.headerTitle}>Article</Text>,
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.navigate('NewsHome')}>
               <Image source={arrowLeft} />
             </TouchableOpacity>
           ),
           headerRight: () => (
-            <TouchableOpacity onPress={() => console.log("Share Button Clicked...")}>
+            <TouchableOpacity
+              onPress={() => console.log('Share Button Clicked...')}>
               <Image source={shareImg} />
             </TouchableOpacity>
           ),
@@ -76,3 +52,14 @@ export const NewsStackScreen = () => {
     </NewsStack.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  headerTitle: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: '700',
+    lineHeight: 26,
+    letterSpacing: 2,
+  },
+});

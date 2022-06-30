@@ -56,7 +56,7 @@ export const SignUpScreen = ({navigation}) => {
       });
       return false;
     } else {
-      setValidations({name: '', email: '', password: ''});
+      setValidations({name: '', email: '', password: '', confirmPwd: ''});
     }
 
     return true;
