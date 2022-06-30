@@ -28,6 +28,7 @@ import editImg from '../../assets/img/icons/edit.png';
 import uploadImg from '../../assets/img/icons/upload.png';
 import Modal from 'react-native-modal';
 import {getAllUserAvatars, getAllUserBackgrounds} from '../helper/user';
+import {validateEmail} from '../utils';
 
 const SERVER_URL = 'http://localhost:3000';
 
@@ -91,6 +92,218 @@ export const ProfileScreen = () => {
   const handlePwdChange = (prop, value) => {
     setPwdValidations(prevState => ({...prevState, [prop]: ''}));
     setPwdValues({...pwdValues, [prop]: value});
+  };
+
+  const checkGeneralValidations = () => {
+    if (generalValues.name === '') {
+      setGeneralValidations({
+        name: 'has-empty',
+        email: '',
+        mobileNumber: '',
+        website: '',
+        walletAddress: '',
+        backgroundImg: '',
+        description: '',
+        password: '',
+      });
+      return false;
+    } else if (generalValues.email === '') {
+      setGeneralValidations({
+        name: '',
+        email: 'has-empty',
+        mobileNumber: '',
+        website: '',
+        walletAddress: '',
+        backgroundImg: '',
+        description: '',
+      });
+      return false;
+    } else if (!validateEmail(generalValues.email)) {
+      setGeneralValidations({
+        name: '',
+        email: 'has-danger',
+        mobileNumber: '',
+        website: '',
+        walletAddress: '',
+        backgroundImg: '',
+        description: '',
+      });
+      return false;
+    } else if (generalValues.mobileNumber === '') {
+      setGeneralValidations({
+        name: '',
+        email: '',
+        mobileNumber: 'has-empty',
+        website: '',
+        walletAddress: '',
+        backgroundImg: '',
+        description: '',
+      });
+      return false;
+    } else if (generalValues.website === '') {
+      setGeneralValidations({
+        name: '',
+        email: '',
+        mobileNumber: '',
+        website: 'has-empty',
+        walletAddress: '',
+        backgroundImg: '',
+        description: '',
+      });
+      return false;
+    } else if (generalValues.walletAddress === '') {
+      setGeneralValidations({
+        name: '',
+        email: '',
+        mobileNumber: '',
+        website: '',
+        walletAddress: 'has-empty',
+        backgroundImg: '',
+        description: '',
+      });
+      return false;
+    } else if (generalValues.backgroundImg === '') {
+      setGeneralValidations({
+        name: '',
+        email: '',
+        mobileNumber: '',
+        website: '',
+        walletAddress: '',
+        backgroundImg: 'has-empty',
+        description: '',
+      });
+      return false;
+    } else if (generalValues.description === '') {
+      setGeneralValidations({
+        name: '',
+        email: '',
+        mobileNumber: '',
+        website: '',
+        walletAddress: '',
+        backgroundImg: '',
+        description: 'has-empty',
+      });
+      return false;
+    } else {
+      setGeneralValidations({
+        name: '',
+        email: '',
+        mobileNumber: '',
+        website: '',
+        walletAddress: '',
+        backgroundImg: '',
+        description: '',
+      });
+    }
+    return true;
+  };
+  const checkSocialValidations = () => {
+    if (socialValues.facebook === '') {
+      setSocialValidations({
+        facebook: 'has-empty',
+        instagram: '',
+        twitter: '',
+        medium: '',
+      });
+      return false;
+    } else if (socialValues.instagram === '') {
+      setSocialValidations({
+        facebook: '',
+        instagram: 'has-empty',
+        twitter: '',
+        medium: '',
+      });
+      return false;
+    } else if (socialValues.twitter === '') {
+      setSocialValidations({
+        facebook: '',
+        instagram: '',
+        twitter: 'has-empty',
+        medium: '',
+      });
+      return false;
+    } else if (socialValues.medium === '') {
+      setSocialValidations({
+        facebook: '',
+        instagram: '',
+        twitter: '',
+        medium: 'has-empty',
+      });
+      return false;
+    } else {
+      setSocialValidations({
+        facebook: '',
+        instagram: '',
+        twitter: '',
+        medium: '',
+      });
+    }
+    return true;
+  };
+  const checkPwdValidations = () => {
+    if (pwdValues.oldPassword === '') {
+      setPwdValidations({
+        oldPassword: 'has-empty',
+        newPassword: '',
+        confirmPassword: '',
+      });
+      return false;
+    } else if (pwdValues.newPassword === '') {
+      setPwdValidations({
+        oldPassword: '',
+        newPassword: 'has-empty',
+        confirmPassword: '',
+      });
+      return false;
+    } else if (pwdValues.newPassword !== pwdValues.confirmPassword) {
+      setPwdValidations({
+        oldPassword: '',
+        newPassword: '',
+        confirmPassword: 'has-empty',
+      });
+      return false;
+    } else {
+      setPwdValidations({
+        oldPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      });
+    }
+    return true;
+  };
+
+  const saveGeneral = async () => {
+    console.log('saveGeneral', generalValues);
+    if (!checkGeneralValidations()) {
+      console.log('Validation for general failed!');
+    } else {
+      Toast.show({
+        type: 'success',
+        text1: 'Validation for general Success!',
+      });
+    }
+  };
+  const saveSocial = async () => {
+    console.log('saveGeneral', socialValues);
+    if (!checkSocialValidations()) {
+      console.log('Validation for social failed!');
+    } else {
+      Toast.show({
+        type: 'success',
+        text1: 'Validation for social Success!',
+      });
+    }
+  };
+  const savePwd = async () => {
+    console.log('saveGeneral', pwdValues);
+    if (!checkPwdValidations()) {
+      console.log('Validation for pwd failed!');
+    } else {
+      Toast.show({
+        type: 'success',
+        text1: 'Validation for pwd Success!',
+      });
+    }
   };
 
   const copyToClipboard = key => {
@@ -171,7 +384,10 @@ export const ProfileScreen = () => {
               <TouchableOpacity
                 style={styles.modalAvatarItem}
                 key={index}
-                onPress={() => setSelectedBackground(icon.src)}>
+                onPress={() => {
+                  setGeneralValues({...generalValues, backgroundImg: icon.src});
+                  setSelectedBackground(icon.src);
+                }}>
                 <Image source={imageUrl(icon.src)} />
               </TouchableOpacity>
             ))}
@@ -337,6 +553,11 @@ export const ProfileScreen = () => {
               ) : (
                 <Text style={styles.errorText} />
               )}
+              {generalValidations.email === 'has-danger' ? (
+                <Text style={styles.errorText}>Input Correct Format</Text>
+              ) : (
+                <Text style={styles.errorText} />
+              )}
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>Mobile Number</Text>
@@ -440,7 +661,7 @@ export const ProfileScreen = () => {
             </View>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => console.log('Save General settings...')}>
+              onPress={() => saveGeneral()}>
               <Text style={styles.text3}>Save</Text>
             </TouchableOpacity>
           </View>
@@ -534,7 +755,7 @@ export const ProfileScreen = () => {
             </View>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => console.log('Save Social Media...')}>
+              onPress={() => saveSocial()}>
               <Text style={styles.text3}>Save</Text>
             </TouchableOpacity>
           </View>
@@ -556,6 +777,7 @@ export const ProfileScreen = () => {
                     ? styles.inputOnFocus
                     : styles.input
                 }
+                secureTextEntry={true}
                 value={pwdValues.oldPassword}
                 autoCapitalize="none"
                 onChangeText={val => handlePwdChange('oldPassword', val)}
@@ -576,6 +798,7 @@ export const ProfileScreen = () => {
                     ? styles.inputOnFocus
                     : styles.input
                 }
+                secureTextEntry={true}
                 value={pwdValues.newPassword}
                 autoCapitalize="none"
                 onChangeText={val => handlePwdChange('newPassword', val)}
@@ -596,19 +819,20 @@ export const ProfileScreen = () => {
                     ? styles.inputOnFocus
                     : styles.input
                 }
+                secureTextEntry={true}
                 value={pwdValues.confirmPassword}
                 autoCapitalize="none"
                 onChangeText={val => handlePwdChange('confirmPassword', val)}
               />
               {pwdValidations.confirmPassword === 'has-empty' ? (
-                <Text style={styles.errorText}>Confirm Password required*</Text>
+                <Text style={styles.errorText}>
+                  Confirm Password must equal with New Password*
+                </Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
             </View>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => console.log('Change Password...')}>
+            <TouchableOpacity style={styles.button} onPress={() => savePwd()}>
               <Text style={styles.text3}>Change Password</Text>
             </TouchableOpacity>
           </View>
