@@ -67,6 +67,24 @@ const getEventPrice = eventCard => {
 };
 
 // Buy...
+const buyTicket = data => {
+  return new Promise((resolve, reject) => {
+    api
+      .post('/api/event/eventcard/buy_ticket', data)
+      .then(response => {
+        if (response.status === 201) {
+          resolve(response.data);
+        } else {
+          reject(response);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        reject(error);
+      });
+  });
+};
+
 const getBuyState = id => {
   return new Promise((resolve, reject) => {
     api
@@ -136,7 +154,7 @@ export {
   getAllEventCards,
   getEventPrice,
   getLatestEventCards,
-  // buyTicket,
+  buyTicket,
   getBuyState,
   // userTickets,
   // updateUserTickets,

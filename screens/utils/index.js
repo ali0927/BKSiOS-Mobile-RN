@@ -7,4 +7,4 @@ const validateEmail = value => {
   return false;
 };
 
-export { validateEmail};
+export {validateEmail};

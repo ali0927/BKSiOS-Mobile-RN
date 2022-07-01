@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 import {
   ScrollView,
   Text,
@@ -21,8 +22,26 @@ import {
 import Countdown from 'react-countdown';
 import likeImg from '../../assets/img/icons/like-empty.png';
 import config from '../helper/config';
+import {PayPalButtons, PayPalScriptProvider} from '@paypal/react-paypal-js';
+import {getEventPrice} from '../helper/event';
+import {buyTicket} from '../helper/event';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
+import HTMLView from 'react-native-htmlview';
+import metamaskImg from '../../assets/img/metamask.png';
+import bitkeepImg from '../../assets/img/bitkeep.png';
+import paypalImg from '../../assets/img/paypal-color.png';
+import {ethers} from 'ethers';
+import {
+  BUSD_TEST_ABI,
+  BUSD_MAIN_ABI,
+  BUSDPayment_TEST_ABI,
+  BUSDPayment_testnet,
+} from '../utils/payment_contract';
+import {useSelector, useDispatch} from 'react-redux';
 
 export const EventDetailsScreen = ({route}) => {
+  const userInfo = useSelector(state => state.userInfoReducer).userInfo;
+
   const id = route.params.item.id;
   const tempData = route.params.item;
   const [isSold, setSold] = useState(false);
@@ -36,6 +55,7 @@ export const EventDetailsScreen = ({route}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [eventCard, setEventCard] = useState(false);
   const [ticketAmount, setTicketAmount] = useState(1);
+  const [wallet, setWallet] = useState('');
 
   const toggleModal = () => {
     console.log('This is Modal');
@@ -72,8 +92,201 @@ export const EventDetailsScreen = ({route}) => {
     return <Countdown date={d} renderer={renderer} />;
   };
 
+  const createOrder = (data, actions) => {
+    console.log('data: ', data);
+    console.log('actions: ', actions);
+    return actions.order.create({
+      purchase_units: [
+        {
+          amount: {
+            value: getEventPrice(eventCard) * ticketAmount,
+            currency_code: 'EUR',
+          },
+        },
+      ],
+    });
+  };
+  const onApprove = (data, actions) => {
+    const orderid = data.orderID;
+    handleBuyTicket(orderid, 'paypal', 'Paypal');
+  };
+
+  const handleBuyTicket = (orderid, _wallet, _chain) => {
+    const param = {
+      wallet_address: _wallet,
+      blockchain: _chain,
+      eventcard: eventCard.id,
+      price: getEventPrice(eventCard),
+      pay_order_id: orderid,
+      count: ticketAmount.toString(),
+    };
+    buyTicket(param)
+      .then(res => {
+        if (res.success) {
+          Toast.show({
+            type: 'success',
+            text1: 'You bought the ticket!',
+          });
+          setModalVisible(false);
+          // handleBought();
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'Failed!',
+          });
+          setModalVisible(false);
+        }
+      })
+      .catch(error => {
+        Toast.show({
+          type: 'error',
+          text1: 'Failed!',
+        });
+        setModalVisible(false);
+      });
+  };
+
+  const getEurRate = async () => {
+    const data = await axios.get(
+      'https://api.coingecko.com/api/v3/coins/ethereum',
+    );
+    const price = data.data.market_data.current_price;
+    return price.usd / price.eur;
+  };
+
+  const buyInBUSD = async provide => {
+    // console.log("account", account, chainId);
+    const provider = new ethers.providers.Web3Provider(provide);
+    const chainId = Number(provider.provider.chainId);
+    console.log('ChainId', chainId);
+    if (chainId !== 56 && chainId !== 97) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please change the network',
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Please wait ... It might takes some time',
+      });
+      try {
+        console.log('Provider', provider);
+        const account = await provider.getSigner().getAddress();
+        console.log('Provider Account', account);
+        const BUSD = new ethers.Contract(
+          chainId === 97
+            ? '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee'
+            : '0xe9e7cea3dedca5984780bafc599bd69add087d56',
+          chainId === 97 ? BUSD_TEST_ABI : BUSD_MAIN_ABI,
+          provider.getSigner(),
+        );
+        const contract = new ethers.Contract(
+          chainId === 97
+            ? BUSDPayment_testnet
+            : '0xe9e7cea3dedca5984780bafc599bd69add087d56',
+          chainId === 97 ? BUSDPayment_TEST_ABI : BUSD_MAIN_ABI,
+          provider.getSigner(),
+        );
+        const rate = await getEurRate();
+        const price = getEventPrice(eventCard) * ticketAmount * rate;
+        console.log(price);
+        const ETH = ethers.BigNumber.from('1000000000000000000');
+        const totalWei = await BUSD.balanceOf(account);
+        const totalBUSD =
+          ethers.BigNumber.from(totalWei)
+            .mul(ethers.BigNumber.from(100))
+            .div(ETH)
+            .toNumber() / 100;
+        console.log('Total Amount', totalBUSD);
+        if (totalBUSD < price) {
+          Toast.show({
+            type: 'error',
+            text1: 'You have not enough BUSD in your wallet',
+          });
+        } else {
+          const amount = ethers.BigNumber.from(Math.floor(price * 100))
+            .mul(ETH)
+            .div(ethers.BigNumber.from(100));
+          let txn = await BUSD.approve(BUSDPayment_testnet, amount);
+          await txn.wait();
+          console.log(txn.hash);
+          const payees =
+            eventCard.payees === ''
+              ? []
+              : JSON.parse(eventCard.payees).map(item => item.wallet);
+          const fees =
+            eventCard.payees === ''
+              ? []
+              : JSON.parse(eventCard.payees).map(item => Number(item.fee));
+          let totalFee = 100;
+          for (let i = 0; i < fees.length; i++) {
+            totalFee -= fees[i];
+          }
+          payees.push(eventCard.owner_wallet);
+          fees.push(totalFee);
+          console.log(payees, fees);
+          txn = await contract.payWithBUSD(account, amount, payees, fees);
+          await txn.wait();
+          handleBuyTicket(txn.hash, wallet, 'Binance Smart Chain');
+        }
+      } catch (err) {
+        console.log(err);
+        Toast.show({
+          type: 'error',
+          text1: err.message,
+        });
+      }
+    }
+    console.log('Buy with BUSD');
+  };
+
+  const buyWithBUSD = async _provide => {
+    let provide = null;
+    if (_provide === 'Bitkeep' && window.isBitKeep) {
+      provide = window.bitkeep.ethereum;
+    } else if (_provide === 'Metamask' && window.ethereum) {
+      provide = window.ethereum;
+    }
+
+    if (provide === null) {
+      Toast.show({
+        type: 'error',
+        text1: 'You need to install ' + _provide,
+      });
+      return;
+    }
+
+    const accounts = await provide.request({method: 'eth_accounts'});
+    console.log('Accounts', accounts);
+    if (accounts.length === 0) {
+      await provide.request({method: 'eth_requestAccounts'});
+    }
+    buyInBUSD(provide);
+  };
+
+  const PaypalContent = `
+    <p>This is Paypal Button Content</p>
+    <div>
+      <p>Buttons</p>
+    </div>
+    <PayPalScriptProvider
+      options={{
+        'client-id':
+          'AffFVjpeVWCzGzYRB3hs1btcwdt1R0adzgVROBak5Fn0hClbBVFea-DznT-WXjcH1h1qjrkqKvPQ6ia-',
+        currency: 'EUR',
+      }}>
+      <div>
+        <PayPalButtons
+          style={styles.paypalStyle}
+          createOrder={createOrder}
+          onApprove={onApprove}
+        />
+      </div>
+    </PayPalScriptProvider>
+    `;
   useEffect(() => {
-    setCurrentEvent(eventData.find(item => id == item.id));
+    setWallet(userInfo?.wallet_address);
+    setCurrentEvent(eventData.find(item => id === item.id));
 
     getEventCardById(id).then(res => {
       console.log('EventCardById', res);
@@ -117,7 +330,7 @@ export const EventDetailsScreen = ({route}) => {
       .catch(err => {
         console.log(err);
       });
-  }, [id]);
+  }, [id, userInfo]);
   return (
     <ScrollView style={styles.container}>
       {tempData && (
@@ -310,20 +523,43 @@ export const EventDetailsScreen = ({route}) => {
                   <Text style={styles.modalClose}>&times;</Text>
                 </TouchableOpacity>
               </View>
+              <PayPalScriptProvider
+                options={{
+                  'client-id':
+                    'AffFVjpeVWCzGzYRB3hs1btcwdt1R0adzgVROBak5Fn0hClbBVFea-DznT-WXjcH1h1qjrkqKvPQ6ia-',
+                  currency: 'EUR',
+                }}>
+                <PayPalButtons
+                  style={styles.paypalStyle}
+                  createOrder={createOrder}
+                  onApprove={onApprove}
+                />
+              </PayPalScriptProvider>
               <TouchableOpacity
                 style={styles.payButton}
                 onPress={() => toggleModal()}>
-                <Text style={styles.text3}>Pay with PayPal</Text>
+                <Image
+                  source={paypalImg}
+                  style={styles.metaImg}
+                  resizeMode="contain"
+                  height={30}
+                />
+              </TouchableOpacity>
+              <Text style={styles.text4}>OR</Text>
+              <TouchableOpacity
+                style={styles.payButton}
+                onPress={() => buyWithBUSD('Metamask')}>
+                <Image source={metamaskImg} style={styles.metaImg} />
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.payButton}
-                onPress={() => toggleModal()}>
-                <Text style={styles.text3}>Buy with crypto: BSC</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.payButton}
-                onPress={() => toggleModal()}>
-                <Text style={styles.text3}>Buy with Crypto: NEAR</Text>
+                onPress={() => buyWithBUSD('Bitkeep')}>
+                <Image
+                  source={bitkeepImg}
+                  style={styles.metaImg}
+                  resizeMode="contain"
+                  height={100}
+                />
               </TouchableOpacity>
             </View>
           </Modal>
@@ -519,6 +755,18 @@ const styles = StyleSheet.create({
     width: '100%',
     letterSpacing: 1.6,
   },
+  text4: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '700',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    marginTop: 15,
+    marginBottom: -15,
+    width: '100%',
+    letterSpacing: 1.6,
+  },
   button: {
     flex: 1,
     paddingTop: 12,
@@ -567,13 +815,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   payButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 30,
-    paddingTop: 12,
+    paddingTop: 10,
     textAlignVertical: 'center',
     height: 44,
     backgroundColor: '#6a4dfd',
     borderRadius: 4,
     width: '100%',
+  },
+  metaImg: {
+    marginTop: -10,
   },
   soldButton: {
     flex: 1,
@@ -583,5 +837,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#6a4dfd44',
     borderRadius: 4,
     marginLeft: 20,
+  },
+  paypalStyle: {
+    layout: 'horizontal',
+    tagline: false,
+    label: 'pay',
   },
 });
