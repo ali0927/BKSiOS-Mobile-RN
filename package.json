@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@paypal/react-paypal-js": "^7.8.1",
     "@react-native-async-storage/async-storage": "^1.17.5",
     "@react-native-clipboard/clipboard": "^1.10.0",
     "@react-navigation/bottom-tabs": "^6.3.1",

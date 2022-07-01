@@ -78,23 +78,21 @@ export const EventDetailsScreen = ({route}) => {
     getEventCardById(id).then(res => {
       console.log('EventCardById', res);
       if (res.success) {
-        console.log('Success!!!');
         setEventCard(res.eventcard);
-        if (res.eventcard.total_tickets === res.eventcard.buy_count)
+        if (res.eventcard.total_tickets === res.eventcard.buy_count) {
           setSold(true);
+        }
         const _addons =
           res.eventcard.addons === '' ? [] : JSON.parse(res.eventcard.addons);
         setAddons(_addons);
-        console.log('Addons:::', _addons);
         let _addonPrice = 0;
         _addons.forEach(addon => {
           _addonPrice += Number(addon.price);
         });
         setAddonPrice(_addonPrice);
         console.log('Before setting colle.name', res.eventcard.collection);
-        getCollectionById(res.eventcard.collection).then(res => {
+        getCollectionById(res.eventcard.collection).then(result => {
           if (res.success) {
-            console.log('CollectionByID11111', res.collection.name);
             setCollectionName(res.collection.name);
           }
         });
@@ -119,7 +117,7 @@ export const EventDetailsScreen = ({route}) => {
       .catch(err => {
         console.log(err);
       });
-  }, []);
+  }, [id]);
   return (
     <ScrollView style={styles.container}>
       {tempData && (
@@ -133,25 +131,19 @@ export const EventDetailsScreen = ({route}) => {
             }}
             style={styles.eventImg}
           />
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginVertical: 20,
-              alignItems: 'center',
-            }}>
+          <View style={styles.flexRow}>
             <Text style={styles.name}>{tempData.name}</Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Image source={likeImg} style={{marginRight: 10}} />
+            <View style={styles.rowCenter}>
+              <Image source={likeImg} style={styles.likedImg} />
               <Text style={styles.followers}>358</Text>
             </View>
           </View>
           <Text style={styles.description}>{tempData.venue_description}</Text>
 
           <View style={styles.infoContainer}>
-            <View style={{width: 180}}>
+            <View style={styles.halfWidth}>
               <Text style={styles.text2}>Creator</Text>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={styles.rowCenter}>
                 <Text style={styles.infoText}>{tempData.creator.name}</Text>
                 <Image source={badgeMark} style={styles.badgeMark} />
               </View>
@@ -162,7 +154,7 @@ export const EventDetailsScreen = ({route}) => {
             </View>
           </View>
           <View style={styles.infoContainer}>
-            <View style={{width: 180}}>
+            <View style={styles.halfWidth}>
               <Text style={styles.text2}>Date</Text>
               <Text style={styles.infoText}>
                 {new Date(tempData.date).toISOString().toString().split('T')[0]}
@@ -175,11 +167,11 @@ export const EventDetailsScreen = ({route}) => {
               </Text>
             </View>
           </View>
-          <View style={styles.divider}></View>
+          <View style={styles.divider} />
           <View style={styles.infoContainer}>
-            <View style={{width: 180}}>
+            <View style={styles.halfWidth}>
               <Text style={styles.text2}>Collection</Text>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={styles.rowCenter}>
                 <Image source={addonsImg} style={styles.avatarImg} />
                 <Text style={styles.infoText}>{collectionName}</Text>
               </View>
@@ -228,15 +220,14 @@ export const EventDetailsScreen = ({route}) => {
             <View style={styles.modalContainer}>
               <View style={styles.modalTitleContainer}>
                 <View>
-                  <Text style={{...styles.modalTitle, marginVertical: 5}}>
-                    Name: {selectedAddon ? selectedAddon.name : ''}
+                  <Text style={styles.modalTxt}>
+                    Name: {selectedAddon?.name}
                   </Text>
-                  <Text style={{...styles.modalTitle, marginVertical: 5}}>
-                    Description:{' '}
-                    {selectedAddon ? selectedAddon.description : ''}
+                  <Text style={styles.modalTxt}>
+                    Description: {selectedAddon?.description}
                   </Text>
-                  <Text style={{...styles.modalTitle, marginVertical: 5}}>
-                    Price: {selectedAddon ? selectedAddon.price + '€' : ''}
+                  <Text style={styles.modalTxt}>
+                    Price: {selectedAddon?.price + ' €'}
                   </Text>
                 </View>
                 <TouchableOpacity onPress={toggleAddonModal}>
@@ -245,34 +236,27 @@ export const EventDetailsScreen = ({route}) => {
               </View>
             </View>
           </Modal>
-          <View style={styles.divider}></View>
-          <View style={{alignItems: 'center', marginBottom: 30}}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={styles.divider} />
+          <View style={styles.eventCounter}>
+            <View style={styles.rowCenter}>
               <Image source={clockImg} />
-              <Text style={{...styles.text2, marginBottom: 0, marginLeft: 10}}>
-                Events start in
-              </Text>
+              <Text style={styles.evStartTxt}>Event starts in</Text>
             </View>
-            <View style={{minWidth: 200, marginTop: 20}}>
+            <View style={styles.counterContainer}>
               <EventCountDown date={new Date(tempData.date).toISOString()} />
             </View>
           </View>
-          <View style={styles.divider}></View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-            <Text style={styles.text2}>
+          <View style={styles.divider} />
+          <View style={styles.flexRow}>
+            <Text style={styles.remainTickets}>
               {tempData.total_tickets - tempData.buy_count} tickets left
             </Text>
             <Text style={styles.priceText}>{tempData.price} €</Text>
           </View>
-          <View style={styles.divider}></View>
-          {tempData.total_tickets - tempData.buy_count == 0 ? (
-            <View style={{flexDirection: 'row', marginBottom: 50}}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={styles.divider} />
+          {tempData.total_tickets - tempData.buy_count === 0 ? (
+            <View style={styles.buyContainer}>
+              <View style={styles.rowCenter}>
                 <Text style={styles.counterText}>-</Text>
                 <Text style={styles.counterText}>{ticketAmount}</Text>
                 <Text style={styles.counterText}>+</Text>
@@ -282,8 +266,8 @@ export const EventDetailsScreen = ({route}) => {
               </TouchableOpacity>
             </View>
           ) : (
-            <View style={{flexDirection: 'row', marginBottom: 50}}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={styles.buyContainer}>
+              <View style={styles.rowCenter}>
                 <Text
                   style={styles.counterText}
                   onPress={() => {
@@ -297,7 +281,15 @@ export const EventDetailsScreen = ({route}) => {
                 <Text style={styles.counterText}>{ticketAmount}</Text>
                 <Text
                   style={styles.counterText}
-                  onPress={() => setTicketAmount(ticketAmount + 1)}>
+                  onPress={() => {
+                    if (
+                      ticketAmount ===
+                      tempData.total_tickets - tempData.buy_count
+                    ) {
+                      return;
+                    }
+                    setTicketAmount(ticketAmount + 1);
+                  }}>
                   +
                 </Text>
               </View>
@@ -308,7 +300,6 @@ export const EventDetailsScreen = ({route}) => {
               </TouchableOpacity>
             </View>
           )}
-
           <Modal
             isVisible={isModalVisible}
             onBackdropPress={() => setModalVisible(false)}>
@@ -349,6 +340,15 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     padding: 20,
   },
+  flexRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  rowCenter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   imgContainer: {
     flex: 1,
     marginTop: 30,
@@ -364,24 +364,35 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     height: 300,
-    backgroundColor: 'pink',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    marginBottom: 20,
   },
   name: {
-    textAlign: 'right',
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
+    lineHeight: 24,
     color: '#fff',
     fontWeight: '700',
   },
+  likedImg: {
+    marginRight: 10,
+  },
   followers: {
+    fontFamily: 'SpaceGrotesk-Medium',
     textAlign: 'right',
     fontSize: 14,
-    color: '#fff',
+    color: 'rgba(255, 255, 255, 0.66)',
     fontWeight: '400',
   },
+  halfWidth: {
+    width: '50%',
+  },
   text1: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 16,
     fontWeight: '500',
+    letterSpacing: 0.5,
     borderWidth: 1,
     borderRadius: 20,
     padding: 10,
@@ -389,6 +400,7 @@ const styles = StyleSheet.create({
     borderColor: '#6a4dfd',
   },
   text2: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: 'rgba(255, 255, 255, 0.66)',
     fontSize: 12,
     fontWeight: '400',
@@ -396,17 +408,45 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 2,
   },
+  remainTickets: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: 'rgba(255, 255, 255, 0.66)',
+    fontSize: 16,
+    lineHeight: 16,
+    fontWeight: '400',
+    letterSpacing: 0.5,
+  },
+  evStartTxt: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: 'rgba(255, 255, 255, 0.66)',
+    fontSize: 12,
+    fontWeight: '400',
+    marginBottom: 0,
+    marginLeft: 10,
+    textTransform: 'uppercase',
+    letterSpacing: 2,
+  },
   infoText: {
+    fontFamily: 'SpaceGrotesk-Medium',
     textAlign: 'left',
     fontSize: 16,
     color: '#fff',
     fontWeight: '500',
+    letterSpacing: 0.5,
     marginRight: 10,
   },
   priceText: {
     color: '#fff',
     fontSize: 32,
     fontWeight: '700',
+  },
+  eventCounter: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  counterContainer: {
+    minWidth: 210,
+    marginTop: 20,
   },
   counterText: {
     color: '#fff',
@@ -419,11 +459,13 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   description: {
+    fontFamily: 'SpaceGrotesk-Medium',
     textAlign: 'left',
     fontSize: 16,
     color: 'rgba(255, 255, 255, 0.66)',
     fontWeight: '400',
     marginBottom: 20,
+    marginTop: 10,
   },
   divider: {
     width: '100%',
@@ -434,6 +476,10 @@ const styles = StyleSheet.create({
   infoContainer: {
     flexDirection: 'row',
     marginBottom: 20,
+  },
+  buyContainer: {
+    flexDirection: 'row',
+    marginBottom: 50,
   },
   badgeMark: {
     backgroundColor: '#2f80ed',
@@ -463,6 +509,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   text3: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 16,
     fontWeight: '700',
@@ -497,9 +544,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   modalTitle: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 20,
     fontWeight: '600',
+  },
+  modalTxt: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: '600',
+    marginVertical: 5,
   },
   modalClose: {
     color: '#fff',
