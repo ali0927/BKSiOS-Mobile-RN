@@ -7,6 +7,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {eventData} from '../constant/eventData';
@@ -26,7 +27,6 @@ import {PayPalButtons, PayPalScriptProvider} from '@paypal/react-paypal-js';
 import {getEventPrice} from '../helper/event';
 import {buyTicket} from '../helper/event';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
-import HTMLView from 'react-native-htmlview';
 import metamaskImg from '../../assets/img/metamask.png';
 import bitkeepImg from '../../assets/img/bitkeep.png';
 import paypalImg from '../../assets/img/paypal-color.png';
@@ -38,6 +38,8 @@ import {
   BUSDPayment_testnet,
 } from '../utils/payment_contract';
 import {useSelector, useDispatch} from 'react-redux';
+import {WebView} from 'react-native-webview';
+import Feather from 'react-native-vector-icons/Feather';
 
 export const EventDetailsScreen = ({route}) => {
   const userInfo = useSelector(state => state.userInfoReducer).userInfo;
@@ -56,6 +58,9 @@ export const EventDetailsScreen = ({route}) => {
   const [eventCard, setEventCard] = useState(false);
   const [ticketAmount, setTicketAmount] = useState(1);
   const [wallet, setWallet] = useState('');
+  const [showGateway, setShowGateway] = useState(false);
+  const [prog, setProg] = useState(false);
+  const [progClr, setProgClr] = useState('#000');
 
   const toggleModal = () => {
     console.log('This is Modal');
@@ -92,6 +97,12 @@ export const EventDetailsScreen = ({route}) => {
     return <Countdown date={d} renderer={renderer} />;
   };
 
+  const gotoPaypal = () => {
+    setModalVisible(false);
+    setTimeout(() => {
+      setShowGateway(true);
+    }, 500);
+  };
   const createOrder = (data, actions) => {
     console.log('data: ', data);
     console.log('actions: ', actions);
@@ -284,6 +295,29 @@ export const EventDetailsScreen = ({route}) => {
       </div>
     </PayPalScriptProvider>
     `;
+
+  const _onApprove = async (data, actions) => {
+    let order = await actions.order.capture();
+    console.log('Payment Order', order);
+    window.ReactNativeWebView &&
+      window.ReactNativeWebView.postMessage(JSON.stringify(order));
+    return order;
+  };
+
+  const _onError = err => {
+    console.log('Payment Error', err);
+    let errObj = {
+      err: err,
+      status: 'FAILED',
+    };
+    window.ReactNativeWebView &&
+      window.ReactNativeWebView.postMessage(JSON.stringify(errObj));
+  };
+  const onMessage = e => {
+    let data = e.nativeEvent.data;
+    setShowGateway(false);
+    console.log('OnMessage Func', data);
+  };
   useEffect(() => {
     setWallet(userInfo?.wallet_address);
     setCurrentEvent(eventData.find(item => id === item.id));
@@ -467,6 +501,48 @@ export const EventDetailsScreen = ({route}) => {
             <Text style={styles.priceText}>{tempData.price} €</Text>
           </View>
           <View style={styles.divider} />
+          {showGateway ? (
+            <Modal
+              isVisible={showGateway}
+              onBackdropPress={() => setShowGateway(false)}>
+              <View style={styles.webViewCon}>
+                <View style={styles.wbHead}>
+                  <TouchableOpacity
+                    style={{padding: 13}}
+                    onPress={() => setShowGateway(false)}>
+                    <Feather name={'x'} size={24} />
+                  </TouchableOpacity>
+                  <Text style={styles.paypalHeader}>Pay with PayPal</Text>
+                  <View style={{padding: 13, opacity: prog ? 1 : 0}}>
+                    <ActivityIndicator size={24} color={progClr} />
+                  </View>
+                </View>
+                <WebView
+                  source={{
+                    uri:
+                      'https://my-paypal.netlify.app/' +
+                      getEventPrice(eventCard) * ticketAmount,
+                  }}
+                  onLoadStart={() => {
+                    setProg(true);
+                    setProgClr('#000');
+                  }}
+                  onLoadProgress={() => {
+                    setProg(true);
+                    setProgClr('#00457c');
+                  }}
+                  onLoadEnd={() => {
+                    setProg(false);
+                  }}
+                  onLoad={() => {
+                    setProg(false);
+                  }}
+                  style={{flex: 1}}
+                  onMessage={onMessage}
+                />
+              </View>
+            </Modal>
+          ) : null}
           {tempData.total_tickets - tempData.buy_count === 0 ? (
             <View style={styles.buyContainer}>
               <View style={styles.rowCenter}>
@@ -513,6 +589,7 @@ export const EventDetailsScreen = ({route}) => {
               </TouchableOpacity>
             </View>
           )}
+
           <Modal
             isVisible={isModalVisible}
             onBackdropPress={() => setModalVisible(false)}>
@@ -523,21 +600,9 @@ export const EventDetailsScreen = ({route}) => {
                   <Text style={styles.modalClose}>&times;</Text>
                 </TouchableOpacity>
               </View>
-              <PayPalScriptProvider
-                options={{
-                  'client-id':
-                    'AffFVjpeVWCzGzYRB3hs1btcwdt1R0adzgVROBak5Fn0hClbBVFea-DznT-WXjcH1h1qjrkqKvPQ6ia-',
-                  currency: 'EUR',
-                }}>
-                <PayPalButtons
-                  style={styles.paypalStyle}
-                  createOrder={createOrder}
-                  onApprove={onApprove}
-                />
-              </PayPalScriptProvider>
               <TouchableOpacity
                 style={styles.payButton}
-                onPress={() => toggleModal()}>
+                onPress={() => gotoPaypal()}>
                 <Image
                   source={paypalImg}
                   style={styles.metaImg}
@@ -842,5 +907,28 @@ const styles = StyleSheet.create({
     layout: 'horizontal',
     tagline: false,
     label: 'pay',
+  },
+  webViewCon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: '100%',
+    backgroundColor: 'green',
+  },
+  wbHead: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f9f9f9',
+    zIndex: 25,
+    elevation: 2,
+  },
+  paypalHeader: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#00457C',
   },
 });
