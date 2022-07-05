@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   StyleSheet,
   TextInput,
+  Platform
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -29,7 +30,6 @@ import {MenuStackScreen} from './menuStack';
 
 const Tab = createBottomTabNavigator();
 const THEME_COLOR = '#14142f';
-const THEME_SEC_COLOR = '#887bff';
 
 export default function MainTabs() {
   const [focusedItem, setFocusedItem] = useState(true);
@@ -45,13 +45,20 @@ export default function MainTabs() {
       <NavigationContainer>
         <Tab.Navigator
           screenOptions={{
-            tabBarActiveTintColor: THEME_SEC_COLOR,
+            tabBarActiveTintColor: '#6a4dfd',
+            tabBarInactiveTintColor: '#797e89',
             tabBarStyle: {
               backgroundColor: THEME_COLOR,
               paddingBottom: 30,
-              marginBottom: -35,
+              marginBottom: Platform.OS === 'ios' ? -35 : -20,
               height: 80,
             },
+            tabBarLabelStyle: {
+              fontSize: 10,
+              lineHeight: 13,
+              fontWeight: '500',
+              letterSpacing: -0.1,
+          },
           }}>
           <Tab.Screen
             name="Home"
