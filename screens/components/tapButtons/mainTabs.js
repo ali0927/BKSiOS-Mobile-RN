@@ -7,7 +7,8 @@ import {
   SafeAreaView,
   StyleSheet,
   TextInput,
-  Platform
+  Platform,
+  Dimensions
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -30,6 +31,8 @@ import {MenuStackScreen} from './menuStack';
 
 const Tab = createBottomTabNavigator();
 const THEME_COLOR = '#14142f';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export default function MainTabs() {
   const [focusedItem, setFocusedItem] = useState(true);
@@ -54,9 +57,10 @@ export default function MainTabs() {
               height: 80,
             },
             tabBarLabelStyle: {
+              fontFamily: 'SpaceGrotesk-Medium',
               fontSize: 10,
               lineHeight: 13,
-              fontWeight: '500',
+              fontWeight: '700',
               letterSpacing: -0.1,
           },
           }}>
@@ -77,7 +81,7 @@ export default function MainTabs() {
             options={{
               tabBarLabel: 'Search',
               headerTitle: () => (
-                <View style={{alignItems: 'center'}}>
+                <View style={{alignItems: 'center', width: windowWidth-40}}>
                   <Text style={styles.headerTitle}>Search</Text>
                   <View style={styles.searchContainer}>
                     <TextInput
@@ -100,10 +104,6 @@ export default function MainTabs() {
               headerStyle: {
                 height: 100,
                 backgroundColor: THEME_COLOR,
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
               },
             }}
           />
@@ -174,9 +174,6 @@ export default function MainTabs() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // backgroundColor: THEME_COLOR,
     backgroundColor: THEME_COLOR,
   },
   headerTitle: {
@@ -195,7 +192,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   input: {
-    width: 350,
+    width: windowWidth-35,
     height: 36,
     backgroundColor: 'rgba(255, 255, 255, 0.06)',
     padding: 8,

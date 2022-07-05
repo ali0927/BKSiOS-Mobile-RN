@@ -107,7 +107,7 @@ export const HomeStackScreen = () => {
         component={HomeScreen}
         options={{
           headerTitle: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%',}}>
               <Image source={logoImg} style={{width: 28, height: 28}} />
               <Text
                 style={{
@@ -127,23 +127,32 @@ export const HomeStackScreen = () => {
         component={EventDetailsScreen}
         options={{
           headerTitle: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image source={arrowLeft} />
+            </TouchableOpacity>
               <Text
                 style={{
+                  fontFamily: 'SpaceGrotesk-Medium',
                   color: '#fff',
-                  fontSize: 16,
+                  fontSize: 20,
                   marginLeft: 10,
-                  fontWeight: '600',
+                  fontWeight: '700',
+                  textAlign: 'right',
+                  letterSpacing: 1.03,
                 }}>
                 Item
               </Text>
+              <View style={{width: 60}}></View>
             </View>
           ),
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image source={arrowLeft} />
-            </TouchableOpacity>
+            <></>
+            // <TouchableOpacity onPress={() => navigation.goBack()}>
+            //   <Image source={arrowLeft} />
+            // </TouchableOpacity>
           ),
+          headerBackVisible: false,
         }}
       />
       <HomeStack.Screen
