@@ -1,11 +1,19 @@
 import React from 'react';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+} from 'react-native';
 import {HomeHero} from '../components/homePage/homeHero';
 import CollectionCarousel from '../components/homePage/collectionCarousel';
 import EventsCarousel from '../components/homePage/eventsCarousel';
 import BackstagersCarousel from '../components/homePage/backstagersCarousel';
 import backImg from '../../assets/img/home/home-background.png';
 
+const deviceWidth = Dimensions.get('window').width;
 export const HomeScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
@@ -38,6 +46,7 @@ const styles = StyleSheet.create({
   },
   backImg: {
     position: 'absolute',
+    width: deviceWidth,
   },
   subtitle: {
     fontFamily: 'SpaceGrotesk-Medium',
