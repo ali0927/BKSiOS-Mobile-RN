@@ -8,7 +8,7 @@ import {
   StyleSheet,
   TextInput,
   Platform,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -50,19 +50,8 @@ export default function MainTabs() {
           screenOptions={{
             tabBarActiveTintColor: '#6a4dfd',
             tabBarInactiveTintColor: '#797e89',
-            tabBarStyle: {
-              backgroundColor: THEME_COLOR,
-              paddingBottom: 30,
-              marginBottom: Platform.OS === 'ios' ? -35 : -20,
-              height: 80,
-            },
-            tabBarLabelStyle: {
-              fontFamily: 'SpaceGrotesk-Medium',
-              fontSize: 10,
-              lineHeight: 13,
-              fontWeight: '700',
-              letterSpacing: -0.1,
-          },
+            tabBarStyle: styles.tabBarStyle,
+            tabBarLabelStyle: styles.tabBarLabelStyle,
           }}>
           <Tab.Screen
             name="Home"
@@ -81,7 +70,7 @@ export default function MainTabs() {
             options={{
               tabBarLabel: 'Search',
               headerTitle: () => (
-                <View style={{alignItems: 'center', width: windowWidth-40}}>
+                <View style={{alignItems: 'center', width: windowWidth - 40}}>
                   <Text style={styles.headerTitle}>Search</Text>
                   <View style={styles.searchContainer}>
                     <TextInput
@@ -101,10 +90,7 @@ export default function MainTabs() {
               tabBarIcon: status => (
                 <Image source={status.focused ? searchActImg : searchImg} />
               ),
-              headerStyle: {
-                height: 100,
-                backgroundColor: THEME_COLOR,
-              },
+              headerStyle: styles.headerStyle,
             }}
           />
           <Tab.Screen
@@ -133,14 +119,7 @@ export default function MainTabs() {
               tabBarIcon: status => (
                 <Image source={status.focused ? exploreActImg : exploreImg} />
               ),
-              headerStyle: {
-                height: 100,
-                backgroundColor: THEME_COLOR,
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
+              headerStyle: styles.headerStyle,
             }}
           />
           <Tab.Screen
@@ -172,6 +151,23 @@ export default function MainTabs() {
 }
 
 const styles = StyleSheet.create({
+  tabBarStyle: {
+    backgroundColor: THEME_COLOR,
+    paddingBottom: 30,
+    marginBottom: Platform.OS === 'ios' ? -35 : -20,
+    height: 80,
+  },
+  tabBarLabelStyle: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    fontSize: 10,
+    lineHeight: 13,
+    fontWeight: '700',
+    letterSpacing: -0.1,
+  },
+  headerStyle: {
+    height: 100,
+    backgroundColor: THEME_COLOR,
+  },
   container: {
     flex: 1,
     backgroundColor: THEME_COLOR,
@@ -186,13 +182,14 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
   },
   searchContainer: {
+    width: windowWidth - 20,
     position: 'relative',
     borderRadius: 4,
     height: 36,
     width: '100%',
   },
   input: {
-    width: windowWidth-35,
+    width: windowWidth - 35,
     height: 36,
     backgroundColor: 'rgba(255, 255, 255, 0.06)',
     padding: 8,
@@ -211,10 +208,11 @@ const styles = StyleSheet.create({
     // shadowOpacity: 0.8,
     // shadowRadius: 5,
     // borderColor: '#6a4dfd',
-    border: 'none',
+    // border: 'none',
     borderColor: 'transparent',
     backgroundColor: 'rgba(255, 255, 255, 0.06)',
-    width: 350,
+    width: windowWidth - 35,
+    // width: 350,
     height: 36,
     borderWidth: 1,
     padding: 8,
