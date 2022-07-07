@@ -41,8 +41,9 @@ export const NewsDetailScreen = ({route, navigation}) => {
       .catch(function (error) {
         setLoading(false);
         Toast.show({
-          type: 'Article Data',
-          text1: error,
+          type: 'error',
+          text1: 'Error occured while calling data...',
+          text2: error,
         });
       })
       .finally(function () {
