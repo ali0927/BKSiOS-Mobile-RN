@@ -1,6 +1,13 @@
 import React from 'react';
 import DateObject from 'react-date-object';
-import {TouchableOpacity, View, Text, Image, StyleSheet} from 'react-native';
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Platform,
+} from 'react-native';
 import messageImg from '../../../assets/img/icons/message.png';
 import clockImg from '../../../assets/img/icons/clock.png';
 import {useNavigation} from '@react-navigation/core';
@@ -86,12 +93,16 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 26,
     color: '#fff',
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     letterSpacing: 0.5,
   },
   categoryBtn: {
-    alignItems: 'flex-start',
+    alignItems: 'center',
     marginBottom: 10,
+    height: 24,
+    width: 60,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 12,
   },
   categoryBtnTxt: {
     fontFamily: 'SpaceGrotesk-Medium',
@@ -99,11 +110,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     lineHeight: 16,
     color: 'rgba(255,255,255,0.66)',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    overflow: 'hidden',
-    borderRadius: 12,
-    paddingVertical: 5,
-    paddingHorizontal: 12,
+    paddingVertical: 4,
   },
   cardFooterContainer: {
     flexDirection: 'row',

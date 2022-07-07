@@ -37,19 +37,19 @@ const FilterModal = ({toggleModal}) => {
     {id: 6, title: 'follows'},
   ];
   const handleChecked = item => {
-    if (item == 0) {
+    if (item === 0) {
       setChecked({...checked, listings: !checked.listings});
-    } else if (item == 1) {
+    } else if (item === 1) {
       setChecked({...checked, purchases: !checked.purchases});
-    } else if (item == 2) {
+    } else if (item === 2) {
       setChecked({...checked, sales: !checked.sales});
-    } else if (item == 3) {
+    } else if (item === 3) {
       setChecked({...checked, transfers: !checked.transfers});
-    } else if (item == 4) {
+    } else if (item === 4) {
       setChecked({...checked, bids: !checked.bids});
-    } else if (item == 5) {
+    } else if (item === 5) {
       setChecked({...checked, likes: !checked.likes});
-    } else if (item == 6) {
+    } else if (item === 6) {
       setChecked({...checked, follows: !checked.follows});
     }
   };
@@ -100,6 +100,17 @@ export const MenuStackScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const navigation = useNavigation();
+  const Header = ({title}) => {
+    return (
+      <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate('MoreMain')}>
+          <Image source={arrowLeft} />
+        </TouchableOpacity>
+        <Text style={styles.titleText}>{title}</Text>
+        <View style={{width: 60}} />
+      </View>
+    );
+  };
 
   const toggleModal = () => {
     console.log('This is Modal');
@@ -113,30 +124,26 @@ export const MenuStackScreen = () => {
         headerStyle: {
           backgroundColor: THEME_COLOR,
         },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
       }}>
       <MenuStack.Screen
         name="MoreMain"
         component={MenuHomeScreen}
         options={{
-          headerTitle: () => <Text style={styles.headerTitle}>More</Text>,
+          headerTitle: () => (
+            <View style={styles.headerContainer}>
+              <View />
+              <Text style={styles.titleText}>More</Text>
+              <View />
+            </View>
+          ),
         }}
       />
       <MenuStack.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
-          headerTitle: () => (
-            <Text style={styles.headerTitle}>Your Profile</Text>
-          ),
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.navigate('MoreMain')}>
-              <Image source={arrowLeft} />
-            </TouchableOpacity>
-          ),
+          headerTitle: () => <Header title="Your Profile" />,
+          headerBackVisible: false,
         }}
       />
       <MenuStack.Screen
@@ -144,8 +151,11 @@ export const MenuStackScreen = () => {
         component={ActivityScreen}
         options={{
           headerTitle: () => (
-            <View>
-              <Text style={styles.headerTitle}>Activity</Text>
+            <View style={styles.headerContainer}>
+              <TouchableOpacity onPress={() => navigation.navigate('MoreMain')}>
+                <Image source={arrowLeft} />
+              </TouchableOpacity>
+              <Text style={styles.titleText}>Activity</Text>
               <Modal
                 isVisible={isModalVisible}
                 backdropOpacity={0}
@@ -153,56 +163,36 @@ export const MenuStackScreen = () => {
                 animationOut={'slideOutUp'}>
                 <FilterModal toggleModal={toggleModal} />
               </Modal>
+              <TouchableOpacity onPress={toggleModal}>
+                <Image source={filterImg} />
+              </TouchableOpacity>
             </View>
           ),
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.navigate('MoreMain')}>
-              <Image source={arrowLeft} />
-            </TouchableOpacity>
-          ),
-          headerRight: () => (
-            <TouchableOpacity onPress={toggleModal}>
-              <Image source={filterImg} />
-            </TouchableOpacity>
-          ),
+          headerBackVisible: false,
         }}
       />
       <MenuStack.Screen
         name="Liked"
         component={ActivityScreen}
         options={{
-          headerTitle: () => <Text style={styles.headerTitle}>Liked</Text>,
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.navigate('MoreMain')}>
-              <Image source={arrowLeft} />
-            </TouchableOpacity>
-          ),
+          headerTitle: () => <Header title="Liked" />,
+          headerBackVisible: false,
         }}
       />
       <MenuStack.Screen
         name="Settings"
         component={AppSettingScreen}
         options={{
-          headerTitle: () => (
-            <Text style={styles.headerTitle}>App Settings</Text>
-          ),
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.navigate('MoreMain')}>
-              <Image source={arrowLeft} />
-            </TouchableOpacity>
-          ),
+          headerTitle: () => <Header title="App Settings" />,
+          headerBackVisible: false,
         }}
       />
       <MenuStack.Screen
         name="About"
         component={AboutScreen}
         options={{
-          headerTitle: () => <Text style={styles.headerTitle}>About</Text>,
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.navigate('MoreMain')}>
-              <Image source={arrowLeft} />
-            </TouchableOpacity>
-          ),
+          headerTitle: () => <Header title="About" />,
+          headerBackVisible: false,
         }}
       />
     </MenuStack.Navigator>
@@ -291,5 +281,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textTransform: 'uppercase',
     letterSpacing: 1.6,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingRight: 40,
+  },
+  titleText: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: '#fff',
+    fontSize: 20,
+    marginLeft: 10,
+    fontWeight: '700',
+    textAlign: 'right',
+    letterSpacing: 1.03,
   },
 });

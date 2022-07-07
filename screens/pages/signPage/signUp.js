@@ -256,11 +256,6 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     color: '#ff4e4e',
   },
-  img: {
-    width: '70%',
-    height: 52,
-    marginBottom: 20,
-  },
   text1: {
     fontFamily: 'SpaceGrotesk-Medium',
     color: 'rgba(255, 255, 255, 0.66)',

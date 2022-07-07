@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {ArticleCard} from '../components/newsPage/articleCard';
+import {Loading} from '../components/loading';
+import Toast from 'react-native-toast-message';
 import config from '../helper/config';
 
 export const NewsScreen = () => {
@@ -19,15 +21,21 @@ export const NewsScreen = () => {
   ]);
   const [currentCategory, setCurrentCategory] = useState(0);
   const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getArticles = () => {
     axios
       .get(config.API_BASE_URL + '/api/article')
       .then(function (response) {
+        setLoading(false);
         setArticles(response.data.articles);
       })
       .catch(function (error) {
-        console.log('error Data: ', error);
+        setLoading(false);
+        Toast.show({
+          type: 'error',
+          text1: error,
+        });
       })
       .finally(function () {
         console.log('arrived there');
@@ -46,7 +54,8 @@ export const NewsScreen = () => {
             categoryList.map(item => (
               <TouchableOpacity
                 style={styles.categoryTitle}
-                onPress={() => setCurrentCategory(item.id)}>
+                onPress={() => setCurrentCategory(item.id)}
+                key={item.id}>
                 <Text
                   style={
                     item.id === currentCategory
@@ -61,6 +70,7 @@ export const NewsScreen = () => {
       </ScrollView>
       <ScrollView>
         <View style={styles.articleContainer}>
+          {loading && <Loading />}
           {articles &&
             articles.map(item => <ArticleCard item={item} key={item.id} />)}
         </View>
@@ -71,6 +81,7 @@ export const NewsScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: '#14142f',
   },
   categoryContainer: {
@@ -91,8 +102,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#fff',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.33)',
-    paddingVertical: 5,
+    paddingVertical: 4,
     paddingHorizontal: 15,
     borderRadius: 12,
     overflow: 'hidden',
@@ -105,7 +115,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#6a4dfd',
     backgroundColor: '#6a4dfd',
-    paddingVertical: 5,
+    paddingVertical: 4,
     paddingHorizontal: 15,
     borderRadius: 12,
     overflow: 'hidden',

@@ -1,105 +1,63 @@
 import React from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/core';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {SignUpScreen} from '../../pages/signPage/signUp';
-import {SignInScreen} from '../../pages/signPage/signIn';
+import {Image, Text, TouchableOpacity, View, StyleSheet} from 'react-native';
+import arrowLeft from '../../../assets/img/icons/arrow-left.png';
+import logoImg from '../../../assets/img/icons/logo.png';
+import {EventDetailsScreen} from '../../pages/eventDetails';
+import {HomeScreen} from '../../pages/home';
+import {ProfileAuthorScreen} from '../../pages/profileAuthor';
 import {ForgetPasswordScreen} from '../../pages/signPage/ForgetPassword';
 import {PrivacyScreen} from '../../pages/signPage/privacy';
-import {HomeScreen} from '../../pages/home';
-import {EventDetailsScreen} from '../../pages/eventDetails';
-import {useNavigation} from '@react-navigation/core';
-import logoImg from '../../../assets/img/icons/logo.png';
-import arrowLeft from '../../../assets/img/icons/arrow-left.png';
-import {ProfileAuthorScreen} from '../../pages/profileAuthor';
+import {SignInScreen} from '../../pages/signPage/signIn';
+import {SignUpScreen} from '../../pages/signPage/signUp';
 
 const HomeStack = createNativeStackNavigator();
-const THEME_COLOR = '#14142f';
 
 export const HomeStackScreen = () => {
   const navigation = useNavigation();
+  const Header = ({title}) => {
+    return (
+      <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image source={arrowLeft} />
+        </TouchableOpacity>
+        <Text style={styles.titleText}>{title}</Text>
+        <View style={{width: 60}} />
+      </View>
+    );
+  };
 
   return (
     <HomeStack.Navigator
       initialRouteName="HomeMain"
       screenOptions={{
         headerStyle: {
-          backgroundColor: THEME_COLOR,
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
+          backgroundColor: '#14142f',
         },
       }}>
       <HomeStack.Screen
         name="SignIn"
         component={SignInScreen}
         options={{
-          headerTitle: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 16,
-                  marginLeft: 10,
-                  fontWeight: '600',
-                }}>
-                Sign In
-              </Text>
-            </View>
-          ),
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image source={arrowLeft} />
-            </TouchableOpacity>
-          ),
+          headerTitle: () => <Header title="Sign In" />,
+          headerBackVisible: false,
         }}
       />
       <HomeStack.Screen
         name="SignUp"
         component={SignUpScreen}
         options={{
-          headerTitle: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 16,
-                  marginLeft: 10,
-                  fontWeight: '600',
-                }}>
-                Sign Up
-              </Text>
-            </View>
-          ),
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image source={arrowLeft} />
-            </TouchableOpacity>
-          ),
+          headerTitle: () => <Header title="Sign Up" />,
+          headerBackVisible: false,
         }}
       />
       <HomeStack.Screen
         name="ForgetPassword"
         component={ForgetPasswordScreen}
         options={{
-          headerTitle: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 16,
-                  marginLeft: 10,
-                  fontWeight: '600',
-                }}>
-                Forgot Password
-              </Text>
-            </View>
-          ),
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image source={arrowLeft} />
-            </TouchableOpacity>
-          ),
+          headerTitle: () => <Header title="Forgot Password" />,
+          headerBackVisible: false,
         }}
       />
       <HomeStack.Screen
@@ -107,17 +65,9 @@ export const HomeStackScreen = () => {
         component={HomeScreen}
         options={{
           headerTitle: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={styles.homeHeaderContainer}>
               <Image source={logoImg} style={{width: 28, height: 28}} />
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 16,
-                  marginLeft: 10,
-                  fontWeight: '600',
-                }}>
-                BACKSTAGE
-              </Text>
+              <Text style={styles.homeHeaderTitle}>BACKSTAGE</Text>
             </View>
           ),
         }}
@@ -126,51 +76,49 @@ export const HomeStackScreen = () => {
         name="EventDetail"
         component={EventDetailsScreen}
         options={{
-          headerTitle: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 16,
-                  marginLeft: 10,
-                  fontWeight: '600',
-                }}>
-                Item
-              </Text>
-            </View>
-          ),
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image source={arrowLeft} />
-            </TouchableOpacity>
-          ),
+          headerTitle: () => <Header title="Item" />,
+          headerBackVisible: false,
         }}
       />
       <HomeStack.Screen
         name="AuthorProfile"
         component={ProfileAuthorScreen}
         options={{
-          headerTitle: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 16,
-                  marginLeft: 10,
-                  fontWeight: '600',
-                }}>
-                Profile
-              </Text>
-            </View>
-          ),
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image source={arrowLeft} />
-            </TouchableOpacity>
-          ),
+          headerTitle: () => <Header title="Profile" />,
+          headerBackVisible: false,
         }}
       />
       <HomeStack.Screen name="Privacy" component={PrivacyScreen} />
     </HomeStack.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  titleText: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: '#fff',
+    fontSize: 20,
+    marginLeft: 10,
+    fontWeight: '700',
+    textAlign: 'right',
+    letterSpacing: 1.03,
+  },
+  homeHeaderContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  homeHeaderTitle: {
+    color: '#fff',
+    fontSize: 16,
+    marginLeft: 10,
+    fontWeight: '600',
+  },
+});

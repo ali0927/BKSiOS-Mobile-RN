@@ -6,17 +6,20 @@ import {
   View,
   StatusBar,
   Image,
+  Dimensions,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import logoImg from '../../assets/img/icons/logo.png';
 import backImg from '../../assets/img/icons/start-back.png';
 
 const THEME_COLOR = '#14142f';
+const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
 
 export const MainPage = ({submit}) => {
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="light-content" backgroundColor={THEME_COLOR}/>
       <View style={{zIndex: 30}}>
         <TouchableOpacity
           style={{alignItems: 'center'}}
@@ -49,6 +52,8 @@ const styles = StyleSheet.create({
   },
   backImage: {
     position: 'absolute',
+    height: deviceHeight,
+    width: deviceWidth,
     bottom: 0,
     zIndex: 0,
   },
