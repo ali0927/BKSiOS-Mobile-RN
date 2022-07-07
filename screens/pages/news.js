@@ -29,7 +29,6 @@ export const NewsScreen = () => {
       .then(function (response) {
         setLoading(false);
         setArticles(response.data.articles);
-        console.log('Articles', response);
       })
       .catch(function (error) {
         setLoading(false);

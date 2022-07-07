@@ -20,8 +20,6 @@ import Toast from 'react-native-toast-message';
 // import shareImg3 from '../../assets/img/icons/medium.png';
 import config from '../helper/config';
 
-// import {getArticleById} from "../helper/article";
-
 export const NewsDetailScreen = ({route, navigation}) => {
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -39,7 +37,6 @@ export const NewsDetailScreen = ({route, navigation}) => {
       .then(function (response) {
         setLoading(false);
         setArticle(response.data.article);
-        console.log("Article Description", response.data.article)
       })
       .catch(function (error) {
         setLoading(false);
