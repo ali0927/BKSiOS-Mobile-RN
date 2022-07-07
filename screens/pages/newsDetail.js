@@ -6,12 +6,15 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import HTMLView from 'react-native-htmlview';
 import axios from 'axios';
 import DateObject from 'react-date-object';
 import clockImg from '../../assets/img/icons/clock.png';
 import messageImg from '../../assets/img/icons/message.png';
+import { Loading } from '../components/loading';
+import Toast from 'react-native-toast-message';
 // import shareImg1 from '../../assets/img/icons/facebook.png';
 // import shareImg2 from '../../assets/img/icons/twitter.png';
 // import shareImg3 from '../../assets/img/icons/medium.png';
@@ -21,6 +24,7 @@ import config from '../helper/config';
 
 export const NewsDetailScreen = ({route, navigation}) => {
   const [article, setArticle] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const dateString = d => {
     var date = new DateObject({
@@ -33,10 +37,16 @@ export const NewsDetailScreen = ({route, navigation}) => {
     axios
       .get(config.API_BASE_URL + '/api/article/' + e)
       .then(function (response) {
+        setLoading(false);
         setArticle(response.data.article);
+        console.log("Article Description", response.data.article)
       })
       .catch(function (error) {
-        console.log('Response Data: ', error);
+        setLoading(false);
+        Toast.show({
+          type: 'Article Data',
+          text1: error,
+        });
       })
       .finally(function () {
         console.log('arrived there');
@@ -50,6 +60,7 @@ export const NewsDetailScreen = ({route, navigation}) => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollStyle}>
+          {loading && <Loading />}
         {article && (
           <View style={styles.innerContainer}>
             <Image
@@ -94,6 +105,7 @@ export const NewsDetailScreen = ({route, navigation}) => {
                 <Text style={styles.shareButtonText}>share</Text>
               </TouchableOpacity>
             </View> */}
+            <View style={{height: 100}} />
           </View>
         )}
       </ScrollView>
@@ -143,24 +155,28 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     letterSpacing: 0.5,
   },
+  newsButton: {
+    alignItems: 'center',
+    height: 24,
+    width: 60,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 12,
+    marginTop: 25,
+  },
   newsText: {
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 12,
-    color: 'rgba(255,255,255,0.66)',
     fontWeight: '500',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    overflow: 'hidden',
-    borderRadius: 11,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    marginTop: 20,
+    lineHeight: 16,
+    color: 'rgba(255,255,255,0.66)',
+    paddingVertical: 4,
   },
   articleTitle: {
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
     lineHeight: 26,
     color: '#fff',
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     marginTop: 10,
     marginBottom: 10,
     letterSpacing: 0.5,
@@ -193,9 +209,6 @@ const styles = StyleSheet.create({
   //   fontSize: 16,
   //   fontWeight: '700',
   // },
-  newsButton: {
-    alignItems: 'flex-start',
-  },
 });
 const htmlStyleSheet = StyleSheet.create({
   h1: {
@@ -203,8 +216,11 @@ const htmlStyleSheet = StyleSheet.create({
     fontSize: 24,
     lineHeight: 26,
     color: '#fff',
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     marginBottom: -50,
+  },
+  strong: {
+    fontFamily: 'SpaceGrotesk-Medium',
   },
   p: {
     fontFamily: 'SpaceGrotesk-Medium',
