@@ -7,6 +7,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import {getEventPrice, getAllEventCards} from '../helper/event';
@@ -52,8 +53,7 @@ export const ExplorerScreen = () => {
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('EventDetail', {item: item})}
-        style={styles.cardContainer}
-        key={item.id}>
+        style={styles.cardContainer}>
         <View style={styles.imageDiv}>
           <Image
             source={{
@@ -100,8 +100,9 @@ export const ExplorerScreen = () => {
   return (
     <ScrollView style={styles.container}>
       {events.map(item => (
-        <Card item={item} />
+        <Card item={item} key={item.id} />
       ))}
+      {Platform.OS === 'android' && <View style={{height: 50}} />}
     </ScrollView>
   );
 };
