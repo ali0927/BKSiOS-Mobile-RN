@@ -7,6 +7,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import {getEventPrice, getAllEventCards} from '../helper/event';
@@ -14,16 +15,19 @@ import config from '../helper/config';
 import badgeMark from '../../assets/img/icons/verified.png';
 import likedImg from '../../assets/img/icons/like-empty.png';
 import collectionAvatar from '../../assets/img/avatars/avatar2.jpg';
+import {Loading} from '../components/loading';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
 export const ExplorerScreen = () => {
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getAllEventCards().then(res => {
       if (res.success) {
+        setLoading(false);
         setEvents(res.eventcards);
       }
     });
@@ -52,8 +56,7 @@ export const ExplorerScreen = () => {
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('EventDetail', {item: item})}
-        style={styles.cardContainer}
-        key={item.id}>
+        style={styles.cardContainer}>
         <View style={styles.imageDiv}>
           <Image
             source={{
@@ -63,7 +66,7 @@ export const ExplorerScreen = () => {
                 item.picture_small,
             }}
             style={styles.img}
-            resizeMode="stretch"
+            resizeMode="cover"
           />
         </View>
         <View style={styles.cardMeta}>
@@ -91,7 +94,9 @@ export const ExplorerScreen = () => {
               <Text style={styles.info}>Reserve Price</Text>
               <Text style={styles.price}>{getEventPrice(item)} &#8364;</Text>
             </View>
-            <Image source={likedImg} />
+            <View style={styles.likedImg}>
+              <Image source={likedImg} />
+            </View>
           </View>
         </View>
       </TouchableOpacity>
@@ -99,9 +104,12 @@ export const ExplorerScreen = () => {
   };
   return (
     <ScrollView style={styles.container}>
-      {events.map(item => (
-        <Card item={item} />
-      ))}
+      <View style={styles.eventContainer}>
+        {loading && <Loading />}
+        {events.map(item => (
+          <Card item={item} key={item.id} />
+        ))}
+      </View>
     </ScrollView>
   );
 };
@@ -110,12 +118,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#14142f',
-    margin: 'auto',
-    overflow: 'hidden',
-    padding: 20,
+  },
+  eventContainer: {
+    flex: 1,
+    paddingVertical: 30,
+    paddingHorizontal: 20,
   },
   cardContainer: {
-    marginTop: 30,
+    marginBottom: 30,
     height: 440,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     overflow: 'hidden',
@@ -135,10 +145,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
     width: '100%',
-    paddingTop: 15,
-    paddingBottom: 15,
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
   },
   detailContainer: {
     display: 'flex',
@@ -177,7 +185,7 @@ const styles = StyleSheet.create({
   name: {
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     color: '#fff',
     lineHeight: 24,
     width: '100%',
@@ -200,7 +208,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 20,
     color: '#fff',
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
   },
   avatar: {
     width: 32,
@@ -212,7 +220,7 @@ const styles = StyleSheet.create({
   price: {
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     color: '#fff',
     lineHeight: 28,
     textAlign: 'left',
@@ -227,5 +235,9 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
     marginLeft: 10,
+  },
+  likedImg: {
+    width: 24,
+    height: 24,
   },
 });

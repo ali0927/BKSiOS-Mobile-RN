@@ -6,11 +6,13 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import avatarImg from '../../assets/img/avatars/avatar3.jpg';
 import {allTickets, getAllCollections, getAllEventCards} from '../helper/event';
 import {useNavigation} from '@react-navigation/core';
 import config from '../helper/config';
+import {Loading} from '../components/loading';
 
 export const SearchScreen = () => {
   const navigation = useNavigation();
@@ -18,10 +20,14 @@ export const SearchScreen = () => {
   const [events, setEvents] = useState([]);
   const [collections, setCollections] = useState([]);
   const [selectedTag, setSelectedTag] = useState('collections');
+  const [colLoading, setColLoading] = useState(true);
+  const [eventLoading, setEventLoading] = useState(true);
+  const [ticketLoading, setTicketLoading] = useState(true);
 
   useEffect(() => {
     getAllCollections().then(res => {
       if (res.success) {
+        setColLoading(false);
         setCollections(res.collections);
       } else {
         console.log('ERROR:::', res);
@@ -30,12 +36,14 @@ export const SearchScreen = () => {
 
     getAllEventCards().then(res => {
       if (res.success) {
+        setEventLoading(false);
         setEvents(res.eventcards);
       }
     });
 
     allTickets().then(res => {
       if (res.success) {
+        setTicketLoading(false);
         setTickets(res.tickets);
       }
     });
@@ -73,13 +81,15 @@ export const SearchScreen = () => {
           <Text style={styles.subtitle}>{selectedTag}</Text>
           {selectedTag === 'collections' && (
             <View style={styles.resultContainer}>
+              {colLoading && <Loading />}
               {collections &&
                 collections.map((collection, i) => (
                   <TouchableOpacity
                     style={styles.resultItem}
                     onPress={() =>
                       navigation.navigate('AuthorProfile', {item: collection})
-                    }>
+                    }
+                    key={'collections' + i}>
                     <View style={styles.resultBackImg}>
                       <Image
                         source={{
@@ -102,7 +112,7 @@ export const SearchScreen = () => {
                         }}
                         style={styles.resultAvatarImg}
                       />
-                      <Text style={styles.resultName}>{collection.name}</Text>
+                      <Text style={styles.resultName} numberOfLines={1}>{collection.name}</Text>
                       <Text style={styles.resultDescription}>Accomodation</Text>
                     </View>
                   </TouchableOpacity>
@@ -111,6 +121,7 @@ export const SearchScreen = () => {
           )}
           {selectedTag === 'events' && (
             <View style={styles.resultContainer}>
+              {eventLoading && <Loading />}
               {events &&
                 events.map((event, i) => {
                   const creatorAvatar = () => {
@@ -151,7 +162,8 @@ export const SearchScreen = () => {
                       style={styles.resultItem}
                       onPress={() =>
                         navigation.navigate('EventDetail', {item: event})
-                      }>
+                      }
+                      key={'events' + i}>
                       <View style={styles.resultBackImg}>
                         <Image
                           source={{
@@ -181,9 +193,12 @@ export const SearchScreen = () => {
           )}
           {selectedTag === 'tickets' && (
             <View style={styles.resultContainer}>
+              {ticketLoading && <Loading />}
               {tickets &&
                 tickets.map((ticket, i) => (
-                  <TouchableOpacity style={styles.resultItem}>
+                  <TouchableOpacity
+                    style={styles.resultItem}
+                    key={'tickets' + i}>
                     <View style={styles.resultBackImg}>
                       <Image
                         source={{
@@ -228,7 +243,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     lineHeight: 31,
     color: '#fff',
     textTransform: 'capitalize',
@@ -302,9 +317,12 @@ const styles = StyleSheet.create({
   resultName: {
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     lineHeight: 20,
+    textAlign: 'center',
+    marginTop: 10,
     color: '#fff',
+    width: '80%',
   },
   resultDescription: {
     fontFamily: 'SpaceGrotesk-Medium',
