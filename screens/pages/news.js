@@ -34,7 +34,8 @@ export const NewsScreen = () => {
         setLoading(false);
         Toast.show({
           type: 'error',
-          text1: error,
+          text1: 'Error occured while calling data...',
+          text2: error,
         });
       })
       .finally(function () {
