@@ -13,7 +13,7 @@ import axios from 'axios';
 import DateObject from 'react-date-object';
 import clockImg from '../../assets/img/icons/clock.png';
 import messageImg from '../../assets/img/icons/message.png';
-import { Loading } from '../components/loading';
+import {Loading} from '../components/loading';
 import Toast from 'react-native-toast-message';
 // import shareImg1 from '../../assets/img/icons/facebook.png';
 // import shareImg2 from '../../assets/img/icons/twitter.png';
@@ -58,7 +58,7 @@ export const NewsDetailScreen = ({route, navigation}) => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollStyle}>
-          {loading && <Loading />}
+        {loading && <Loading />}
         {article && (
           <View style={styles.innerContainer}>
             <Image
