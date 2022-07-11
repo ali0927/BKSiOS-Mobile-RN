@@ -60,14 +60,14 @@ export const SignInScreen = ({navigation}) => {
           navigation.navigate('HomeMain');
         } else {
           Toast.show({
-            type: 'success',
+            type: 'error',
             text1: res.message,
           });
         }
       })
       .catch(error => {
         Toast.show({
-          type: 'success',
+          type: 'error',
           text1: 'Login Failed...',
           text2: error,
         });
