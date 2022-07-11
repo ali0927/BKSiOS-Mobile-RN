@@ -27,15 +27,20 @@ import uploadImg from '../../assets/img/icons/upload.png';
 import Modal from 'react-native-modal';
 import {
   changeAvatar,
+  changeSocial,
+  changePassword,
   getAllUserAvatars,
   getAllUserBackgrounds,
 } from '../helper/user';
 import {validateEmail} from '../utils';
 import {useSelector} from 'react-redux';
+import {updateProfile} from '../helper/auth';
 
 const SERVER_URL = 'http://localhost:3000';
 
 export const ProfileScreen = () => {
+  const userInfo = useSelector(state => state.userInfoReducer).userInfo;
+
   const [backModalVisible, setBackModalVisible] = useState(false);
   const [avatarModalVisible, setAvatarModalVisible] = useState(false);
   const [userAvatars, setUserAvatars] = useState([]);
@@ -88,7 +93,6 @@ export const ProfileScreen = () => {
   const [socialChanged, setSocialChanged] = useState(false);
   const [pwdChanged, setPwdChanged] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-  const userInfo = useSelector(state => state.userInfoReducer).userInfo;
 
   const handleGeneralChange = (prop, value) => {
     setGeneralChanged(true);
@@ -285,32 +289,81 @@ export const ProfileScreen = () => {
   };
 
   const saveGeneral = async () => {
-    console.log('saveGeneral', generalValues);
-    if (!checkGeneralValidations()) {
-      console.log('Validation for general failed!');
-    } else {
-      Toast.show({
-        type: 'success',
-        text1: 'Validation for general Success!',
+    updateProfile({
+      name: generalValues.name,
+      email: generalValues.email,
+      phone: generalValues.mobileNumber,
+      wallet_address: generalValues.walletAddress,
+      background: generalValues.backgroundImg,
+      facebook: currentUser.facebook,
+      instagram: currentUser.instagram,
+      twitter: currentUser.twitter,
+      medium: currentUser.medium,
+      wallet_address_near: currentUser.wallet_address_near,
+    })
+      .then(res => {
+        if (res.success) {
+          Toast.show({
+            type: 'success',
+            text1: 'Updating General Data Success!',
+          });
+          console.log('general save response', res);
+        } else {
+          const message = res.message ? res.message : 'failed';
+          Toast.show({
+            type: 'error',
+            text1: message,
+          });
+        }
+      })
+      .catch(error => {
+        Toast.show({
+          type: 'error',
+          text1: 'Failed!',
+        });
       });
-    }
+    console.log('saveGeneral', generalValues);
   };
   const saveSocial = async () => {
     console.log('saveGeneral', socialValues);
-    if (!checkSocialValidations()) {
-      console.log('Validation for social failed!');
-    } else {
-      Toast.show({
-        type: 'success',
-        text1: 'Validation for social Success!',
-      });
-    }
+    changeSocial(socialValues).then(res => {
+      if (res.success) {
+        Toast.show({
+          type: 'success',
+          text1: 'Saved successfully!',
+        });
+      } else {
+        const message = res.message ? res.message : 'Failed';
+        Toast.show({
+          type: 'error',
+          text1: message,
+        });
+      }
+    });
   };
   const savePwd = async () => {
     console.log('saveGeneral', pwdValues);
     if (!checkPwdValidations()) {
       console.log('Validation for pwd failed!');
+      return;
     } else {
+      changePassword({
+        old_password: pwdValues.oldPassword,
+        new_password: pwdValues.newPassword,
+      }).then(res => {
+        if (res.success) {
+          Toast.show({
+            type: 'success',
+            text1: 'Password Changed!',
+          });
+        } else {
+          const message = res.message ? res.message : 'Failed';
+          Toast.show({
+            type: 'error',
+            text1: message,
+          });
+        }
+      });
       Toast.show({
         type: 'success',
         text1: 'Validation for pwd Success!',
@@ -440,8 +493,29 @@ export const ProfileScreen = () => {
   };
 
   useEffect(() => {
-    console.log('UserInfos>>>', JSON.parse(userInfo).user);
-    setCurrentUser(JSON.parse(userInfo).user);
+    console.log('Current user', JSON.parse(userInfo).user);
+    if (JSON.parse(userInfo)) {
+      setCurrentUser(JSON.parse(userInfo).user);
+      setGeneralValues({
+        ...generalValues,
+        name: JSON.parse(userInfo).user.name,
+        email: JSON.parse(userInfo).user.email,
+        mobileNumber: JSON.parse(userInfo).user.phone,
+        website: '',
+        walletAddress: JSON.parse(userInfo).user.wallet_address,
+        backgroundImg: JSON.parse(userInfo).user.background,
+        description: '',
+      });
+      setSocialValues({
+        ...socialValues,
+        facebook: JSON.parse(userInfo).user.facebook,
+        instagram: JSON.parse(userInfo).user.instagram,
+        twitter: JSON.parse(userInfo).user.twitter,
+        medium: JSON.parse(userInfo).user.medium,
+      });
+      setSelectedBackground(JSON.parse(userInfo).user.background);
+      setSelectedAvatar(JSON.parse(userInfo).user.avatar);
+    }
     getAllUserAvatars().then(res => {
       if (res.success) {
         setUserAvatars(res.useravatars);

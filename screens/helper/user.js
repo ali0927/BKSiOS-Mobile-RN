@@ -17,6 +17,34 @@ const changeAvatar = data => {
       });
   });
 };
+
+const changePassword = data => {
+  return new Promise((resolve, reject) => {
+    api
+      .put('/api/user/change_password', data)
+      .then(response => {
+        resolve(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+        reject(error);
+      });
+  });
+};
+
+const changeSocial = data => {
+  return new Promise((resolve, reject) => {
+    api
+      .put('/api/user/change_social', data)
+      .then(response => {
+        resolve(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+        reject(error);
+      });
+  });
+};
 const getAllUserAvatars = () => {
   return new Promise((resolve, reject) => {
     api
@@ -45,4 +73,10 @@ const getAllUserBackgrounds = () => {
   });
 };
 
-export {changeAvatar, getAllUserAvatars, getAllUserBackgrounds};
+export {
+  changeAvatar,
+  changeSocial,
+  changePassword,
+  getAllUserAvatars,
+  getAllUserBackgrounds,
+};
