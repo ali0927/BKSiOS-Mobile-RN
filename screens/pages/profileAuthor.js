@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  TextInput,
+  Linking,
   Image,
   TouchableOpacity,
   ScrollView,
+  Platform,
 } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from 'react-native-toast-message';
@@ -37,6 +38,9 @@ export const ProfileAuthorScreen = ({route}) => {
     }
   };
 
+  useEffect(() => {
+    console.log('collectionData', collectionData);
+  }, []);
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -77,17 +81,12 @@ export const ProfileAuthorScreen = ({route}) => {
               <Image source={badgeMark} style={styles.badgeMark} />
             </View>
             <Text style={styles.idText}>{collectionData.category}</Text>
-            <Text style={styles.description}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </Text>
+            <Text style={styles.description}>{collectionData.description}</Text>
             <Text style={styles.subTitle}>Wallet</Text>
             <View style={styles.clipboardDiv}>
-              <TextInput
-                style={styles.input}
-                editable={false}
-                value={collectionData?.creator.wallet_address}
-              />
+              <Text style={styles.input} ellipsizeMode="tail" numberOfLines={1}>
+                {collectionData?.creator.wallet_address}
+              </Text>
               <TouchableOpacity
                 style={styles.copyImg}
                 onPress={() => copyToClipboard('wallet')}>
@@ -96,32 +95,54 @@ export const ProfileAuthorScreen = ({route}) => {
             </View>
             <Text style={styles.subTitle}>Links</Text>
             <View style={styles.socialDiv}>
-              <TouchableOpacity style={styles.socialImg}>
+              <TouchableOpacity
+                style={styles.socialImg}
+                onPress={() => Linking.openURL('https://t.me/BKSBackstage')}>
                 <Image source={globalImg} />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.socialImg}>
+              <TouchableOpacity
+                style={styles.socialImg}
+                onPress={() => Linking.openURL('https://t.me/BKSBackstage')}>
                 <Image source={telegramImg} />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.socialImg}>
+              <TouchableOpacity
+                style={styles.socialImg}
+                onPress={() =>
+                  Linking.openURL('https://medium.com/BackstageBks')
+                }>
                 <Image source={mediumImg} />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.socialImg}>
+              <TouchableOpacity
+                style={styles.socialImg}
+                onPress={() =>
+                  Linking.openURL('https://twitter.com/BackstageBks')
+                }>
                 <Image source={twitterImg} />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.socialImg}>
+              <TouchableOpacity
+                style={styles.socialImg}
+                onPress={() =>
+                  Linking.openURL('https://www.facebook.com/BKSBackstage')
+                }>
                 <Image source={facebookImg} />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.socialImg}>
+              <TouchableOpacity
+                style={styles.socialImg}
+                onPress={() =>
+                  Linking.openURL(
+                    'https://www.instagram.com/bksbackstage/?hl=en',
+                  )
+                }>
                 <Image source={instagramImg} />
               </TouchableOpacity>
             </View>
             <View style={styles.followDiv}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={styles.text1}>
+                <Text style={styles.text4}>
                   {collectionData.creator.followers}
                 </Text>
                 <Text style={{...styles.description, marginTop: 0}}>
-                  followrs
+                  followers
                 </Text>
               </View>
               <TouchableOpacity
@@ -131,7 +152,7 @@ export const ProfileAuthorScreen = ({route}) => {
               </TouchableOpacity>
             </View>
             <View style={styles.divider} />
-            <Text style={styles.subtitle}>Hot Collections</Text>
+            <Text style={styles.text1}>Hot Collections</Text>
             <CollectionCarousel />
           </View>
         )}
@@ -195,61 +216,70 @@ const styles = StyleSheet.create({
     top: 20,
   },
   input: {
+    fontFamily: 'SpaceGrotesk-Medium',
     height: 44,
     backgroundColor: 'rgba(255, 255, 255, 0.06)',
     marginTop: 10,
-    padding: 8,
-    paddingRight: 50,
+    padding: 12,
+    paddingRight: 60,
     paddingLeft: 20,
-    color: 'white',
+    color: '#fff',
     borderRadius: 4,
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '400',
   },
   text1: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     marginRight: 10,
   },
   text2: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 16,
     fontWeight: '400',
     lineHeight: 30,
   },
   text3: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     textAlign: 'center',
     letterSpacing: 1.5,
     textTransform: 'uppercase',
   },
+  text4: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
+    marginRight: 10,
+  },
   idText: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#6a4dfd',
     fontSize: 16,
     textAlign: 'center',
     marginVertical: 10,
   },
-  subtitle: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: '700',
-    marginBottom: 20,
-  },
   description: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 16,
+    fontWeight: '400',
     color: 'rgba(255, 255, 255, 0.66)',
     marginTop: 10,
-    letterSpacing: 1.2,
   },
   subTitle: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 12,
     color: 'rgba(255, 255, 255, 0.66)',
     textTransform: 'uppercase',
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     marginTop: 30,
+    letterSpacing: 1.15,
   },
   button: {
     justifyContent: 'center',
