@@ -1,5 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import rightArrowImg from '../../assets/img/icons/arrow-right.png';
 import profileImg from '../../assets/img/icons/user2.png';
 import activityImg from '../../assets/img/icons/activity.png';
@@ -29,7 +36,7 @@ export const MenuHomeScreen = ({navigation}) => {
     <View style={styles.container}>
       <View>
         <TouchableOpacity
-          style={styles.listItem}
+          style={styles.listItemFirst}
           onPress={() => navigation.navigate('Profile')}>
           <View style={styles.subContainer}>
             <Image source={profileImg} />
@@ -108,6 +115,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     padding: 20,
   },
+  listItemFirst: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderColor: 'rgba(121, 126, 137, 0.5)',
+    borderBottomWidth: 0.5,
+    borderTopWidth: 0.5,
+    padding: 20,
+  },
   subContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -116,7 +131,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     textTransform: 'uppercase',
     letterSpacing: 1.4,
     marginLeft: 20,
@@ -125,10 +140,10 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     textAlign: 'center',
     textTransform: 'uppercase',
-    height: 40,
+    lineHeight: 19,
     letterSpacing: 1.6,
     marginLeft: 10,
   },
