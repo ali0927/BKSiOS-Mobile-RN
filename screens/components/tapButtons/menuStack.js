@@ -14,6 +14,7 @@ import Modal from 'react-native-modal';
 import Toast from 'react-native-toast-message';
 import arrowLeft from '../../../assets/img/icons/arrow-left.png';
 import checkImg from '../../../assets/img/icons/check.png';
+import blackImg from '../../../assets/img/BLANK_ICON.png';
 import filterImg from '../../../assets/img/icons/filter.png';
 import {AboutScreen} from '../../pages/about';
 import {ActivityScreen} from '../../pages/activity';
@@ -93,7 +94,7 @@ const FilterModal = ({toggleModal}) => {
                   borderColor: checked[item.title] ? '#6a4dfd' : '#ffffff54',
                 }}
                 containerStyle={styles.checkBoxMark}
-                checkImage={checked[item.title] ? checkImg : ''}
+                checkImage={checked[item.title] ? checkImg : blackImg}
               />
               <TouchableOpacity
                 onPress={() => handleChecked(item.id)}
