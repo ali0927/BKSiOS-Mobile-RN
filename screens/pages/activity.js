@@ -65,7 +65,7 @@ export const ActivityScreen = () => {
   }, []);
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView style={styles.scrollContainer}>
         {tickets &&
           tickets.map((ticket, i) => <ActivityCard ticket={ticket} key={i} />)}
       </ScrollView>
@@ -77,7 +77,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#14142f',
-    padding: 20,
+  },
+  scrollContainer: {
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    borderColor: 'rgba(121, 126, 137, 0.5)',
+    borderTopWidth: 0.5,
   },
   cardContainer: {
     flexDirection: 'row',
