@@ -1,17 +1,24 @@
-import React, {useState} from 'react';
-import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {useNavigation} from '@react-navigation/core';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, {useState} from 'react';
+import {
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import CheckBox from 'react-native-customizable-checkbox';
+import Modal from 'react-native-modal';
+import arrowLeft from '../../../assets/img/icons/arrow-left.png';
+import checkImg from '../../../assets/img/icons/check.png';
+import filterImg from '../../../assets/img/icons/filter.png';
+import {AboutScreen} from '../../pages/about';
+import {ActivityScreen} from '../../pages/activity';
+import {AppSettingScreen} from '../../pages/appSetting';
 import {MenuHomeScreen} from '../../pages/menuHome';
 import {ProfileScreen} from '../../pages/profile';
-import {ActivityScreen} from '../../pages/activity';
-import {AboutScreen} from '../../pages/about';
-import {AppSettingScreen} from '../../pages/appSetting';
-import arrowLeft from '../../../assets/img/icons/arrow-left.png';
-import filterImg from '../../../assets/img/icons/filter.png';
-import {useNavigation} from '@react-navigation/core';
-import Modal from 'react-native-modal';
-import CheckBox from 'react-native-customizable-checkbox';
-import checkImg from '../../../assets/img/icons/check.png';
 
 const MenuStack = createNativeStackNavigator();
 const THEME_COLOR = '#14142f';
@@ -37,6 +44,7 @@ const FilterModal = ({toggleModal}) => {
     {id: 6, title: 'follows'},
   ];
   const handleChecked = item => {
+    console.log('Item::', item);
     if (item === 0) {
       setChecked({...checked, listings: !checked.listings});
     } else if (item === 1) {
@@ -65,30 +73,34 @@ const FilterModal = ({toggleModal}) => {
         </View>
         {checkList &&
           checkList.map(item => (
-            <TouchableOpacity
-              onPress={() => handleChecked(item.id)}
-              key={item.id}>
+            <View key={item.id} style={styles.checkBoxContainer}>
               <CheckBox
-                label={item.title}
+                label=""
                 value={checked[item.title]}
                 onChangeValue={() => handleChecked(item.id)}
                 colorInactive={'#09091a'}
                 colorActive={'#6a4dfd'}
-                textStyle={styles.checkBoxText}
                 boxStyle={{
                   ...styles.checkBox,
                   borderColor: checked[item.title] ? '#6a4dfd' : '#ffffff54',
                 }}
-                containerStyle={styles.checkBoxContainer}
+                containerStyle={styles.checkBoxMark}
                 checkImage={checked[item.title] ? checkImg : ''}
               />
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleChecked(item.id)}
+                style={{flex: 1}}>
+                <Text style={styles.checkBoxText}>{item.title}</Text>
+              </TouchableOpacity>
+            </View>
           ))}
       </View>
       <View style={styles.applyButton}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => console.log('Applied filter')}>
+          onPress={() => {
+            console.log('Applied filter');
+          }}>
           <Text style={styles.text3}>Apply</Text>
         </TouchableOpacity>
       </View>
@@ -159,8 +171,8 @@ export const MenuStackScreen = () => {
               <Modal
                 isVisible={isModalVisible}
                 backdropOpacity={0}
-                animationIn={'slideInDown'}
-                animationOut={'slideOutUp'}>
+                animationIn={'slideInUp'}
+                animationOut={'slideOutDown'}>
                 <FilterModal toggleModal={toggleModal} />
               </Modal>
               <TouchableOpacity onPress={toggleModal}>
@@ -216,7 +228,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderWidth: 0.5,
     paddingBottom: 30,
-    marginTop: 20,
+    marginTop: Platform.OS === 'ios' ? 20 : -10,
     marginBottom: -20,
     marginHorizontal: -20,
   },
@@ -240,12 +252,17 @@ const styles = StyleSheet.create({
     bottom: 20,
   },
   checkBoxContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
     height: 60,
     borderColor: 'rgba(121, 126, 137, 0.5)',
     borderBottomWidth: 0.5,
     paddingLeft: 20,
+  },
+  checkBoxMark: {
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   checkBox: {
     height: 20,

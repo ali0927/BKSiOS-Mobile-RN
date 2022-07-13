@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ScrollView, Image, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  StyleSheet,
+  Platform,
+} from 'react-native';
 import clockImg from '../../assets/img/icons/clock.png';
 import badgeMark from '../../assets/img/icons/verified.png';
 import ReactTimeAgo from 'react-native-timeago';
@@ -11,7 +18,6 @@ const ActivityCard = ({ticket}) => {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.cardAvatar}>
-        {/* <Text style={{color: "#fff"}}>{ticket.eventcard.picture_small}</Text> */}
         <Image
           source={{
             uri:
@@ -21,7 +27,6 @@ const ActivityCard = ({ticket}) => {
           }}
           style={{width: '100%', height: '100%'}}
         />
-        {/* <Image source={avatarImg} style={{width: '100%', height: '100%'}} /> */}
       </View>
       <View style={{flex: 1}}>
         <View style={styles.cardTopDiv}>
@@ -32,10 +37,10 @@ const ActivityCard = ({ticket}) => {
           </View>
         </View>
         <Text style={styles.byText}>Created by</Text>
-        <Text style={styles.byNameText}>@{ticket.eventcard.creator.name}</Text>
+        <Text style={styles.byNameText}>{ticket.eventcard.creator.name}</Text>
         <Text style={styles.byText}>Purchased by</Text>
         <View style={{flexDirection: 'row'}}>
-          <Text style={styles.byNameText}>@{ticket.buyer.name}</Text>
+          <Text style={styles.byNameText}>{ticket.buyer.name}</Text>
           <Image source={badgeMark} style={styles.badgeMark} />
         </View>
         <View style={styles.timeDiv}>
@@ -53,9 +58,7 @@ export const ActivityScreen = () => {
 
   useEffect(() => {
     allTickets().then(res => {
-      // console.log("This is Res", res)
       if (res.success) {
-        console.log('REsTICDETAf', res.tickets);
         setTickets(res.tickets);
       }
     });
@@ -98,16 +101,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 5,
   },
-  ticketName: {fontSize: 16, fontWeight: '700', color: '#fff'},
+  ticketName: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    fontSize: 16,
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
+    color: '#fff',
+  },
   quantityText: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 12,
     fontWeight: '400',
-    color: '#fff',
+    color: 'rgba(255, 255, 255, 0.66)',
     letterSpacing: 2,
   },
   amount: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     color: '#fff',
     marginLeft: 10,
   },
@@ -121,6 +131,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   byText: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 12,
     fontWeight: '400',
     color: 'rgba(255,255,255,0.66)',
@@ -130,8 +141,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   byNameText: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     color: '#fff',
   },
   timeDiv: {
@@ -140,10 +152,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   timeText: {
+    fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 12,
     fontWeight: '400',
     color: 'rgba(255,255,255,0.66)',
-    letterSpacing: 0.5,
+    letterSpacing: 1.05,
     marginLeft: 10,
   },
 });
