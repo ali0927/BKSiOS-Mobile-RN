@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import CheckBox from 'react-native-customizable-checkbox';
 import Modal from 'react-native-modal';
+import Toast from 'react-native-toast-message';
 import arrowLeft from '../../../assets/img/icons/arrow-left.png';
 import checkImg from '../../../assets/img/icons/check.png';
 import filterImg from '../../../assets/img/icons/filter.png';
@@ -61,12 +62,19 @@ const FilterModal = ({toggleModal}) => {
       setChecked({...checked, follows: !checked.follows});
     }
   };
+  const handleApply = () => {
+    toggleModal();
+    Toast.show({
+      type: 'success',
+      text1: 'Applied the choosen items.',
+    });
+  };
 
   return (
     <View style={styles.modalContainer}>
       <View>
         <View style={styles.modalTitle}>
-          <Text style={{fontSize: 20, color: '#fff'}}>Filter</Text>
+          <Text style={styles.modalTitleText}>Filter</Text>
           <Text style={styles.modalClose} onPress={toggleModal}>
             Close
           </Text>
@@ -96,11 +104,7 @@ const FilterModal = ({toggleModal}) => {
           ))}
       </View>
       <View style={styles.applyButton}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            console.log('Applied filter');
-          }}>
+        <TouchableOpacity style={styles.button} onPress={() => handleApply()}>
           <Text style={styles.text3}>Apply</Text>
         </TouchableOpacity>
       </View>
@@ -217,7 +221,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     marginLeft: 10,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     letterSpacing: 2,
   },
   modalContainer: {
@@ -240,6 +244,12 @@ const styles = StyleSheet.create({
     height: 60,
     borderBottomWidth: 0.5,
     borderColor: 'rgba(121, 126, 137, 0.5)',
+  },
+  modalTitleText: {
+    fontSize: 20,
+    color: '#fff',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
+    letterSpacing: 1.03,
   },
   modalClose: {
     fontSize: 12,
@@ -272,7 +282,7 @@ const styles = StyleSheet.create({
   checkBoxText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     letterSpacing: 1.03,
     textTransform: 'capitalize',
     fontFamily: 'SpaceGrotesk-Medium',
@@ -292,9 +302,10 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   text3: {
+    fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     textAlign: 'center',
     textTransform: 'uppercase',
     letterSpacing: 1.6,
@@ -311,7 +322,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     marginLeft: 10,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     textAlign: 'right',
     letterSpacing: 1.03,
   },
