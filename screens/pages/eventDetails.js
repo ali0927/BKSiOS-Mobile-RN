@@ -8,6 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {eventData} from '../constant/eventData';
@@ -350,7 +351,7 @@ export const EventDetailsScreen = ({route}) => {
         });
         setAddonPrice(_addonPrice);
         console.log('Before setting colle.name', res.eventcard.collection);
-        getCollectionById(res.eventcard.collection).then(result => {
+        getCollectionById(res.eventcard.collection).then(res => {
           if (res.success) {
             setCollectionName(res.collection.name);
           }
@@ -561,19 +562,19 @@ export const EventDetailsScreen = ({route}) => {
           {tempData.total_tickets - tempData.buy_count === 0 ? (
             <View style={styles.buyContainer}>
               <View style={styles.rowCenter}>
-                <Text style={styles.counterText}>-</Text>
+                <Text style={styles.counterLeftControl}>-</Text>
                 <Text style={styles.counterText}>{ticketAmount}</Text>
-                <Text style={styles.counterText}>+</Text>
+                <Text style={styles.counterRightControl}>+</Text>
               </View>
-              <TouchableOpacity style={styles.soldButton}>
+              <View style={styles.soldButton}>
                 <Text style={styles.text3}>Sold out</Text>
-              </TouchableOpacity>
+              </View>
             </View>
           ) : (
             <View style={styles.buyContainer}>
               <View style={styles.rowCenter}>
                 <Text
-                  style={styles.counterText}
+                  style={styles.counterLeftControl}
                   onPress={() => {
                     if (ticketAmount < 1) {
                       return;
@@ -584,7 +585,7 @@ export const EventDetailsScreen = ({route}) => {
                 </Text>
                 <Text style={styles.counterText}>{ticketAmount}</Text>
                 <Text
-                  style={styles.counterText}
+                  style={styles.counterRightControl}
                   onPress={() => {
                     if (
                       ticketAmount ===
@@ -688,7 +689,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 24,
     color: '#fff',
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
   },
   likedImg: {
     marginRight: 10,
@@ -703,24 +704,12 @@ const styles = StyleSheet.create({
   halfWidth: {
     width: '50%',
   },
-  text1: {
-    fontFamily: 'SpaceGrotesk-Medium',
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '500',
-    letterSpacing: 0.5,
-    borderWidth: 1,
-    borderRadius: 20,
-    padding: 10,
-    textAlign: 'center',
-    borderColor: '#6a4dfd',
-  },
   text2: {
     fontFamily: 'SpaceGrotesk-Medium',
     color: 'rgba(255, 255, 255, 0.66)',
     fontSize: 12,
     fontWeight: '400',
-    marginBottom: 10,
+    marginBottom: 5,
     textTransform: 'uppercase',
     letterSpacing: 2,
   },
@@ -754,15 +743,31 @@ const styles = StyleSheet.create({
   priceText: {
     color: '#fff',
     fontSize: 32,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
+    letterSpacing: 1,
   },
   eventCounter: {
     alignItems: 'center',
     marginBottom: 30,
   },
+  text1: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '500',
+    letterSpacing: 0.5,
+    textAlign: 'center',
+  },
   counterContainer: {
-    minWidth: 210,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 220,
     marginTop: 20,
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: '#6a4dfd',
+    height: 40,
   },
   counterText: {
     color: '#fff',
@@ -772,7 +777,32 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingVertical: 11.5,
     paddingHorizontal: 14,
-    borderRadius: 4,
+  },
+  counterRightControl: {
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '400',
+    borderColor: 'rgba(255, 255, 255, 0.15)',
+    borderWidth: 1,
+    borderLeftWidth: 0,
+    paddingVertical: 11.5,
+    width: 35,
+    borderTopRightRadius: 4,
+    borderBottomRightRadius: 4,
+  },
+  counterLeftControl: {
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '400',
+    borderColor: 'rgba(255, 255, 255, 0.15)',
+    borderWidth: 1,
+    borderRightWidth: 0,
+    paddingVertical: 11.5,
+    width: 35,
+    borderTopLeftRadius: 4,
+    borderBottomLeftRadius: 4,
   },
   description: {
     fontFamily: 'SpaceGrotesk-Medium',
@@ -780,7 +810,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'rgba(255, 255, 255, 0.66)',
     fontWeight: '400',
-    marginBottom: 20,
+    marginBottom: 30,
     marginTop: 10,
   },
   divider: {
@@ -802,8 +832,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: '#fff',
     borderWidth: 1,
-    width: 20,
-    height: 20,
+    width: 16,
+    height: 16,
   },
   avatarImg: {
     position: 'relative',
@@ -828,7 +858,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     textAlign: 'center',
     textTransform: 'uppercase',
     height: 40,
@@ -839,7 +869,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     textAlign: 'center',
     textTransform: 'uppercase',
     marginTop: 15,
