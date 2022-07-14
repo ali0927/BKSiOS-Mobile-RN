@@ -328,7 +328,7 @@ export const EventDetailsScreen = ({route}) => {
   };
   const timeString = t => {
     var date = new Date(t);
-    return date.getUTCHours() + ' : ' + date.getUTCMinutes() + " GMT";
+    return date.getUTCHours() + ' : ' + date.getUTCMinutes() + ' GMT';
   };
   useEffect(() => {
     console.log('TTTTEEEE>>>>', tempData);
@@ -483,19 +483,31 @@ export const EventDetailsScreen = ({route}) => {
             <View style={styles.modalContainer}>
               <View style={styles.modalTitleContainer}>
                 <View>
-                  <Text style={styles.modalTxt}>
-                    Name: {selectedAddon?.name}
-                  </Text>
-                  <Text style={styles.modalTxt}>
-                    Description: {selectedAddon?.description}
-                  </Text>
-                  <Text style={styles.modalTxt}>
-                    Price: {selectedAddon?.price + ' €'}
-                  </Text>
+                  <View style={styles.modalRow}>
+                    <Text style={styles.text3}>A D D O N</Text>
+                    <TouchableOpacity
+                      onPress={toggleAddonModal}
+                      style={{marginTop: -5}}>
+                      <Text style={styles.modalClose}>&times;</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.modalRow}>
+                    <Text style={styles.modalSubtitle}>Name :</Text>
+                    <Text style={styles.modalTxt}>{selectedAddon?.name}</Text>
+                  </View>
+                  <View style={styles.modalRow}>
+                    <Text style={styles.modalSubtitle}>Description :</Text>
+                    <Text style={styles.modalTxt}>
+                      {selectedAddon?.description}
+                    </Text>
+                  </View>
+                  <View style={styles.modalRow}>
+                    <Text style={styles.modalSubtitle}>Price :</Text>
+                    <Text style={styles.modalTxt}>
+                      {selectedAddon?.price + ' €'}
+                    </Text>
+                  </View>
                 </View>
-                <TouchableOpacity onPress={toggleAddonModal}>
-                  <Text style={styles.modalClose}>&times;</Text>
-                </TouchableOpacity>
               </View>
             </View>
           </Modal>
@@ -893,8 +905,8 @@ const styles = StyleSheet.create({
     borderColor: '#887bff',
     paddingTop: 20,
     paddingBottom: 20,
-    paddingRight: 10,
-    paddingLeft: 10,
+    paddingRight: 20,
+    paddingLeft: 20,
   },
   modalTitleContainer: {
     flexDirection: 'row',
@@ -907,22 +919,35 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
   },
-  modalTxt: {
+  modalRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '79%',
+  },
+  modalSubtitle: {
     fontFamily: 'SpaceGrotesk-Medium',
+    textAlign: 'justify',
     color: '#fff',
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '600',
     marginVertical: 5,
+    width: 100,
+  },
+  modalTxt: {
+    flex: 1,
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+    marginVertical: 5,
+    marginLeft: 20,
   },
   modalClose: {
     color: '#fff',
     width: 25,
     margin: 0,
     textAlign: 'center',
-    fontSize: 20,
-    borderRadius: 8,
-    borderColor: '#fff',
-    borderWidth: 1,
+    fontSize: 26,
   },
   payButton: {
     display: 'flex',
