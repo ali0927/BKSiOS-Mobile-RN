@@ -30,6 +30,7 @@ import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import metamaskImg from '../../assets/img/metamask.png';
 import bitkeepImg from '../../assets/img/bitkeep.png';
 import paypalImg from '../../assets/img/paypal-color.png';
+import DateObject from 'react-date-object';
 import {ethers} from 'ethers';
 import {
   BUSD_TEST_ABI,
@@ -318,7 +319,18 @@ export const EventDetailsScreen = ({route}) => {
     setShowGateway(false);
     console.log('OnMessage Func', data);
   };
+  const dateString = d => {
+    var date = new DateObject({
+      date: new Date(d),
+    });
+    return date.format('DD. MM. YYYY');
+  };
+  const timeString = t => {
+    var date = new Date(t);
+    return date.getUTCHours() + ' : ' + date.getUTCMinutes() + " GMT";
+  };
   useEffect(() => {
+    console.log('TTTTEEEE>>>>', tempData);
     setWallet(userInfo?.wallet_address);
     setCurrentEvent(eventData.find(item => id === item.id));
 
@@ -382,7 +394,7 @@ export const EventDetailsScreen = ({route}) => {
             <Text style={styles.name}>{tempData.name}</Text>
             <View style={styles.rowCenter}>
               <Image source={likeImg} style={styles.likedImg} />
-              <Text style={styles.followers}>358</Text>
+              <Text style={styles.followers}>{tempData.creator.followers}</Text>
             </View>
           </View>
           <Text style={styles.description}>{tempData.venue_description}</Text>
@@ -404,14 +416,17 @@ export const EventDetailsScreen = ({route}) => {
             <View style={styles.halfWidth}>
               <Text style={styles.text2}>Date</Text>
               <Text style={styles.infoText}>
-                {new Date(tempData.date).toISOString().toString().split('T')[0]}
+                {/* {new Date(tempData.date).toISOString().toString().split('T')[0]} */}
+                {dateString(tempData.date)}
               </Text>
             </View>
             <View>
               <Text style={styles.text2}>Time</Text>
               <Text style={styles.infoText}>
-                {new Date(tempData.date).toISOString().toString().split('T')[1]}
+                {timeString(new Date(tempData.date))}
+                {/* {new Date(tempData.date).toISOString().toString().split('T')[1]} */}
               </Text>
+              <Text style={styles.infoText}></Text>
             </View>
           </View>
           <View style={styles.divider} />
