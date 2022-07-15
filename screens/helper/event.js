@@ -113,6 +113,20 @@ const getEventCardById = id => {
   });
 };
 
+const getEventCardInCollection = (id) => {
+  return new Promise((resolve, reject) => {
+    api
+      .get("/api/event/in_collection/" + id)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error);
+      });
+  });
+};
+
 // Tickets
 const allTickets = data => {
   console.log('Ticket is called', data);
@@ -148,7 +162,7 @@ export {
   getAllCollections,
   // getAllAddonIcons,
   getCollectionById,
-  // getEventCardInCollection,
+  getEventCardInCollection,
   // createEventCard,
   getEventCardById,
   getAllEventCards,

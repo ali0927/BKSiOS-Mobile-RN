@@ -20,7 +20,7 @@ const CollectionCard = ({item}) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('AuthorProfile', {item: item})}
+      onPress={() => navigation.navigate('Collection', {item: item})}
       style={styles.cardContainer}>
       <Image
         style={styles.collectionImg}
@@ -33,7 +33,9 @@ const CollectionCard = ({item}) => {
         key={item.id}
       />
       <View style={styles.collectionMeta}>
-        <View style={styles.collectionAvatar}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('AuthorProfile', {item: item})}
+          style={styles.collectionAvatar}>
           <Image
             source={{
               uri:
@@ -44,13 +46,16 @@ const CollectionCard = ({item}) => {
             style={styles.avatarImg}
           />
           {/* <Image source={badgeMark} style={styles.badgeMark} /> */}
-        </View>
-        <Text
-          style={styles.collectionName}
-          ellipsizeMode="tail"
-          numberOfLines={1}>
-          {item.name}
-        </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('AuthorProfile', {item: item})}>
+          <Text
+            style={styles.collectionName}
+            ellipsizeMode="tail"
+            numberOfLines={1}>
+            {item.name}
+          </Text>
+        </TouchableOpacity>
         <Text style={styles.collectionNumber}>{item.category}</Text>
       </View>
     </TouchableOpacity>
@@ -115,7 +120,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: 80,
-    backgroundColor: '#14142f',    
+    backgroundColor: '#14142f',
   },
   collectionAvatar: {
     borderRadius: 12,

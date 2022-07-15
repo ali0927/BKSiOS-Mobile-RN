@@ -7,6 +7,7 @@ import logoImg from '../../../assets/img/icons/logo.png';
 import {EventDetailsScreen} from '../../pages/eventDetails';
 import {HomeScreen} from '../../pages/home';
 import {ProfileAuthorScreen} from '../../pages/profileAuthor';
+import {CollectionScreen} from '../../pages/collection';
 import {ForgetPasswordScreen} from '../../pages/signPage/ForgetPassword';
 import {PrivacyScreen} from '../../pages/signPage/privacy';
 import {SignInScreen} from '../../pages/signPage/signIn';
@@ -85,6 +86,14 @@ export const HomeStackScreen = () => {
         component={ProfileAuthorScreen}
         options={{
           headerTitle: () => <Header title="Profile" />,
+          headerBackVisible: false,
+        }}
+      />
+      <HomeStack.Screen
+        name="Collection"
+        component={CollectionScreen}
+        options={{
+          headerTitle: () => <Header title="Collection" />,
           headerBackVisible: false,
         }}
       />
