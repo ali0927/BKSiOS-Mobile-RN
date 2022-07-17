@@ -9,17 +9,8 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
-import Toast from 'react-native-toast-message';
 import badgeMark from '../../assets/img/icons/verified.png';
-import telegramImg from '../../assets/img/icons/telegram.png';
-import globalImg from '../../assets/img/icons/globe.png';
-import mediumImg from '../../assets/img/icons/medium.png';
-import twitterImg from '../../assets/img/icons/twitter.png';
-import facebookImg from '../../assets/img/icons/facebook.png';
-import instagramImg from '../../assets/img/icons/instagram.png';
-import copyImg from '../../assets/img/icons/copy.png';
-import CollectionCarousel from '../components/homePage/collectionCarousel';
+import likedImg from '../../assets/img/icons/like-empty.png';
 import config from '../helper/config';
 import {getEventCardInCollection} from '../helper/event';
 import {useSelector} from 'react-redux';
@@ -39,6 +30,37 @@ export const CollectionScreen = ({route}) => {
       addonPrice += Number(addons[i].price);
     }
     return eventCard.price + addonPrice;
+  };
+  const imageUrl = src => {
+    if (src === '/img/avatars/avatar.jpg') {
+      return require('../../assets/img/avatars/avatar.jpg');
+    } else if (src === '/img/avatars/avatar2.jpg') {
+      return require('../../assets/img/avatars/avatar2.jpg');
+    } else if (src === '/img/avatars/avatar3.jpg') {
+      return require('../../assets/img/avatars/avatar3.jpg');
+    } else if (src === '/img/avatars/avatar4.jpg') {
+      return require('../../assets/img/avatars/avatar4.jpg');
+    } else if (src === '/img/avatars/avatar5.jpg') {
+      return require('../../assets/img/avatars/avatar5.jpg');
+    } else if (src === '/img/avatars/avatar6.jpg') {
+      return require('../../assets/img/avatars/avatar6.jpg');
+    } else if (src === '/img/avatars/avatar7.jpg') {
+      return require('../../assets/img/avatars/avatar7.jpg');
+    } else if (src === '/img/avatars/avatar8.jpg') {
+      return require('../../assets/img/avatars/avatar8.jpg');
+    } else if (src === '/img/bg/bg-small.png') {
+      return require('../../assets/img/bg/bg-small.png');
+    } else if (src === '/img/bg/bg-small2.png') {
+      return require('../../assets/img/bg/bg-small2.png');
+    } else if (src === '/img/bg/bg-small3.png') {
+      return require('../../assets/img/bg/bg-small3.png');
+    } else if (src === '/img/bg/bg-small4.png') {
+      return require('../../assets/img/bg/bg-small4.png');
+    } else if (src === '/img/bg/bg-small5.png') {
+      return require('../../assets/img/bg/bg-small5.png');
+    } else if (src === '/img/bg/bg-small6.png') {
+      return require('../../assets/img/bg/bg-small6.png');
+    }
   };
 
   useEffect(() => {
@@ -106,8 +128,6 @@ export const CollectionScreen = ({route}) => {
                 @{collectionData?.creator?.name}
               </Text>
             </View>
-            {/* <Text style={styles.categoryText}>{collectionData.category}</Text> */}
-            {/* <Text style={styles.description}>{collectionData.description}</Text> */}
             <Text style={styles.description}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -126,12 +146,12 @@ export const CollectionScreen = ({route}) => {
             )}
           </View>
         )}
-        <View>
+        <View style={styles.eventCardsContainer}>
           {eventCards.map((eventcard, index) => {
             const addons =
               eventcard.addons === '' ? [] : JSON.parse(eventcard.addons);
             return (
-              <View style={styles.eventContainer}>
+              <TouchableOpacity style={styles.eventContainer}>
                 <Image
                   source={{
                     uri:
@@ -142,67 +162,56 @@ export const CollectionScreen = ({route}) => {
                   resizeMode="stretch"
                   style={styles.eventBackImg}
                 />
-                <TouchableOpacity to={`/event/eventcard/${eventcard.id}`}>
-                  <Text>{eventcard.name}</Text>
-                </TouchableOpacity>
-                <View>
-                  <Text>creator</Text>
-                  <View>
-                    <Image source={`${eventcard.creator.avatar}`} />
+                <View style={styles.eventCardMetaContainer}>
+                  <TouchableOpacity to={`/event/eventcard/${eventcard.id}`}>
+                    <Text style={styles.eventCardName}>{eventcard.name}</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.eventCardSubName}>creator</Text>
+                  <View
+                    style={{...styles.flexRow, justifyContent: 'flex-start'}}>
+                    <Image
+                      source={imageUrl(eventcard.creator.avatar)}
+                      resizeMode="stretch"
+                      style={styles.creatorImg}
+                    />
                     <TouchableOpacity to="/author">
-                      <Text>@{eventcard.creator.name}</Text>
+                      <Text style={styles.creatorName}>
+                        {eventcard.creator.name}
+                      </Text>
                     </TouchableOpacity>
-                    <View />
                   </View>
-                </View>
-                <View>
-                  {addons.length ? (
-                    addons.map(addon => (
-                      <Image source={addon.icon} width={20} />
-                    ))
-                  ) : (
-                    <></>
-                  )}
-                </View>
-
-                <View>
+                  <View style={styles.divider} />
                   <View>
-                    <Text>Reserve price</Text>
-                    {eventcard.total_tickets === eventcard.buy_count && (
-                      <Text>Sold out!</Text>
+                    {addons.length ? (
+                      addons.map(addon => (
+                        <Image
+                          source={imageUrl(addon.icon)}
+                          resizeMode="stretch"
+                          style={styles.creatorImg}
+                        />
+                      ))
+                    ) : (
+                      <View style={styles.creatorImg} />
                     )}
-
-                    <Text>{getEventPrice(eventcard)} €</Text>
                   </View>
-
-                  {/* <button
-                      className="collection__card-likes"
-                      type="button"
-                      onClick={() => onClickLike(index)}
-                    >
-                      {userInfo &&
-                      eventcard.likes_number &&
-                      eventcard.likes_number.includes(
-                        userInfo.user.id
-                      ) ? (
-                        <img src="/img/icons/liked_blue.svg" alt="" />
-                      ) : (
-                        <img src="/img/icons/liked_white.svg" alt="" />
-                      )}
-                      <p
-                        style={{
-                          color: "rgba(255, 255, 255, 0.66)",
-                          fontSize: 14,
-                          fontWeight: 400,
-                          margin: 0,
-                          paddingLeft: 8,
-                        }}
-                      >
-                        {getLikesNumber(eventcard)}
-                      </p>
-                    </button> */}
+                  <View style={{...styles.divider, marginBottom: 0}} />
+                  <Text style={{...styles.eventCardSubName, marginBottom: 0}}>
+                    Reserve price
+                  </Text>
+                  <View
+                    style={{
+                      ...styles.flexRow,
+                      justifyContent: 'space-between',
+                    }}>
+                    <Text style={styles.price}>
+                      {getEventPrice(eventcard)} €
+                    </Text>
+                    <View style={styles.likedImg}>
+                      <Image source={likedImg} />
+                    </View>
+                  </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             );
             return <></>;
           })}
@@ -230,15 +239,63 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  eventCardsContainer: {
+    paddingHorizontal: 20,
+  },
   eventContainer: {
     height: 498,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderRadius: 12,
     overflow: 'hidden',
+    marginVertical: 20,
   },
   eventBackImg: {
     backgroundColor: 'rgba(255, 255, 255, 0.07)',
     height: 210,
+  },
+  eventCardMetaContainer: {
+    padding: 20,
+  },
+  eventCardName: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
+    marginRight: 10,
+  },
+  eventCardSubName: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: 'rgba(255, 255, 255, 0.66)',
+    fontSize: 10,
+    fontWeight: '400',
+    textTransform: 'uppercase',
+    letterSpacing: 1.15,
+    marginVertical: 10,
+  },
+  creatorImg: {
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    height: 32,
+    width: 32,
+    borderRadius: 16,
+    marginRight: 10,
+  },
+  creatorName: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '500',
+    letterSpacing: 1.03,
+  },
+  price: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
+    letterSpacing: 1,
+  },
+  likedImg: {
+    width: 24,
+    height: 24,
   },
   avatarContainer: {
     flex: 1,
@@ -358,7 +415,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'rgba(255,255,255,0.15)',
     height: 1,
-    marginTop: 40,
-    marginBottom: 40,
+    marginTop: 20,
+    marginBottom: 20,
   },
 });
