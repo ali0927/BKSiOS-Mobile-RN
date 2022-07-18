@@ -174,10 +174,16 @@ export const CollectionScreen = ({route}) => {
                       resizeMode="stretch"
                       style={styles.creatorImg}
                     />
-                    <TouchableOpacity to="/author">
+                    <TouchableOpacity
+                      to="/author"
+                      style={{flexDirection: 'row', alignItems: 'center'}}>
                       <Text style={styles.creatorName}>
                         {eventcard.creator.name}
                       </Text>
+                      <Image
+                        source={badgeMark}
+                        style={{...styles.badgeMark, marginLeft: 10}}
+                      />
                     </TouchableOpacity>
                   </View>
                   <View style={styles.divider} />
@@ -191,7 +197,12 @@ export const CollectionScreen = ({route}) => {
                         />
                       ))
                     ) : (
-                      <View style={styles.creatorImg} />
+                      <View
+                        style={{
+                          ...styles.creatorImg,
+                          backgroundColor: 'transparent',
+                        }}
+                      />
                     )}
                   </View>
                   <View style={{...styles.divider, marginBottom: 0}} />
@@ -342,22 +353,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 1.05,
   },
-  text3: {
-    fontFamily: 'SpaceGrotesk-Medium',
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: Platform.OS === 'ios' ? '700' : '500',
-    textAlign: 'center',
-    letterSpacing: 1.5,
-    textTransform: 'uppercase',
-  },
-  text4: {
-    fontFamily: 'SpaceGrotesk-Medium',
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: Platform.OS === 'ios' ? '700' : '500',
-    marginRight: 10,
-  },
   byText: {
     fontFamily: 'SpaceGrotesk-Medium',
     color: 'rgba(255, 255, 255, 0.66)',
@@ -387,29 +382,6 @@ const styles = StyleSheet.create({
     fontWeight: Platform.OS === 'ios' ? '700' : '500',
     marginTop: 30,
     letterSpacing: 2,
-  },
-  button: {
-    justifyContent: 'center',
-    height: 44,
-    width: 140,
-    backgroundColor: '#6a4dfd',
-    borderRadius: 4,
-  },
-  socialDiv: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-  },
-  socialImg: {
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
-    padding: 10,
-    borderRadius: 4,
-  },
-  followDiv: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 30,
   },
   divider: {
     width: '100%',
