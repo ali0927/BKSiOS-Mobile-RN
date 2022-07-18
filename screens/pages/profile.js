@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Linking,
+  Platform,
 } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
@@ -308,6 +309,7 @@ export const ProfileScreen = () => {
             text1: 'Updating General Data Success!',
           });
           console.log('general save response', res);
+          setGeneralChanged(false);
         } else {
           const message = res.message ? res.message : 'failed';
           Toast.show({
@@ -493,7 +495,7 @@ export const ProfileScreen = () => {
   };
 
   useEffect(() => {
-    console.log('Current user', JSON.parse(userInfo).user);
+    console.log('Current user', JSON.parse(userInfo));
     if (JSON.parse(userInfo)) {
       setCurrentUser(JSON.parse(userInfo).user);
       setGeneralValues({
@@ -577,11 +579,12 @@ export const ProfileScreen = () => {
           </Text>
           <Text style={styles.walletTitle}>Wallet</Text>
           <View style={styles.clipboardDiv}>
-            <TextInput
-              style={styles.input}
-              editable={false}
-              value={currentUser?.wallet_address}
-            />
+            <Text
+              style={styles.inputWallet}
+              ellipsizeMode="tail"
+              numberOfLines={1}>
+              {currentUser?.wallet_address}
+            </Text>
             <TouchableOpacity
               style={styles.copyImg}
               onPress={() => copyToClipboard('wallet')}>
@@ -1058,7 +1061,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     marginLeft: 10,
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     letterSpacing: 1.15,
   },
   modalContainer: {
@@ -1075,7 +1078,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
   },
   modalAvatarContainer: {
     flexDirection: 'row',
@@ -1115,14 +1118,14 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
     color: '#fff',
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     letterSpacing: 1.02,
     marginVertical: 30,
   },
   categoryTitle: {
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 12,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     letterSpacing: 2,
     color: 'rgba(255, 255, 255, 0.66)',
     textTransform: 'uppercase',
@@ -1170,6 +1173,19 @@ const styles = StyleSheet.create({
     height: 44,
     borderWidth: 1,
     padding: 8,
+    paddingLeft: 20,
+    color: '#fff',
+    borderRadius: 4,
+    fontSize: 14,
+    fontWeight: '400',
+  },
+  inputWallet: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    height: 44,
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    marginTop: 10,
+    padding: 12,
+    paddingRight: 60,
     paddingLeft: 20,
     color: '#fff',
     borderRadius: 4,
@@ -1224,14 +1240,14 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     marginRight: 10,
   },
   text31: {
     fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     textAlign: 'center',
     letterSpacing: 1.5,
     textTransform: 'uppercase',
@@ -1240,7 +1256,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     color: 'rgba(255, 255, 255, 0.33)',
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     textAlign: 'center',
     letterSpacing: 1.5,
     textTransform: 'uppercase',
@@ -1266,10 +1282,11 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 12,
     color: 'rgba(255, 255, 255, 0.66)',
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     textTransform: 'uppercase',
     letterSpacing: 1,
     marginTop: 30,
+    letterSpacing: 1.15,
   },
   subTitle: {
     fontFamily: 'SpaceGrotesk-Medium',
