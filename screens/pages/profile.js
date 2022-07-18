@@ -95,9 +95,19 @@ export const ProfileScreen = () => {
   const [pwdChanged, setPwdChanged] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
+  const initialGeneralValidations = {
+    name: '',
+    email: '',
+    mobileNumber: '',
+    website: '',
+    walletAddress: '',
+    backgroundImg: '',
+    description: '',
+  };
+
   const handleGeneralChange = (prop, value) => {
     setGeneralChanged(true);
-    setGeneralValidations(prevState => ({...prevState, [prop]: ''}));
+    setGeneralValidations(initialGeneralValidations);
     setGeneralValues({...generalValues, [prop]: value});
   };
   const handleSocialChange = (prop, value) => {
@@ -114,103 +124,71 @@ export const ProfileScreen = () => {
   const checkGeneralValidations = () => {
     if (generalValues.name === '') {
       setGeneralValidations({
+        ...initialGeneralValidations,
         name: 'has-empty',
-        email: '',
-        mobileNumber: '',
-        website: '',
-        walletAddress: '',
-        backgroundImg: '',
-        description: '',
-        password: '',
       });
       return false;
-    } else if (generalValues.email === '') {
+    } else if (!ValidateEmail(generalValues.email)) {
       setGeneralValidations({
-        name: '',
+        ...initialGeneralValidations,
         email: 'has-empty',
-        mobileNumber: '',
-        website: '',
-        walletAddress: '',
-        backgroundImg: '',
-        description: '',
       });
       return false;
-    } else if (!validateEmail(generalValues.email)) {
+    } else if (
+      isNaN(Number(generalValues.mobile)) ||
+      generalValues.mobile.length > 11
+    ) {
       setGeneralValidations({
-        name: '',
-        email: 'has-danger',
-        mobileNumber: '',
-        website: '',
-        walletAddress: '',
-        backgroundImg: '',
-        description: '',
-      });
-      return false;
-    } else if (generalValues.mobileNumber === '') {
-      setGeneralValidations({
-        name: '',
-        email: '',
+        ...initialGeneralValidations,
         mobileNumber: 'has-empty',
-        website: '',
-        walletAddress: '',
-        backgroundImg: '',
-        description: '',
       });
       return false;
-    } else if (generalValues.website === '') {
-      setGeneralValidations({
-        name: '',
-        email: '',
-        mobileNumber: '',
-        website: 'has-empty',
-        walletAddress: '',
-        backgroundImg: '',
-        description: '',
-      });
-      return false;
-    } else if (generalValues.walletAddress === '') {
-      setGeneralValidations({
-        name: '',
-        email: '',
-        mobileNumber: '',
-        website: '',
-        walletAddress: 'has-empty',
-        backgroundImg: '',
-        description: '',
-      });
-      return false;
-    } else if (generalValues.backgroundImg === '') {
-      setGeneralValidations({
-        name: '',
-        email: '',
-        mobileNumber: '',
-        website: '',
-        walletAddress: '',
-        backgroundImg: 'has-empty',
-        description: '',
-      });
-      return false;
-    } else if (generalValues.description === '') {
-      setGeneralValidations({
-        name: '',
-        email: '',
-        mobileNumber: '',
-        website: '',
-        walletAddress: '',
-        backgroundImg: '',
-        description: 'has-empty',
-      });
-      return false;
+      // } else if (generalValues.website === '') {
+      //   setGeneralValidations({
+      //     name: '',
+      //     email: '',
+      //     mobileNumber: '',
+      //     website: 'has-empty',
+      //     walletAddress: '',
+      //     backgroundImg: '',
+      //     description: '',
+      //   });
+      //   return false;
+      // } else if (generalValues.walletAddress === '') {
+      //   setGeneralValidations({
+      //     name: '',
+      //     email: '',
+      //     mobileNumber: '',
+      //     website: '',
+      //     walletAddress: 'has-empty',
+      //     backgroundImg: '',
+      //     description: '',
+      //   });
+      //   return false;
+      // } else if (generalValues.backgroundImg === '') {
+      //   setGeneralValidations({
+      //     name: '',
+      //     email: '',
+      //     mobileNumber: '',
+      //     website: '',
+      //     walletAddress: '',
+      //     backgroundImg: 'has-empty',
+      //     description: '',
+      //   });
+      //   return false;
+      // } else if (generalValues.description === '') {
+      //   setGeneralValidations({
+      //     name: '',
+      //     email: '',
+      //     mobileNumber: '',
+      //     website: '',
+      //     walletAddress: '',
+      //     backgroundImg: '',
+      //     description: 'has-empty',
+      //   });
+      //   return false;
     } else {
-      setGeneralValidations({
-        name: '',
-        email: '',
-        mobileNumber: '',
-        website: '',
-        walletAddress: '',
-        backgroundImg: '',
-        description: '',
-      });
+      setGeneralValidations(initialGeneralValidations);
     }
     return true;
   };
@@ -288,8 +266,20 @@ export const ProfileScreen = () => {
     }
     return true;
   };
+  const ValidateEmail = input => {
+    var validRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+    if (input.match(validRegex)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   const saveGeneral = async () => {
+    if (!checkGeneralValidations()) return;
+    
     updateProfile({
       name: generalValues.name,
       email: generalValues.email,
@@ -572,11 +562,8 @@ export const ProfileScreen = () => {
             <Text style={styles.text1}>{currentUser?.name}</Text>
             <Image source={badgeMark} style={styles.badgeMark} />
           </View>
-          <Text style={styles.idText}>@{currentUser?.name}</Text>
-          <Text style={styles.description}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </Text>
+          <Text style={styles.idText}>{currentUser?.email}</Text>
+          <Text style={styles.description}>{currentUser?.description}</Text>
           <Text style={styles.walletTitle}>Wallet</Text>
           <View style={styles.clipboardDiv}>
             <Text
