@@ -7,6 +7,7 @@ import {
   Image,
   ScrollView,
   Linking,
+  Dimensions,
 } from 'react-native';
 import logoImg from '../../assets/img/icons/logo.png';
 import backImg from '../../assets/img/icons/start-back.png';
@@ -18,6 +19,7 @@ import facebookImg from '../../assets/img/icons/facebook.png';
 import instagramImg from '../../assets/img/icons/instagram.png';
 
 const THEME_COLOR = '#14142f';
+const deviceWidth = Dimensions.get('window').width;
 
 export const AboutScreen = () => {
   return (
@@ -99,7 +101,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: THEME_COLOR,
-    paddingTop: 20,
   },
   mainContainer: {
     alignItems: 'center',
@@ -159,7 +160,8 @@ const styles = StyleSheet.create({
   backImage: {
     position: 'absolute',
     bottom: 0,
-    zIndex: 0,
+    zIndex: 0,    
+    width: deviceWidth,
   },
   overlay: {
     backgroundColor: THEME_COLOR,
