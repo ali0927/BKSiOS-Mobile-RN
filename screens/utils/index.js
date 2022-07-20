@@ -6,5 +6,39 @@ const validateEmail = value => {
   }
   return false;
 };
+  
+const getEventPrice = (eventCard) => {
+  const addons = eventCard.addons === "" ? [] : JSON.parse(eventCard.addons);
+  const payees = eventCard.payees === "" ? [] : JSON.parse(eventCard.payees);
+  let addonPrice = 0;
+  const len = addons.length;
+  for (let i = 0; i < len; i++) {
+    addonPrice += Number(addons[i].price);
+  }
+  let payeeFee = 0;
+  payees.map((payee) => {
+    payeeFee += Number(payee.fee);
+    return 0;
+  });
+  return ((Number(eventCard.price) + addonPrice) * (100 + payeeFee)) / 100;
+};
 
-export {validateEmail};
+const getLikesNumber = (eventCard) => {
+  let likes = [];
+  try {
+    likes = JSON.parse(eventCard.likes_number);
+  } catch (err) {
+    likes = [];
+    console.log(err);
+  }
+  if (typeof likes !== "object" || likes === null) likes = [];
+  if (likes) return likes.length;
+  else return 0;
+};
+
+
+export {
+  validateEmail,
+  getEventPrice,
+  getLikesNumber,
+};

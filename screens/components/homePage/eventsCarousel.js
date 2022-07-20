@@ -9,93 +9,143 @@ import {
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import {useNavigation} from '@react-navigation/core';
-import {getLatestEventCards} from '../../helper/event';
+import {getLatestEventCards, updateEventLike} from '../../helper/event';
 import Countdown from 'react-countdown';
 import likeImg from '../../../assets/img/icons/liked-white.png';
+import likeBlueImg from '../../../assets/img/icons/like-fill.png';
 import config from '../../helper/config';
+import { useSelector } from 'react-redux';
+import { getLikesNumber, getEventPrice } from '../../utils';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 
-const CompletionList = () => <Text style={styles.leftTime}>EVENT STARTED</Text>;
-
-const pad = (num, size = 2) => {
-  const s = '000000000' + num;
-  return s.substr(s.length - size);
-};
-
-const renderer = ({days, hours, minutes, seconds, completed}) => {
-  if (completed) {
-    return <CompletionList />;
-  } else {
-    return (
-      <Text style={styles.leftTime}>
-        {days} DAYS {pad(hours)}h {pad(minutes)}m {pad(seconds)}s
-      </Text>
-    );
-  }
-};
-
-const EventCountDown = ({date}) => {
-  const d = new Date(date);
-  return <Countdown date={d} renderer={renderer} />;
-};
-
-const EventCard = ({item}) => {
-  const navigation = useNavigation();
-  const addons = item.addons === '' ? [] : JSON.parse(item.addons);
-  let addonPrice = 0;
-  addons.forEach(addon => {
-    addonPrice += Number(addon.price);
-  });
-
-  return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate('EventDetail', {item: item})}
-      style={styles.cardContainer}>
-      <Image
-        source={{
-          uri:
-            config.API_BASE_URL +
-            '/api/upload/get_file?path=' +
-            item.picture_small,
-        }}
-        style={styles.img}
-      />
-      <View style={styles.collectionMeta}>
-        <Text style={styles.name}>{item.name}</Text>
-        <EventCountDown date={new Date(item.date).toISOString()} />
-        <View style={styles.details}>
-          <View style={styles.detailContainer}>
-            <Text style={styles.info}>Date </Text>
-            <Text style={styles.infoVal}>
-              {new Date(item.date).toISOString().toString().split('T')[0]}
-            </Text>
-          </View>
-          <View style={styles.detailContainer}>
-            <Text style={styles.info}>Location</Text>
-            <Text style={styles.infoVal}>{item.location}</Text>
-          </View>
-        </View>
-        <View style={styles.divider} />
-        <View style={styles.footerDetails}>
-          <View>
-            <Text style={styles.info}>Current price</Text>
-            <Text style={styles.price}>{item.price + addonPrice} €</Text>
-          </View>
-          <Image source={likeImg} />
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
-
-const renderItem = ({item, index}) => {
-  return <EventCard item={item} index={index} />;
-};
-
 const EventsCarousel = () => {
   const [latestEvents, setLatestEvents] = useState([]);
+
+  const userInfo = useSelector(state => state.userInfoReducer).userInfo;
+
+  const EventCard = ({item}) => {
+    console.log('User Info...', userInfo);
+    const navigation = useNavigation();
+    const addons = item.addons === '' ? [] : JSON.parse(item.addons);
+    let addonPrice = 0;
+    addons.forEach(addon => {
+      addonPrice += Number(addon.price);
+    });
+
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate('EventDetail', {item: item})}
+        style={styles.cardContainer}>
+        <Image
+          source={{
+            uri:
+              config.API_BASE_URL +
+              '/api/upload/get_file?path=' +
+              item.picture_small,
+          }}
+          style={styles.img}
+        />
+        <View style={styles.collectionMeta}>
+          <Text style={styles.name}>{item.name}</Text>
+          <EventCountDown date={new Date(item.date).toISOString()} />
+          <View style={styles.details}>
+            <View style={styles.detailContainer}>
+              <Text style={styles.info}>Date </Text>
+              <Text style={styles.infoVal}>
+                {new Date(item.date).toISOString().toString().split('T')[0]}
+              </Text>
+            </View>
+            <View style={styles.detailContainer}>
+              <Text style={styles.info}>Location</Text>
+              <Text style={styles.infoVal}>{item.location}</Text>
+            </View>
+          </View>
+          <View style={styles.divider} />
+          <View style={styles.footerDetails}>
+            <View>
+              <Text style={styles.info}>Current price</Text>
+              <Text style={styles.price}>{item.price + addonPrice} €</Text>
+            </View>
+            <View>
+              <TouchableOpacity onPress={onClickLike()}>
+                <Image
+                  source={
+                    userInfo &&
+                    item.likes_number &&
+                    item.likes_number.includes(userInfo.user.id)
+                      ? likeBlueImg
+                      : likeImg
+                  }
+                />
+              </TouchableOpacity>
+              <Text>{ getLikesNumber(item)}</Text>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+  const renderItem = ({item, index}) => {
+    return <EventCard item={item} index={index} />;
+  };
+
+  const EventCountDown = ({date}) => {
+    const d = new Date(date);
+    return <Countdown date={d} renderer={renderer} />;
+  };
+
+  const renderer = ({days, hours, minutes, seconds, completed}) => {
+    if (completed) {
+      return <CompletionList />;
+    } else {
+      return (
+        <Text style={styles.leftTime}>
+          {days} DAYS {pad(hours)}h {pad(minutes)}m {pad(seconds)}s
+        </Text>
+      );
+    }
+  };
+
+  const CompletionList = () => (
+    <Text style={styles.leftTime}>EVENT STARTED</Text>
+  );
+
+  const pad = (num, size = 2) => {
+    const s = '000000000' + num;
+    return s.substr(s.length - size);
+  };
+
+  const onClickLike = index => {
+    if (!userInfo) return;
+    let likes = [];
+    try {
+      likes = JSON.parse(latestEvents[index].likes_number);
+    } catch (err) {
+      likes = [];
+      console.log(err);
+    }
+    if (typeof likes !== 'object' || likes === null) likes = [];
+    const userId = userInfo?.user?.id;
+    if (likes.includes(userId)) {
+      const index = likes.indexOf(userId);
+      likes.splice(index, 1);
+    } else {
+      likes.push(userId);
+    }
+    updateEventLike({
+      id: latestEvents[index]?.id,
+      likes_number: JSON.stringify(likes),
+    }).then(res => {
+      if (res.success) {
+        const _eventCards = [...latestEvents];
+        _eventCards[index].likes_number = JSON.stringify(likes);
+        console.log(_eventCards[index]);
+        setLatestEvents(_eventCards);
+      }
+    });
+  };
 
   useEffect(() => {
     getLatestEventCards().then(res => {

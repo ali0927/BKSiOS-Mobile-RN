@@ -113,14 +113,28 @@ const getEventCardById = id => {
   });
 };
 
-const getEventCardInCollection = (id) => {
+const getEventCardInCollection = id => {
   return new Promise((resolve, reject) => {
     api
-      .get("/api/event/in_collection/" + id)
-      .then((response) => {
+      .get('/api/event/in_collection/' + id)
+      .then(response => {
         resolve(response.data);
       })
-      .catch((error) => {
+      .catch(error => {
+        console.log(error);
+        reject(error);
+      });
+  });
+};
+
+const updateEventLike = data => {
+  return new Promise((resolve, reject) => {
+    api
+      .post('/api/event/eventcard_multi/update_like', data)
+      .then(response => {
+        resolve(response.data);
+      })
+      .catch(error => {
         console.log(error);
         reject(error);
       });
@@ -163,7 +177,7 @@ export {
   // getAllAddonIcons,
   getCollectionById,
   getEventCardInCollection,
-  // createEventCard,
+  updateEventLike,
   getEventCardById,
   getAllEventCards,
   getEventPrice,
