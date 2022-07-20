@@ -105,6 +105,13 @@ export const ProfileScreen = () => {
     description: '',
   };
 
+  const initalSocialValidations = {
+    facebook: "",
+    twitter: "",
+    instagram: "",
+    medium: "",
+  };
+
   const handleGeneralChange = (prop, value) => {
     setGeneralChanged(true);
     setGeneralValidations(initialGeneralValidations);
@@ -112,7 +119,7 @@ export const ProfileScreen = () => {
   };
   const handleSocialChange = (prop, value) => {
     setSocialChanged(true);
-    setSocialValidations(prevState => ({...prevState, [prop]: ''}));
+    setSocialValidations({ ...initalSocialValidations });
     setSocialValues({...socialValues, [prop]: value});
   };
   const handlePwdChange = (prop, value) => {
@@ -120,6 +127,8 @@ export const ProfileScreen = () => {
     setPwdValidations(prevState => ({...prevState, [prop]: ''}));
     setPwdValues({...pwdValues, [prop]: value});
   };
+
+ 
 
   const checkGeneralValidations = () => {
     if (generalValues.name === '') {
@@ -134,59 +143,12 @@ export const ProfileScreen = () => {
         email: 'has-empty',
       });
       return false;
-    } else if (
-      isNaN(Number(generalValues.mobile)) ||
-      generalValues.mobile.length > 11
-    ) {
+    } else if (!isMobileValid()) {
       setGeneralValidations({
         ...initialGeneralValidations,
         mobileNumber: 'has-empty',
       });
       return false;
-      // } else if (generalValues.website === '') {
-      //   setGeneralValidations({
-      //     name: '',
-      //     email: '',
-      //     mobileNumber: '',
-      //     website: 'has-empty',
-      //     walletAddress: '',
-      //     backgroundImg: '',
-      //     description: '',
-      //   });
-      //   return false;
-      // } else if (generalValues.walletAddress === '') {
-      //   setGeneralValidations({
-      //     name: '',
-      //     email: '',
-      //     mobileNumber: '',
-      //     website: '',
-      //     walletAddress: 'has-empty',
-      //     backgroundImg: '',
-      //     description: '',
-      //   });
-      //   return false;
-      // } else if (generalValues.backgroundImg === '') {
-      //   setGeneralValidations({
-      //     name: '',
-      //     email: '',
-      //     mobileNumber: '',
-      //     website: '',
-      //     walletAddress: '',
-      //     backgroundImg: 'has-empty',
-      //     description: '',
-      //   });
-      //   return false;
-      // } else if (generalValues.description === '') {
-      //   setGeneralValidations({
-      //     name: '',
-      //     email: '',
-      //     mobileNumber: '',
-      //     website: '',
-      //     walletAddress: '',
-      //     backgroundImg: '',
-      //     description: 'has-empty',
-      //   });
-      //   return false;
     } else {
       setGeneralValidations(initialGeneralValidations);
     }
@@ -276,10 +238,25 @@ export const ProfileScreen = () => {
       return false;
     }
   };
-
+  const isMobileValid = () => {
+    let str = generalValues.mobileNumber;
+    const len = str.length;
+    for (let i = 0; i < len; i++) {
+      if ((str[i] < '0' || str[i] > '9') && str[i] !== '+' && str[i] !== ' ')
+        return false;
+    }
+    while (str[0] === '+' || str[0] === '0') str = str.slice(1);
+    console.log(str);
+    let _len = 0;
+    for (let i = 0; i < str.length; i++) {
+      if (str[i] >= '0' && str[i] <= '9') _len++;
+    }
+    if (_len > 11) return false;
+    return true;
+  };
   const saveGeneral = async () => {
     if (!checkGeneralValidations()) return;
-    
+
     updateProfile({
       name: generalValues.name,
       email: generalValues.email,
@@ -291,14 +268,15 @@ export const ProfileScreen = () => {
       twitter: currentUser.twitter,
       medium: currentUser.medium,
       wallet_address_near: currentUser.wallet_address_near,
+      website: generalValues.website,
+      description: generalValues.description,
     })
       .then(res => {
         if (res.success) {
           Toast.show({
             type: 'success',
-            text1: 'Updating General Data Success!',
+            text1: 'Saved successfully!',
           });
-          console.log('general save response', res);
           setGeneralChanged(false);
         } else {
           const message = res.message ? res.message : 'failed';
@@ -317,7 +295,8 @@ export const ProfileScreen = () => {
     console.log('saveGeneral', generalValues);
   };
   const saveSocial = async () => {
-    console.log('saveGeneral', socialValues);
+    if (!checkSocialValidations()) return;
+    
     changeSocial(socialValues).then(res => {
       if (res.success) {
         Toast.show({
@@ -334,7 +313,7 @@ export const ProfileScreen = () => {
     });
   };
   const savePwd = async () => {
-    console.log('saveGeneral', pwdValues);
+    console.log('savePwd', pwdValues);
     if (!checkPwdValidations()) {
       console.log('Validation for pwd failed!');
       return;
@@ -493,10 +472,10 @@ export const ProfileScreen = () => {
         name: JSON.parse(userInfo).user.name,
         email: JSON.parse(userInfo).user.email,
         mobileNumber: JSON.parse(userInfo).user.phone,
-        website: '',
+        website: JSON.parse(userInfo).user.website,
         walletAddress: JSON.parse(userInfo).user.wallet_address,
         backgroundImg: JSON.parse(userInfo).user.background,
-        description: '',
+        description: JSON.parse(userInfo).user.description,
       });
       setSocialValues({
         ...socialValues,
@@ -663,12 +642,7 @@ export const ProfileScreen = () => {
                 onChangeText={val => handleGeneralChange('email', val)}
               />
               {generalValidations.email === 'has-empty' ? (
-                <Text style={styles.errorText}>Email required*</Text>
-              ) : (
-                <Text style={styles.errorText} />
-              )}
-              {generalValidations.email === 'has-danger' ? (
-                <Text style={styles.errorText}>Input Correct Format</Text>
+                <Text style={styles.errorText}>Valid Email required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -688,7 +662,9 @@ export const ProfileScreen = () => {
                 onChangeText={val => handleGeneralChange('mobileNumber', val)}
               />
               {generalValidations.mobileNumber === 'has-empty' ? (
-                <Text style={styles.errorText}>Mobile Number required*</Text>
+                <Text style={styles.errorText}>
+                  Valid Mobile Number Required*
+                </Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -707,11 +683,6 @@ export const ProfileScreen = () => {
                 autoCapitalize="none"
                 onChangeText={val => handleGeneralChange('website', val)}
               />
-              {generalValidations.website === 'has-empty' ? (
-                <Text style={styles.errorText}>Website required*</Text>
-              ) : (
-                <Text style={styles.errorText} />
-              )}
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>BSC Wallet Address</Text>
@@ -727,11 +698,6 @@ export const ProfileScreen = () => {
                 autoCapitalize="none"
                 onChangeText={val => handleGeneralChange('walletAddress', val)}
               />
-              {generalValidations.walletAddress === 'has-empty' ? (
-                <Text style={styles.errorText}>Wallet Address required*</Text>
-              ) : (
-                <Text style={styles.errorText} />
-              )}
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>Background Image</Text>
@@ -745,11 +711,6 @@ export const ProfileScreen = () => {
                 {backgroundImgModal()}
                 {/* <Button title="Save" onPress={handleUploadPhoto} /> */}
               </View>
-              {generalValidations.backgroundImg === 'has-empty' ? (
-                <Text style={styles.errorText}>Background Image required*</Text>
-              ) : (
-                <Text style={styles.errorText} />
-              )}
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.subTitle}>Description</Text>
@@ -808,7 +769,7 @@ export const ProfileScreen = () => {
                 onChangeText={val => handleSocialChange('facebook', val)}
               />
               {socialValidations.facebook === 'has-empty' ? (
-                <Text style={styles.errorText}>Facebook required*</Text>
+                <Text style={styles.errorText}>Correct URL Required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -828,7 +789,7 @@ export const ProfileScreen = () => {
                 onChangeText={val => handleSocialChange('instagram', val)}
               />
               {socialValidations.instagram === 'has-empty' ? (
-                <Text style={styles.errorText}>Instagram required*</Text>
+                <Text style={styles.errorText}>Correct URL Required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -848,7 +809,7 @@ export const ProfileScreen = () => {
                 onChangeText={val => handleSocialChange('twitter', val)}
               />
               {socialValidations.twitter === 'has-empty' ? (
-                <Text style={styles.errorText}>Twitter required*</Text>
+                <Text style={styles.errorText}>Correct URL Required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -868,7 +829,7 @@ export const ProfileScreen = () => {
                 onChangeText={val => handleSocialChange('medium', val)}
               />
               {socialValidations.medium === 'has-empty' ? (
-                <Text style={styles.errorText}>Medium required*</Text>
+                <Text style={styles.errorText}>Correct URL Required*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -1185,9 +1146,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.33)',
     marginTop: 10,
-    padding: 15,
-    paddingRight: 50,
-    paddingLeft: 20,
+    paddingHorizontal: 20,
     color: 'white',
     borderRadius: 4,
     fontSize: 14,
@@ -1207,8 +1166,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 88,
     borderWidth: 1,
-    padding: 15,
-    paddingLeft: 20,
+    paddingHorizontal: 20,
     color: 'white',
     borderRadius: 4,
     fontSize: 14,
