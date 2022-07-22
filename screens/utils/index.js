@@ -6,24 +6,30 @@ const validateEmail = value => {
   }
   return false;
 };
-  
-const getEventPrice = (eventCard) => {
-  const addons = eventCard.addons === "" ? [] : JSON.parse(eventCard.addons);
-  const payees = eventCard.payees === "" ? [] : JSON.parse(eventCard.payees);
+
+const getEventPrice = eventCard => {
+  const addons = eventCard.addons === '' ? [] : JSON.parse(eventCard.addons);
+  const payees = eventCard.payees === '' ? [] : JSON.parse(eventCard.payees);
   let addonPrice = 0;
   const len = addons.length;
   for (let i = 0; i < len; i++) {
     addonPrice += Number(addons[i].price);
   }
   let payeeFee = 0;
-  payees.map((payee) => {
+  payees.map(payee => {
     payeeFee += Number(payee.fee);
     return 0;
   });
   return ((Number(eventCard.price) + addonPrice) * (100 + payeeFee)) / 100;
 };
 
-const getLikesNumber = (eventCard) => {
+const isVideoFile = str => {
+  const fileName = str.split('.');
+  const ext = fileName[fileName.length - 1].toLowerCase();
+  return ext === 'mp4' || ext === 'mov' || ext === 'avi';
+};
+
+const getLikesNumber = eventCard => {
   let likes = [];
   try {
     likes = JSON.parse(eventCard.likes_number);
@@ -31,14 +37,9 @@ const getLikesNumber = (eventCard) => {
     likes = [];
     console.log(err);
   }
-  if (typeof likes !== "object" || likes === null) likes = [];
+  if (typeof likes !== 'object' || likes === null) likes = [];
   if (likes) return likes.length;
   else return 0;
 };
 
-
-export {
-  validateEmail,
-  getEventPrice,
-  getLikesNumber,
-};
+export {validateEmail, getEventPrice, getLikesNumber, isVideoFile};

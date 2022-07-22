@@ -22,8 +22,9 @@ export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 
 const EventsCarousel = () => {
   const [latestEvents, setLatestEvents] = useState([]);
+  const [userInfo, setUserInfo] = useState();
 
-  const userInfo = useSelector(state => state.userInfoReducer).userInfo;
+  const _userInfo = useSelector(state => state.userInfoReducer).userInfo;
 
   const EventCard = ({item}) => {
     console.log('User Info...', userInfo);
@@ -74,7 +75,7 @@ const EventsCarousel = () => {
                   source={
                     userInfo &&
                     item.likes_number &&
-                    item.likes_number.includes(userInfo.user.id)
+                    item.likes_number.includes(userInfo?.user?.id)
                       ? likeBlueImg
                       : likeImg
                   }
@@ -141,16 +142,22 @@ const EventsCarousel = () => {
       if (res.success) {
         const _eventCards = [...latestEvents];
         _eventCards[index].likes_number = JSON.stringify(likes);
-        console.log(_eventCards[index]);
+        console.log("_eventCards[index]", _eventCards[index]);
         setLatestEvents(_eventCards);
       }
     });
   };
 
   useEffect(() => {
+    if (!userInfo) {      
+      setUserInfo(_userInfo);
+    }   
+    
     getLatestEventCards().then(res => {
       if (res.success) {
         setLatestEvents(res.eventcards);
+        console.log("AAA>>>>", res.eventcards);
+        console.log("User Info in UseEffect::", userInfo);
       }
     });
   }, []);

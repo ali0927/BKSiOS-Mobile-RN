@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
+import Video from 'react-native-video';
 import {useNavigation} from '@react-navigation/core';
 import {getEventPrice, getAllEventCards} from '../helper/event';
 import config from '../helper/config';
@@ -16,6 +17,7 @@ import badgeMark from '../../assets/img/icons/verified.png';
 import likedImg from '../../assets/img/icons/like-empty.png';
 import collectionAvatar from '../../assets/img/avatars/avatar2.jpg';
 import {Loading} from '../components/loading';
+import {isVideoFile} from '../utils';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
@@ -58,7 +60,7 @@ export const ExplorerScreen = () => {
         onPress={() => navigation.navigate('EventDetail', {item: item})}
         style={styles.cardContainer}>
         <View style={styles.imageDiv}>
-          <Image
+          {/* <Image
             source={{
               uri:
                 config.API_BASE_URL +
@@ -67,7 +69,45 @@ export const ExplorerScreen = () => {
             }}
             style={styles.img}
             resizeMode="cover"
-          />
+          /> */}
+          {isVideoFile(eventCard.picture_large) ? (
+            <View>
+              <Video
+                source={{
+                  uri:
+                    config.API_BASE_URL +
+                    '/api/upload/get_file?path=' +
+                    item.picture_large,
+                }}
+                autoPlay
+                playInBackground
+                repeat
+                muted
+                style={{width: 'auto', height: '100%'}}
+                ref={ref => {
+                  this.player = ref;
+                }}>
+                {/* <source
+                    src={`${config.API_BASE_URL}/api/upload/get_file?path=${eventCard.picture_large}`}
+                    type="video/mp4"
+                  /> */}
+                Your browser does not support the video tag.
+              </Video>
+            </View>
+          ) : (
+            <View>
+              <Image
+                source={{
+                  uri:
+                    config.API_BASE_URL +
+                    '/api/upload/get_file?path=' +
+                    item.picture_large,
+                }}
+                style={styles.img}
+                resizeMode="cover"
+              />
+            </View>
+          )}
         </View>
         <View style={styles.cardMeta}>
           <Text style={styles.name}>{item.name}</Text>

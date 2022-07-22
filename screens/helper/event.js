@@ -143,12 +143,11 @@ const updateEventLike = data => {
 
 // Tickets
 const allTickets = data => {
-  console.log('Ticket is called', data);
   return new Promise((resolve, reject) => {
     api
       .get('/api/event/eventcard_multi/tickets')
       .then(response => {
-        console.log('Ticket Calling Res', response.data);
+        // console.log('Ticket Calling Res', response.data);
         resolve(response.data);
       })
       .catch(error => {
