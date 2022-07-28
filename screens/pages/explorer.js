@@ -11,13 +11,18 @@ import {
 } from 'react-native';
 import Video from 'react-native-video';
 import {useNavigation} from '@react-navigation/core';
-import {getEventPrice, getAllEventCards} from '../helper/event';
+import {
+  getEventPrice,
+  getAllEventCards,
+  updateEventLike,
+} from '../helper/event';
 import config from '../helper/config';
 import badgeMark from '../../assets/img/icons/verified.png';
-import likedImg from '../../assets/img/icons/like-empty.png';
+import likeImg from '../../assets/img/icons/liked-white.png';
+import likeBlueImg from '../../assets/img/icons/like-fill.png';
 import collectionAvatar from '../../assets/img/avatars/avatar2.jpg';
 import {Loading} from '../components/loading';
-import {isVideoFile} from '../utils';
+import {isVideoFile, getLikesNumber} from '../utils';
 import {useSelector} from 'react-redux';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
@@ -27,6 +32,9 @@ export const ExplorerScreen = () => {
   const [originEvents, setOriginEvents] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState();
+
+  const _userInfo = useSelector(state => state.userInfoReducer).userInfo;
   const searchInfo = useSelector(state => state.searchInfoReducer).searchInfo;
 
   const filterEvents = events_ => {
@@ -38,6 +46,40 @@ export const ExplorerScreen = () => {
       setEvents(events_);
     }
   };
+
+  const onClickLike = index => {
+    console.log('Onclick Func>>', index);
+    if (!userInfo) return;
+    let likes = [];
+    try {
+      likes = JSON.parse(originEvents[index].likes_number);
+    } catch (err) {
+      likes = [];
+      console.log(err);
+    }
+    if (typeof likes !== 'object' || likes === null) likes = [];
+    const userId = userInfo?.user?.id;
+    if (likes.includes(userId)) {
+      const index = likes.indexOf(userId);
+      likes.splice(index, 1);
+    } else {
+      likes.push(userId);
+    }
+    updateEventLike({
+      id: originEvents[index]?.id,
+      likes_number: JSON.stringify(likes),
+    }).then(res => {
+      if (res.success) {
+        const _eventCards = [...originEvents];
+        _eventCards[index].likes_number = JSON.stringify(likes);
+        setOriginEvents(_eventCards);
+      }
+    });
+  };
+
+  useEffect(() => {
+    setUserInfo(JSON.parse(_userInfo));
+  }, [_userInfo]);
 
   useEffect(() => {
     console.log('SearchInfo>>', searchInfo);
@@ -53,7 +95,7 @@ export const ExplorerScreen = () => {
       }
     });
   }, []);
-  const Card = ({item}) => {
+  const Card = ({item, index}) => {
     const navigation = useNavigation();
     const creatorAvatar = () => {
       if (item.creator.avatar === '/img/avatars/avatar.jpg') {
@@ -135,7 +177,7 @@ export const ExplorerScreen = () => {
               <Text style={styles.info}>Collection</Text>
               <View style={styles.collectionSub}>
                 <Image source={collectionAvatar} style={styles.avatar} />
-                <Text style={styles.owner}>cName</Text>
+                <Text style={styles.owner}>{item.collection.name}</Text>
               </View>
             </View>
             <View>
@@ -158,8 +200,19 @@ export const ExplorerScreen = () => {
               <Text style={styles.info}>Reserve Price</Text>
               <Text style={styles.price}>{getEventPrice(item)} &#8364;</Text>
             </View>
-            <View style={styles.likedImg}>
-              <Image source={likedImg} />
+            <View style={styles.flexRow}>
+              <TouchableOpacity onPress={() => onClickLike(index)}>
+                <Image
+                  source={
+                    userInfo &&
+                    item.likes_number &&
+                    item.likes_number.includes(userInfo?.user?.id)
+                      ? likeBlueImg
+                      : likeImg
+                  }
+                />
+              </TouchableOpacity>
+              <Text style={styles.likeNum}>{getLikesNumber(item)}</Text>
             </View>
           </View>
         </View>
@@ -170,8 +223,8 @@ export const ExplorerScreen = () => {
     <ScrollView style={styles.container}>
       <View style={styles.eventContainer}>
         {loading && <Loading />}
-        {events.map(item => (
-          <Card item={item} key={item.id} />
+        {events.map((item, index) => (
+          <Card item={item} index={index} key={item.id} />
         ))}
       </View>
     </ScrollView>
@@ -300,8 +353,18 @@ const styles = StyleSheet.create({
     height: 16,
     marginLeft: 10,
   },
-  likedImg: {
-    width: 24,
-    height: 24,
+  flexRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  likeNum: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    fontSize: 20,
+    color: 'rgba(255, 255, 255, 0.66)',
+    fontWeight: '400',
+    letterSpacing: 2,
+    textAlign: 'center',
+    marginLeft: 10,
   },
 });
