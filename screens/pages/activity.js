@@ -10,11 +10,13 @@ import {
 import clockImg from '../../assets/img/icons/clock.png';
 import badgeMark from '../../assets/img/icons/verified.png';
 import ReactTimeAgo from 'react-native-timeago';
-import {allTickets} from '../helper/event';
+import {updateUsertickets, userTickets} from '../helper/event';
+// import {useWeb3React} from '@web3-react/core';
 import config from '../helper/config';
+import {useSelector} from 'react-redux';
 
 const ActivityCard = ({ticket}) => {
-  console.log('Ticket', ticket.eventcard);
+  // console.log('Ticket', ticket.eventcard);
   return (
     <View style={styles.cardContainer}>
       <View style={styles.cardAvatar}>
@@ -55,14 +57,29 @@ const ActivityCard = ({ticket}) => {
 };
 export const ActivityScreen = () => {
   const [tickets, setTickets] = useState([]);
+  const [userInfo, setUserInfo] = useState();
+  const _userInfo = useSelector(state => state.userInfoReducer).userInfo;
+
+  const [isFilter, setIsFiilter] = useState(false);
+  const {connector} = useWeb3React();
 
   useEffect(() => {
-    allTickets().then(res => {
-      if (res.success) {
-        setTickets(res.tickets);
-      }
-    });
-  }, []);
+    setUserInfo(JSON.parse(_userInfo));
+  }, [_userInfo]);
+
+  useEffect(() => {
+    // wallet_connect();
+    if (userInfo && userInfo.user.user_type === 'NORMAL') {
+      console.log('NORMAL Activity');
+      userTickets().then(res => {
+        console.log("userTicekts");
+        if (res.success) {
+          setTickets(res.tickets);
+        }
+      });
+    }
+  }, [userInfo]);
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>

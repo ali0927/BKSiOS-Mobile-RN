@@ -24,7 +24,7 @@ export const MenuHomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const signOut = async () => {
     if (userInfo) {
-      console.log('SignOut Function...', userInfo);
+      // console.log('SignOut Function...', userInfo);
       const keys = await AsyncStorage.getAllKeys();
       await AsyncStorage.multiRemove(keys);
       dispatch({type: 'CLEAR_USER_INFO'});
