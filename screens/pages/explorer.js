@@ -31,8 +31,12 @@ export const ExplorerScreen = () => {
 
   const filterEvents = events_ => {
     let res = [];
-    res = events_.filter(card => card.name.includes(searchInfo));
-    setEvents([...res]);
+    if (searchInfo !== null) {
+      res = events_.filter(card => card.name.includes(searchInfo));
+      setEvents([...res]);
+    } else {
+      setEvents(events_);
+    }
   };
 
   useEffect(() => {

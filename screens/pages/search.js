@@ -22,7 +22,7 @@ export const SearchScreen = () => {
   const [originEvents, setOriginEvents] = useState([]);
   const [events, setEvents] = useState([]);
   const [originCollections, setOriginCollections] = useState([]);
-  const [collections, setCollections] = useState([]);  
+  const [collections, setCollections] = useState([]);
   const [selectedTag, setSelectedTag] = useState('collections');
   const [colLoading, setColLoading] = useState(true);
   const [eventLoading, setEventLoading] = useState(true);
@@ -31,22 +31,36 @@ export const SearchScreen = () => {
 
   const filterTickets = tickets_ => {
     let res = [];
-    res = tickets_.filter(card => card.eventcard.name.includes(searchInfo));
-    setTickets([...res]);
+    if (searchInfo !== null) {
+      res = tickets_.filter(card => card.eventcard.name.includes(searchInfo));
+      setTickets([...res]);
+    } else {
+      setTickets(tickets_);
+    }
   };
 
   const filterEvents = events_ => {
     let res = [];
-    res = events_.filter(card => card.name.includes(searchInfo));
-    setEvents([...res]);
+    if (searchInfo !== null) {
+      res = events_.filter(card => card.name.includes(searchInfo));
+      setEvents([...res]);
+    } else {
+      setEvents(events_);
+    }
   };
-  
+
   const filterCollections = collections_ => {
     let res = [];
-    res = collections_.filter(card => card.name.toLowerCase().includes(searchInfo));
-    setCollections([...res]);
+    if (searchInfo !== null) {
+      res = collections_.filter(card =>
+        card.name.toLowerCase().includes(searchInfo),
+      );
+      setCollections([...res]);
+    } else {
+      setCollections(collections_);
+    }
   };
-  
+
   useEffect(() => {
     getAllCollections().then(res => {
       if (res.success) {
@@ -79,7 +93,7 @@ export const SearchScreen = () => {
     filterTickets(originTickets);
     filterEvents(originEvents);
     filterCollections(originCollections);
-  }, [searchInfo])
+  }, [searchInfo]);
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -144,7 +158,9 @@ export const SearchScreen = () => {
                         }}
                         style={styles.resultAvatarImg}
                       />
-                      <Text style={styles.resultName} numberOfLines={1}>{collection.name}</Text>
+                      <Text style={styles.resultName} numberOfLines={1}>
+                        {collection.name}
+                      </Text>
                       <Text style={styles.resultDescription}>Accomodation</Text>
                     </View>
                   </TouchableOpacity>
