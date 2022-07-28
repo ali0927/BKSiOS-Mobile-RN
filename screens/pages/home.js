@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Image,
   ScrollView,
@@ -12,9 +12,34 @@ import CollectionCarousel from '../components/homePage/collectionCarousel';
 import EventsCarousel from '../components/homePage/eventsCarousel';
 import BackstagersCarousel from '../components/homePage/backstagersCarousel';
 import backImg from '../../assets/img/home/home-background.png';
+import EventsArtsCarousel from '../components/homePage/eventsArtsCarousel';
+import EventsServicesCarousel from '../components/homePage/eventsServicesCarousel';
+import { useDispatch } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const deviceWidth = Dimensions.get('window').width;
-export const HomeScreen = ({navigation}) => {
+export const HomeScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+
+  const getData = async () => {
+    // get Data from Storage
+    try {
+      const data = await AsyncStorage.getItem('userInfo');
+      if (data !== null) {
+        console.log("Saved AsyncStorage Data:::", data);
+        dispatch({type: 'SET_USER_INFO', payload: data});
+        // return data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, [])
+  // const result = AsyncStorage.getItem('userInfo');
+  // dispatch({type: 'SET_USER_INFO', payload: JSON.stringify(result)});
   return (
     <View style={styles.container}>
       <Image source={backImg} style={styles.backImg} />
@@ -29,6 +54,14 @@ export const HomeScreen = ({navigation}) => {
         <View>
           <Text style={styles.subtitle}>Latest Events</Text>
           <EventsCarousel navigation={navigation} />
+        </View>
+        <View>
+          <Text style={styles.subtitle}>Latest Arts</Text>
+          <EventsArtsCarousel navigation={navigation} />
+        </View>
+        <View>
+          <Text style={styles.subtitle}>Latest Services</Text>
+          <EventsServicesCarousel navigation={navigation} />
         </View>
         <View>
           <Text style={styles.subtitle}>Backstagers</Text>
