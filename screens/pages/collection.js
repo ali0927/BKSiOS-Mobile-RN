@@ -74,11 +74,8 @@ export const CollectionScreen = ({route}) => {
   }, [eventCards]);
 
   useEffect(() => {
-    console.log('collectionData', collectionData);
     getEventCardInCollection(collectionData.id).then(res => {
-      console.log('RES...', res);
       if (res.success) {
-        console.log('Res.EventCards', res.eventcards);
         setEventCards(res.eventcards);
       }
     });
@@ -151,7 +148,7 @@ export const CollectionScreen = ({route}) => {
             const addons =
               eventcard.addons === '' ? [] : JSON.parse(eventcard.addons);
             return (
-              <TouchableOpacity style={styles.eventContainer}>
+              <TouchableOpacity style={styles.eventContainer} key={index}>
                 <Image
                   source={{
                     uri:
