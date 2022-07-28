@@ -20,7 +20,7 @@ import {getLikesNumber} from '../../utils';
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 
-const EventsCarousel = () => {
+const EventsServicesCarousel = () => {
   const [latestEvents, setLatestEvents] = useState([]);
   const [userInfo, setUserInfo] = useState();
   const _userInfo = useSelector(state => state.userInfoReducer).userInfo;
@@ -150,7 +150,7 @@ const EventsCarousel = () => {
       if (res.success) {
         setLatestEvents(
           res.eventcards.filter(
-            eventcard => eventcard.category === 'Category1',
+            eventcard => eventcard.category === 'Category3',
           ),
         );
       }
@@ -174,7 +174,7 @@ const EventsCarousel = () => {
     </View>
   );
 };
-export default EventsCarousel;
+export default EventsServicesCarousel;
 
 const styles = StyleSheet.create({
   container: {
