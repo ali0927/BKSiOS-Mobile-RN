@@ -121,7 +121,7 @@ export const ExplorerScreen = () => {
         onPress={() => navigation.navigate('EventDetail', {item: item})}
         style={styles.cardContainer}>
         <View style={styles.imageDiv}>
-          {/* <Image
+          <Image
             source={{
               uri:
                 config.API_BASE_URL +
@@ -130,7 +130,7 @@ export const ExplorerScreen = () => {
             }}
             style={styles.img}
             resizeMode="cover"
-          /> */}
+          />
           {/* {isVideoFile(item.picture_large) ? (
             <View>
               <Video
