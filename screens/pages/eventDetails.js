@@ -20,9 +20,11 @@ import {
   getCollectionById,
   getLatestEventCards,
   getBuyState,
+  updateEventLike,
 } from '../helper/event';
 import Countdown from 'react-countdown';
 import likeImg from '../../assets/img/icons/like-empty.png';
+import likeBlueImg from '../../assets/img/icons/like-fill.png';
 import config from '../helper/config';
 import {PayPalButtons, PayPalScriptProvider} from '@paypal/react-paypal-js';
 import {getEventPrice} from '../helper/event';
@@ -42,9 +44,11 @@ import {
 import {useSelector, useDispatch} from 'react-redux';
 import {WebView} from 'react-native-webview';
 import Feather from 'react-native-vector-icons/Feather';
+import {getLikesNumber} from '../utils';
 
 export const EventDetailsScreen = ({route}) => {
-  const userInfo = useSelector(state => state.userInfoReducer).userInfo;
+  const [userInfo, setUserInfo] = useState();
+  const _userInfo = useSelector(state => state.userInfoReducer).userInfo;
 
   const id = route.params.item.id;
   const tempData = route.params.item;
@@ -65,12 +69,10 @@ export const EventDetailsScreen = ({route}) => {
   const [progClr, setProgClr] = useState('#000');
 
   const toggleModal = () => {
-    console.log('This is Modal');
     setModalVisible(!isModalVisible);
   };
 
   const toggleAddonModal = item => {
-    console.log('This is Addon Modal', item);
     setSelectedAddon(item);
     setAddonModalVisible(!isAddonModalVisible);
   };
@@ -106,8 +108,6 @@ export const EventDetailsScreen = ({route}) => {
     }, 500);
   };
   const createOrder = (data, actions) => {
-    console.log('data: ', data);
-    console.log('actions: ', actions);
     return actions.order.create({
       purchase_units: [
         {
@@ -171,7 +171,7 @@ export const EventDetailsScreen = ({route}) => {
     // console.log("account", account, chainId);
     const provider = new ethers.providers.Web3Provider(provide);
     const chainId = Number(provider.provider.chainId);
-    console.log('ChainId', chainId);
+    // console.log('ChainId', chainId);
     if (chainId !== 56 && chainId !== 97) {
       Toast.show({
         type: 'error',
@@ -183,9 +183,9 @@ export const EventDetailsScreen = ({route}) => {
         text1: 'Please wait ... It might takes some time',
       });
       try {
-        console.log('Provider', provider);
+        // console.log('Provider', provider);
         const account = await provider.getSigner().getAddress();
-        console.log('Provider Account', account);
+        // console.log('Provider Account', account);
         const BUSD = new ethers.Contract(
           chainId === 97
             ? '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee'
@@ -202,7 +202,7 @@ export const EventDetailsScreen = ({route}) => {
         );
         const rate = await getEurRate();
         const price = getEventPrice(eventCard) * ticketAmount * rate;
-        console.log(price);
+        // console.log(price);
         const ETH = ethers.BigNumber.from('1000000000000000000');
         const totalWei = await BUSD.balanceOf(account);
         const totalBUSD =
@@ -210,7 +210,7 @@ export const EventDetailsScreen = ({route}) => {
             .mul(ethers.BigNumber.from(100))
             .div(ETH)
             .toNumber() / 100;
-        console.log('Total Amount', totalBUSD);
+        // console.log('Total Amount', totalBUSD);
         if (totalBUSD < price) {
           Toast.show({
             type: 'error',
@@ -222,7 +222,7 @@ export const EventDetailsScreen = ({route}) => {
             .div(ethers.BigNumber.from(100));
           let txn = await BUSD.approve(BUSDPayment_testnet, amount);
           await txn.wait();
-          console.log(txn.hash);
+          // console.log(txn.hash);
           const payees =
             eventCard.payees === ''
               ? []
@@ -237,7 +237,7 @@ export const EventDetailsScreen = ({route}) => {
           }
           payees.push(eventCard.owner_wallet);
           fees.push(totalFee);
-          console.log(payees, fees);
+          // console.log(payees, fees);
           txn = await contract.payWithBUSD(account, amount, payees, fees);
           await txn.wait();
           handleBuyTicket(txn.hash, wallet, 'Binance Smart Chain');
@@ -250,7 +250,7 @@ export const EventDetailsScreen = ({route}) => {
         });
       }
     }
-    console.log('Buy with BUSD');
+    // console.log('Buy with BUSD');
   };
 
   const buyWithBUSD = async _provide => {
@@ -270,7 +270,7 @@ export const EventDetailsScreen = ({route}) => {
     }
 
     const accounts = await provide.request({method: 'eth_accounts'});
-    console.log('Accounts', accounts);
+    // console.log('Accounts', accounts);
     if (accounts.length === 0) {
       await provide.request({method: 'eth_requestAccounts'});
     }
@@ -300,7 +300,7 @@ export const EventDetailsScreen = ({route}) => {
 
   const _onApprove = async (data, actions) => {
     let order = await actions.order.capture();
-    console.log('Payment Order', order);
+    // console.log('Payment Order', order);
     window.ReactNativeWebView &&
       window.ReactNativeWebView.postMessage(JSON.stringify(order));
     return order;
@@ -330,13 +330,42 @@ export const EventDetailsScreen = ({route}) => {
     var date = new Date(t);
     return date.getUTCHours() + ' : ' + date.getUTCMinutes() + ' GMT';
   };
+
+  const onClickLike = () => {
+    if (!userInfo) return;
+    let likes = [];
+    try {
+      likes = JSON.parse(tempData.likes_number);
+    } catch (err) {
+      likes = [];
+      console.log(err);
+    }
+    if (typeof likes !== 'object' || likes === null) likes = [];
+    const userId = userInfo?.user?.id;
+    if (likes.includes(userId)) {
+      const index = likes.indexOf(userId);
+      likes.splice(index, 1);
+    } else {
+      likes.push(userId);
+    }
+    updateEventLike({
+      id: tempData.id,
+      likes_number: JSON.stringify(likes),
+    }).then(res => {
+      if (res.success) {
+        const _eventCards = [...latestEvents];
+        tempData.likes_number = JSON.stringify(likes);
+        setLatestEvents(_eventCards);
+      }
+    });
+  };
+
   useEffect(() => {
-    console.log('TTTTEEEE>>>>', tempData);
     setWallet(userInfo?.wallet_address);
     setCurrentEvent(eventData.find(item => id === item.id));
 
     getEventCardById(id).then(res => {
-      console.log('EventCardById', res);
+      // console.log('EventCardById', res);
       if (res.success) {
         setEventCard(res.eventcard);
         if (res.eventcard.total_tickets === res.eventcard.buy_count) {
@@ -350,7 +379,7 @@ export const EventDetailsScreen = ({route}) => {
           _addonPrice += Number(addon.price);
         });
         setAddonPrice(_addonPrice);
-        console.log('Before setting colle.name', res.eventcard.collection);
+        // console.log('Before setting colle.name', res.eventcard.collection);
         getCollectionById(res.eventcard.collection).then(res => {
           if (res.success) {
             setCollectionName(res.collection.name);
@@ -378,6 +407,10 @@ export const EventDetailsScreen = ({route}) => {
         console.log(err);
       });
   }, [id, userInfo]);
+
+  useEffect(() => {
+    setUserInfo(JSON.parse(_userInfo));
+  }, [_userInfo]);
   return (
     <ScrollView style={styles.container}>
       {tempData && (
@@ -394,8 +427,19 @@ export const EventDetailsScreen = ({route}) => {
           <View style={styles.flexRow}>
             <Text style={styles.name}>{tempData.name}</Text>
             <View style={styles.rowCenter}>
-              <Image source={likeImg} style={styles.likedImg} />
-              <Text style={styles.followers}>{tempData.creator.followers}</Text>
+              <TouchableOpacity onPress={() => onClickLike()}>
+                <Image
+                  source={
+                    userInfo &&
+                    tempData.likes_number &&
+                    tempData.likes_number.includes(userInfo?.user?.id)
+                      ? likeBlueImg
+                      : likeImg
+                  }
+                  style={styles.likedImg}
+                />
+              </TouchableOpacity>
+              <Text style={styles.followers}>{getLikesNumber(tempData)}</Text>
             </View>
           </View>
           <Text style={styles.description}>{tempData.venue_description}</Text>
