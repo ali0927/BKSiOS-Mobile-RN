@@ -27,19 +27,23 @@ import exploreImg from '../../../assets/img/icons/explore.png';
 import exploreActImg from '../../../assets/img/icons/explore-act.png';
 import newsImg from '../../../assets/img/icons/news.png';
 import newsActImg from '../../../assets/img/icons/news-act.png';
-import {MenuStackScreen} from './menuStack';
+import { MenuStackScreen } from './menuStack';
+import { useDispatch } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 const THEME_COLOR = '#14142f';
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+// const windowHeight = Dimensions.get('window').height;
 
 export default function MainTabs() {
   const [focusedItem, setFocusedItem] = useState(true);
   const [searchValue, setSearchValue] = useState('');
-  const [searchValidation, setSearchValidation] = useState('');
+  // const [searchValidation, setSearchValidation] = useState('');
+  const dispatch = useDispatch();
+
   const handleChange = value => {
     setSearchValue(value);
+    dispatch({type: 'SET_SEARCH_INFO', payload: value});
   };
 
   return (

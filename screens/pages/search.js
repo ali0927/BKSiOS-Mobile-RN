@@ -13,22 +13,46 @@ import {allTickets, getAllCollections, getAllEventCards} from '../helper/event';
 import {useNavigation} from '@react-navigation/core';
 import config from '../helper/config';
 import {Loading} from '../components/loading';
+import {useSelector} from 'react-redux';
 
 export const SearchScreen = () => {
   const navigation = useNavigation();
+  const [originTickets, setOriginTickets] = useState([]);
   const [tickets, setTickets] = useState([]);
+  const [originEvents, setOriginEvents] = useState([]);
   const [events, setEvents] = useState([]);
-  const [collections, setCollections] = useState([]);
+  const [originCollections, setOriginCollections] = useState([]);
+  const [collections, setCollections] = useState([]);  
   const [selectedTag, setSelectedTag] = useState('collections');
   const [colLoading, setColLoading] = useState(true);
   const [eventLoading, setEventLoading] = useState(true);
   const [ticketLoading, setTicketLoading] = useState(true);
+  const searchInfo = useSelector(state => state.searchInfoReducer).searchInfo;
 
+  const filterTickets = tickets_ => {
+    let res = [];
+    res = tickets_.filter(card => card.eventcard.name.includes(searchInfo));
+    setTickets([...res]);
+  };
+
+  const filterEvents = events_ => {
+    let res = [];
+    res = events_.filter(card => card.name.includes(searchInfo));
+    setEvents([...res]);
+  };
+  
+  const filterCollections = collections_ => {
+    let res = [];
+    res = collections_.filter(card => card.name.toLowerCase().includes(searchInfo));
+    setCollections([...res]);
+  };
+  
   useEffect(() => {
     getAllCollections().then(res => {
       if (res.success) {
         setColLoading(false);
-        setCollections(res.collections);
+        setOriginCollections(res.collections);
+        filterCollections(res.collections);
       } else {
         console.log('ERROR:::', res);
       }
@@ -37,17 +61,25 @@ export const SearchScreen = () => {
     getAllEventCards().then(res => {
       if (res.success) {
         setEventLoading(false);
-        setEvents(res.eventcards);
+        setOriginEvents(res.eventcards);
+        filterEvents(res.eventcards);
       }
     });
 
     allTickets().then(res => {
       if (res.success) {
         setTicketLoading(false);
-        setTickets(res.tickets);
+        setOriginTickets(res.tickets);
+        filterTickets(res.tickets);
       }
     });
   }, []);
+
+  useEffect(() => {
+    filterTickets(originTickets);
+    filterEvents(originEvents);
+    filterCollections(originCollections);
+  }, [searchInfo])
   return (
     <View style={styles.container}>
       <ScrollView>

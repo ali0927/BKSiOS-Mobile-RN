@@ -10,13 +10,13 @@ api.interceptors.request.use(async request => {
   // console.log("Userinfo ---->", userInfo);
 
   const result = await AsyncStorage.getItem('userInfo');
-  console.log('getItem-userInfo', JSON.parse(result)?.accessToken, request.url);
+  // console.log('getItem-userInfo', JSON.parse(result));
   let token = result ? JSON.parse(result).accessToken : '';
   request.headers = {
     Authorization: `Bearer ${token}`,
     Accept: '*/*',
   };
-  console.log("Request", request);
+  // console.log("Request", request);
   return request;
 });
 

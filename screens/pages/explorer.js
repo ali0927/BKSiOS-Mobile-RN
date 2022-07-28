@@ -18,19 +18,34 @@ import likedImg from '../../assets/img/icons/like-empty.png';
 import collectionAvatar from '../../assets/img/avatars/avatar2.jpg';
 import {Loading} from '../components/loading';
 import {isVideoFile} from '../utils';
+import {useSelector} from 'react-redux';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
 export const ExplorerScreen = () => {
+  const [originEvents, setOriginEvents] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const searchInfo = useSelector(state => state.searchInfoReducer).searchInfo;
+
+  const filterEvents = events_ => {
+    let res = [];
+    res = events_.filter(card => card.name.includes(searchInfo));
+    setEvents([...res]);
+  };
+
+  useEffect(() => {
+    console.log('SearchInfo>>', searchInfo);
+    filterEvents(originEvents);
+  }, [searchInfo]);
 
   useEffect(() => {
     getAllEventCards().then(res => {
       if (res.success) {
         setLoading(false);
-        setEvents(res.eventcards);
+        setOriginEvents(res.eventcards);
+        filterEvents(res.eventcards);
       }
     });
   }, []);
@@ -70,7 +85,7 @@ export const ExplorerScreen = () => {
             style={styles.img}
             resizeMode="cover"
           /> */}
-          {isVideoFile(eventCard.picture_large) ? (
+          {/* {isVideoFile(item.picture_large) ? (
             <View>
               <Video
                 source={{
@@ -90,7 +105,7 @@ export const ExplorerScreen = () => {
                 {/* <source
                     src={`${config.API_BASE_URL}/api/upload/get_file?path=${eventCard.picture_large}`}
                     type="video/mp4"
-                  /> */}
+                  /> //
                 Your browser does not support the video tag.
               </Video>
             </View>
@@ -107,7 +122,7 @@ export const ExplorerScreen = () => {
                 resizeMode="cover"
               />
             </View>
-          )}
+          )} */}
         </View>
         <View style={styles.cardMeta}>
           <Text style={styles.name}>{item.name}</Text>
@@ -128,6 +143,11 @@ export const ExplorerScreen = () => {
               </View>
             </View>
           </View>
+          {item.totoal_ticekts === item.buy_count && (
+            <View>
+              <Text style={{color: 'brown', fontSize: 16}}>Sold out!</Text>
+            </View>
+          )}
           <View style={styles.divider} />
           <View style={styles.footerContainer}>
             <View>
