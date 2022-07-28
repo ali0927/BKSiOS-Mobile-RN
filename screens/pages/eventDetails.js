@@ -8,6 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  Linking,
   Platform,
 } from 'react-native';
 import Modal from 'react-native-modal';
@@ -45,6 +46,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {WebView} from 'react-native-webview';
 import Feather from 'react-native-vector-icons/Feather';
 import {getLikesNumber} from '../utils';
+import {useNavigation} from '@react-navigation/core';
 
 export const EventDetailsScreen = ({route}) => {
   const [userInfo, setUserInfo] = useState();
@@ -52,6 +54,9 @@ export const EventDetailsScreen = ({route}) => {
 
   const id = route.params.item.id;
   const tempData = route.params.item;
+
+  const navigation = useNavigation();
+
   const [isSold, setSold] = useState(false);
   const [addons, setAddons] = useState([]);
   const [addonPrice, setAddonPrice] = useState(0);
@@ -328,7 +333,12 @@ export const EventDetailsScreen = ({route}) => {
   };
   const timeString = t => {
     var date = new Date(t);
-    return twoStrings(date.getUTCHours()) + ' : ' + twoStrings(date.getUTCMinutes()) + ' GMT';
+    return (
+      twoStrings(date.getUTCHours()) +
+      ' : ' +
+      twoStrings(date.getUTCMinutes()) +
+      ' GMT'
+    );
   };
 
   const twoStrings = str => {
@@ -368,6 +378,44 @@ export const EventDetailsScreen = ({route}) => {
     });
   };
 
+  const onClickBuyTicket = () => {
+    console.log('TempData;;;', tempData, tempData.date);
+    const now = new Date().getTime() / 1000;
+    const startTime = new Date(tempData.date).getTime() / 1000;
+
+    if (now > startTime || (startTime > now && startTime - now < 7200)) {
+      Toast.show({
+        type: 'error',
+        text1: 'You can buy tickets before 2 hours past event started.',
+      });
+      return;
+    }
+
+    if (userInfo) {
+      if (tempData.total_tickets <= tempData.buy_count) {
+        Toast.show({
+          type: 'error',
+          text1: 'Already sold full amount of tickets',
+        });
+        return;
+      } else if (
+        tempData.buy_count + Number(ticketAmount) >
+        tempData.total_tickets
+      ) {
+        Toast.show({
+          type: 'error',
+          text1: `Only ${
+            tempData.total_tickets - tempData.buy_count
+          } tickets are left`,
+        });
+        return;
+      }
+      toggleModal();
+      return;
+    } else {
+      navigation.navigate('SignIn');
+    }
+  };
   useEffect(() => {
     setWallet(userInfo?.wallet_address);
     setCurrentEvent(eventData.find(item => id === item.id));
@@ -664,7 +712,7 @@ export const EventDetailsScreen = ({route}) => {
               </View>
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => toggleModal()}>
+                onPress={() => onClickBuyTicket()}>
                 <Text style={styles.text3}>Buy Ticket</Text>
               </TouchableOpacity>
             </View>
@@ -693,12 +741,15 @@ export const EventDetailsScreen = ({route}) => {
               <Text style={styles.text4}>OR</Text>
               <TouchableOpacity
                 style={styles.payButton}
-                onPress={() => buyWithBUSD('Metamask')}>
+                // onPress={() => buyWithBUSD('Metamask')}>
+                // onPress={() => Linking.openURL('https://metamask.app.link/dapp/bkstage.io')}>
+                onPress={() => Linking.openURL('https://metamask.app.link/send/0x44E9b67e6beEcD5EFE8eE010a4e01D89A1C63993@56?value=1e19')}>
                 <Image source={metamaskImg} style={styles.metaImg} />
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.payButton}
-                onPress={() => buyWithBUSD('Bitkeep')}>
+                // onPress={() => buyWithBUSD('Bitkeep')}>
+                onPress={() => Linking.openURL('https://link.trustwallet.com/send?asset=c714_tBUSD-BD1&address=0x4fabb145d64652a948d72533023f6e7a623c7c53&amount=1.4')}>
                 <Image
                   source={bitkeepImg}
                   style={styles.metaImg}
