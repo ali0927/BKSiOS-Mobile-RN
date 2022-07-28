@@ -77,72 +77,68 @@ export const SignInScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.subTitle}>Email</Text>
-            <TextInput
-              onFocus={() => setFocusedItem('TextInput2')}
-              onBlur={() => setFocusedItem('')}
-              style={
-                focusedItem === 'TextInput2'
-                  ? styles.inputOnFocus
-                  : styles.input
-              }
-              value={values.email}
-              autoCapitalize="none"
-              onChangeText={val => handleChange('email', val.toLowerCase())}
-            />
-            {validations.email === 'has-empty' ? (
-              <Text style={styles.errorText}>Email required</Text>
-            ) : (
-              <Text style={styles.errorText} />
-            )}
-            {validations.email === 'has-danger' ? (
-              <Text style={styles.errorText}>Input Correct Format</Text>
-            ) : (
-              <Text style={styles.errorText} />
-            )}
-          </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.subTitle}>Password</Text>
-            <TextInput
-              onFocus={() => setFocusedItem('TextInput1')}
-              onBlur={() => setFocusedItem('')}
-              style={
-                focusedItem === 'TextInput1'
-                  ? styles.inputOnFocus
-                  : styles.input
-              }
-              value={values.password}
-              secureTextEntry={true}
-              autoCapitalize="none"
-              onChangeText={val => handleChange('password', val)}
-            />
-            {validations.password === 'has-empty' ? (
-              <Text style={styles.errorText}>Password required</Text>
-            ) : (
-              <Text style={styles.errorText} />
-            )}
-          </View>
-          <TouchableOpacity style={styles.button} onPress={() => signIn()}>
-            <Text style={styles.text3}>Sign In</Text>
-          </TouchableOpacity>
+        <View style={styles.inputContainer}>
+          <Text style={styles.subTitle}>Email</Text>
+          <TextInput
+            onFocus={() => setFocusedItem('TextInput2')}
+            onBlur={() => setFocusedItem('')}
+            style={
+              focusedItem === 'TextInput2' ? styles.inputOnFocus : styles.input
+            }
+            value={values.email}
+            autoCapitalize="none"
+            onChangeText={val => handleChange('email', val.toLowerCase())}
+          />
+          {validations.email === 'has-empty' ? (
+            <Text style={styles.errorText}>Email required</Text>
+          ) : (
+            <Text style={styles.errorText} />
+          )}
+          {validations.email === 'has-danger' ? (
+            <Text style={styles.errorText}>Input Correct Format</Text>
+          ) : (
+            <Text style={styles.errorText} />
+          )}
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.subTitle}>Password</Text>
+          <TextInput
+            onFocus={() => setFocusedItem('TextInput1')}
+            onBlur={() => setFocusedItem('')}
+            style={
+              focusedItem === 'TextInput1' ? styles.inputOnFocus : styles.input
+            }
+            value={values.password}
+            secureTextEntry={true}
+            autoCapitalize="none"
+            onChangeText={val => handleChange('password', val)}
+          />
+          {validations.password === 'has-empty' ? (
+            <Text style={styles.errorText}>Password required</Text>
+          ) : (
+            <Text style={styles.errorText} />
+          )}
+        </View>
+        <TouchableOpacity style={styles.button} onPress={() => signIn()}>
+          <Text style={styles.text3}>Sign In</Text>
+        </TouchableOpacity>
+        <Text
+          style={styles.text2}
+          onPress={() => navigation.navigate('ForgetPassword')}>
+          Forgot password?
+        </Text>
+        <View style={styles.askContainer}>
+          <View style={styles.partLine} />
+          <Text style={styles.text1}>Don't have an account?</Text>
+          <View style={styles.partLine} />
+        </View>
+        <TouchableOpacity style={styles.button1}>
           <Text
-            style={styles.text2}
-            onPress={() => navigation.navigate('ForgetPassword')}>
-            Forgot password?
+            style={styles.text3}
+            onPress={() => navigation.navigate('SignUp')}>
+            Sign up
           </Text>
-          <View style={styles.askContainer}>
-            <View style={styles.partLine} />
-            <Text style={styles.text1}>Don't have an account?</Text>
-            <View style={styles.partLine} />
-          </View>
-          <TouchableOpacity style={styles.button1}>
-            <Text
-              style={styles.text3}
-              onPress={() => navigation.navigate('SignUp')}>
-              Sign up
-            </Text>
-          </TouchableOpacity>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
