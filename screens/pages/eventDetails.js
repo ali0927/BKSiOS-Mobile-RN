@@ -328,7 +328,15 @@ export const EventDetailsScreen = ({route}) => {
   };
   const timeString = t => {
     var date = new Date(t);
-    return date.getUTCHours() + ' : ' + date.getUTCMinutes() + ' GMT';
+    return twoStrings(date.getUTCHours()) + ' : ' + twoStrings(date.getUTCMinutes()) + ' GMT';
+  };
+
+  const twoStrings = str => {
+    if (str.toString().length == 2) {
+      return str;
+    } else {
+      return '0' + str;
+    }
   };
 
   const onClickLike = () => {
