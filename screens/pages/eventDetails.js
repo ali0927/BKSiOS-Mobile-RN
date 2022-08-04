@@ -47,6 +47,7 @@ import {WebView} from 'react-native-webview';
 import Feather from 'react-native-vector-icons/Feather';
 import {getLikesNumber} from '../utils';
 import {useNavigation} from '@react-navigation/core';
+import ParamModal from '../components/modals/prams';
 
 export const EventDetailsScreen = ({route}) => {
   const [userInfo, setUserInfo] = useState();
@@ -70,6 +71,7 @@ export const EventDetailsScreen = ({route}) => {
   const [ticketAmount, setTicketAmount] = useState(1);
   const [wallet, setWallet] = useState('');
   const [showGateway, setShowGateway] = useState(false);
+  const [showCreditModal, setShowCreditModal] = useState(false);
   const [prog, setProg] = useState(false);
   const [progClr, setProgClr] = useState('#000');
 
@@ -112,6 +114,14 @@ export const EventDetailsScreen = ({route}) => {
       setShowGateway(true);
     }, 500);
   };
+
+  const gotoCredit = () => {
+    setModalVisible(false);
+    setTimeout(() => {
+      setShowCreditModal(true);
+    }, 500);
+  };
+
   const createOrder = (data, actions) => {
     return actions.order.create({
       purchase_units: [
@@ -730,6 +740,11 @@ export const EventDetailsScreen = ({route}) => {
               </View>
               <TouchableOpacity
                 style={styles.payButton}
+                onPress={() => gotoCredit()}>
+                <Text style={styles.text3}>Buy With Credit Card</Text>
+              </TouchableOpacity>
+              {/* <TouchableOpacity
+                style={styles.payButton}
                 onPress={() => gotoPaypal()}>
                 <Image
                   source={paypalImg}
@@ -756,9 +771,14 @@ export const EventDetailsScreen = ({route}) => {
                   resizeMode="contain"
                   height={100}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </Modal>
+          <ParamModal
+            eventCard={eventCard}
+            showCreditModal={showCreditModal}
+            setShowCreditModal={setShowCreditModal}
+          />
         </View>
       )}
     </ScrollView>
@@ -1004,7 +1024,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: '#14142f',
     borderRadius: 10,
-    borderWidth: 0.5,
+    borderWidth: 1,
     borderColor: '#887bff',
     paddingTop: 20,
     paddingBottom: 20,
@@ -1056,8 +1076,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 30,
-    paddingTop: 10,
+    marginTop: 0,
+    paddingTop: 15,
     textAlignVertical: 'center',
     height: 44,
     backgroundColor: '#6a4dfd',
