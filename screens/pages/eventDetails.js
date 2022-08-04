@@ -12,7 +12,7 @@ import {
   Platform,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import {eventData} from '../constant/eventData';
+// import {eventData} from '../constant/eventData';
 import clockImg from '../../assets/img/icons/clock.png';
 import addonsImg from '../../assets/img/avatars/avatar5.jpg';
 import badgeMark from '../../assets/img/icons/verified.png';
@@ -62,7 +62,7 @@ export const EventDetailsScreen = ({route}) => {
   const [addonPrice, setAddonPrice] = useState(0);
   const [collectionName, setCollectionName] = useState();
   const [latestEvents, setLatestEvents] = useState([]);
-  const [currentEvent, setCurrentEvent] = useState(null);
+  // const [currentEvent, setCurrentEvent] = useState(null);
   const [isAddonModalVisible, setAddonModalVisible] = useState(false);
   const [selectedAddon, setSelectedAddon] = useState();
   const [isModalVisible, setModalVisible] = useState(false);
@@ -418,7 +418,7 @@ export const EventDetailsScreen = ({route}) => {
   };
   useEffect(() => {
     setWallet(userInfo?.wallet_address);
-    setCurrentEvent(eventData.find(item => id === item.id));
+    // setCurrentEvent(eventData.find(item => id === item.id));
 
     getEventCardById(id).then(res => {
       // console.log('EventCardById', res);

@@ -1,13 +1,14 @@
 import React from 'react';
 import {ScrollView, View, Text, StyleSheet} from 'react-native';
-import {privacyData} from '../../constant/privacy';
+// import {privacyData} from '../../constant/privacy';
 import HTMLView from 'react-native-htmlview';
 
 export const PrivacyScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View>
-        <HTMLView value={privacyData} stylesheet={htmlStyleSheet} />
+        {/* <HTMLView value={privacyData} stylesheet={htmlStyleSheet} /> */}
+        <Text>Privacy</Text>
       </View>
     </ScrollView>
   );

@@ -17,6 +17,8 @@
     "@react-navigation/material-bottom-tabs": "^6.2.1",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
+    "@web3-react/core": "^6.1.9",
+    "@web3-react/injected-connector": "^6.0.7",
     "axios": "^0.27.2",
     "ethers": "^5.6.9",
     "moment": "^2.29.3",

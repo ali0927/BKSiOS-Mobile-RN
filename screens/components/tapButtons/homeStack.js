@@ -9,7 +9,7 @@ import {HomeScreen} from '../../pages/home';
 import {ProfileAuthorScreen} from '../../pages/profileAuthor';
 import {CollectionScreen} from '../../pages/collection';
 import {ForgetPasswordScreen} from '../../pages/signPage/ForgetPassword';
-import {PrivacyScreen} from '../../pages/signPage/privacy';
+// import {PrivacyScreen} from '../../pages/signPage/privacy';
 import {SignInScreen} from '../../pages/signPage/signIn';
 import {SignUpScreen} from '../../pages/signPage/signUp';
 
@@ -97,7 +97,7 @@ export const HomeStackScreen = () => {
           headerBackVisible: false,
         }}
       />
-      <HomeStack.Screen name="Privacy" component={PrivacyScreen} />
+      {/* <HomeStack.Screen name="Privacy" component={PrivacyScreen} /> */}
     </HomeStack.Navigator>
   );
 };

@@ -26,6 +26,7 @@ const MenuStack = createNativeStackNavigator();
 const THEME_COLOR = '#14142f';
 
 const FilterModal = ({toggleModal}) => {
+  const [isFilter, setIsFiilter] = useState(false);
   const [checked, setChecked] = useState({
     listings: true,
     purchases: true,
@@ -46,7 +47,6 @@ const FilterModal = ({toggleModal}) => {
     {id: 6, title: 'follows'},
   ];
   const handleChecked = item => {
-    console.log('Item::', item);
     if (item === 0) {
       setChecked({...checked, listings: !checked.listings});
     } else if (item === 1) {
@@ -130,7 +130,6 @@ export const MenuStackScreen = () => {
   };
 
   const toggleModal = () => {
-    console.log('This is Modal');
     setModalVisible(!isModalVisible);
   };
 

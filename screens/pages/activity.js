@@ -61,7 +61,7 @@ export const ActivityScreen = () => {
   const _userInfo = useSelector(state => state.userInfoReducer).userInfo;
 
   const [isFilter, setIsFiilter] = useState(false);
-  const {connector} = useWeb3React();
+  // const {connector} = useWeb3React();
 
   useEffect(() => {
     setUserInfo(JSON.parse(_userInfo));

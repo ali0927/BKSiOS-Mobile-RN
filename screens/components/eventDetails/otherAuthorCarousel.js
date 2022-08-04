@@ -13,7 +13,7 @@ import {
 
 import Carousel from 'react-native-snap-carousel';
 import {useNavigation} from '@react-navigation/core';
-import { eventData } from '../../constant/eventData';
+// import { eventData } from '../../constant/eventData';
 
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
@@ -50,12 +50,13 @@ const renderItem = ({item, index}) => {
   const OthersCarousel = () => {
     return (
       <View style={{marginTop: 10, marginBottom: 50}}>
-        <Carousel
+        {/* <Carousel
           data={eventData}
           renderItem={renderItem}
           sliderWidth={SLIDER_WIDTH}
           itemWidth={ITEM_WIDTH}
-        />
+        /> */}
+        <Text>xxx</Text>
       </View>
     );
   };
