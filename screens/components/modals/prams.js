@@ -33,13 +33,8 @@ const ParamModal = ({eventCard, showCreditModal, setShowCreditModal}) => {
     const Islem_Hash = await axios.get(
       `${liveInfo.api}/SHA2B64?Data=${Islem_Hash_Raw}`,
     );
-    console.log('XML-Islem_Hash', Islem_Hash.data);
-    // const parser = new DOMParser();
-    // const xmlDoc = parser.parseFromString(Islem_Hash.data, 'text/xml');
-    const xmlDoc = DomSelector(parseFromString(Islem_Hash.data, 'text/xml'));
-    console.log('Doccc', xmlDoc);
-    const hash =
-      xmlDoc.getElementsByTagName('string')[0].childNodes[0].nodeValue;
+    const xmlDoc = DomSelector(Islem_Hash.data);
+    const hash = xmlDoc.getElementsByTagName('string')[0].lastChild.text;
     console.log('Hash', hash);
     const xml = `<?xml version="1.0" encoding="utf-8"?>
       <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -87,14 +82,14 @@ const ParamModal = ({eventCard, showCreditModal, setShowCreditModal}) => {
     };
     creditPayment(data)
       .then(res => {
-        setModal({open: false});
+        setShowCreditModal(false);
         Toast.show({
           type: 'success',
           text1: 'Payment success!',
         });
       })
       .catch(err => {
-        setModal({open: false});
+        setShowCreditModal(false);
         Toast.show({
           type: 'error',
           text1: 'Payment failed.',
