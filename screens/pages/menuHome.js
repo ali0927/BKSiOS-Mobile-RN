@@ -1,22 +1,22 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import {
+  Image,
+  Platform,
   StyleSheet,
   Text,
-  View,
-  Image,
   TouchableOpacity,
-  Platform,
+  View,
 } from 'react-native';
-import rightArrowImg from '../../assets/img/icons/arrow-right.png';
-import profileImg from '../../assets/img/icons/user2.png';
-import activityImg from '../../assets/img/icons/activity.png';
-import settingsImg from '../../assets/img/icons/settings2.png';
+import {useDispatch, useSelector} from 'react-redux';
 import aboutImg from '../../assets/img/icons/about.png';
+import activityImg from '../../assets/img/icons/activity.png';
+import rightArrowImg from '../../assets/img/icons/arrow-right.png';
+import likedImg from '../../assets/img/icons/liked.png';
 import loginImg from '../../assets/img/icons/log-in.png';
 import logoutImg from '../../assets/img/icons/log-out.png';
-import likedImg from '../../assets/img/icons/liked.png';
-import {useSelector, useDispatch} from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import settingsImg from '../../assets/img/icons/settings2.png';
+import profileImg from '../../assets/img/icons/user2.png';
 
 export const MenuHomeScreen = ({navigation}) => {
   const userInfo = useSelector(state => state.userInfoReducer).userInfo;
@@ -35,28 +35,32 @@ export const MenuHomeScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View>
-        <TouchableOpacity
-          style={styles.listItemFirst}
-          onPress={() => navigation.navigate('Profile')}>
-          <View style={styles.subContainer}>
-            <Image source={profileImg} />
-            <Text style={styles.title}>Profile</Text>
-          </View>
-          <Image source={rightArrowImg} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.listItem}
-          onPress={() => navigation.navigate('Activity')}>
-          <View style={styles.subContainer}>
-            <Image source={activityImg} />
-            <Text style={styles.title}>Activity</Text>
-          </View>
-          <Image source={rightArrowImg} />
-        </TouchableOpacity>
+        {userInfo && (
+          <TouchableOpacity
+            style={styles.listItemFirst}
+            onPress={() => navigation.navigate('Profile')}>
+            <View style={styles.subContainer}>
+              <Image source={profileImg} />
+              <Text style={styles.title}>Profile</Text>
+            </View>
+            <Image source={rightArrowImg} />
+          </TouchableOpacity>
+        )}
         {userInfo && (
           <TouchableOpacity
             style={styles.listItem}
-            onPress={() => navigation.navigate('Settings')}>
+            onPress={() => navigation.navigate('Activity')}>
+            <View style={styles.subContainer}>
+              <Image source={activityImg} />
+              <Text style={styles.title}>Activity</Text>
+            </View>
+            <Image source={rightArrowImg} />
+          </TouchableOpacity>
+        )}
+        {userInfo && (
+          <TouchableOpacity
+            style={styles.listItem}
+            onPress={() => navigation.navigate('Liked')}>
             <View style={styles.subContainer}>
               <Image source={likedImg} />
               <Text style={styles.title}>Liked</Text>
@@ -64,7 +68,7 @@ export const MenuHomeScreen = ({navigation}) => {
             <Image source={rightArrowImg} />
           </TouchableOpacity>
         )}
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.listItem}
           onPress={() => navigation.navigate('Settings')}>
           <View style={styles.subContainer}>
@@ -72,7 +76,7 @@ export const MenuHomeScreen = ({navigation}) => {
             <Text style={styles.title}>App Settings</Text>
           </View>
           <Image source={rightArrowImg} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={styles.listItem}
           onPress={() => navigation.navigate('About')}>

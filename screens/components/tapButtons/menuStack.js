@@ -12,13 +12,13 @@ import {
 import CheckBox from 'react-native-customizable-checkbox';
 import Modal from 'react-native-modal';
 import Toast from 'react-native-toast-message';
+import blackImg from '../../../assets/img/BLANK_ICON.png';
 import arrowLeft from '../../../assets/img/icons/arrow-left.png';
 import checkImg from '../../../assets/img/icons/check.png';
-import blackImg from '../../../assets/img/BLANK_ICON.png';
 import filterImg from '../../../assets/img/icons/filter.png';
 import {AboutScreen} from '../../pages/about';
 import {ActivityScreen} from '../../pages/activity';
-import {AppSettingScreen} from '../../pages/appSetting';
+import {LikedScreen} from '../../pages/liked';
 import {MenuHomeScreen} from '../../pages/menuHome';
 import {ProfileScreen} from '../../pages/profile';
 
@@ -189,20 +189,20 @@ export const MenuStackScreen = () => {
       />
       <MenuStack.Screen
         name="Liked"
-        component={ActivityScreen}
+        component={LikedScreen}
         options={{
           headerTitle: () => <Header title="Liked" />,
           headerBackVisible: false,
         }}
       />
-      <MenuStack.Screen
-        name="Settings"
-        component={AppSettingScreen}
+      {/* <MenuStack.Screen
+        name="Liked"
+        component={LikedScreen}
         options={{
           headerTitle: () => <Header title="App Settings" />,
           headerBackVisible: false,
         }}
-      />
+      /> */}
       <MenuStack.Screen
         name="About"
         component={AboutScreen}
