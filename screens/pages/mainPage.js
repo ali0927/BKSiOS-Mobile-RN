@@ -1,12 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
+  Dimensions,
+  Image,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  StatusBar,
-  Image,
-  Dimensions,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import logoImg from '../../assets/img/icons/logo.png';
@@ -17,9 +17,14 @@ const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 export const MainPage = ({submit}) => {
+  useEffect(() => {
+    setTimeout(() => {
+      submit(true);
+    }, 500);
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={THEME_COLOR}/>
+      <StatusBar barStyle="light-content" backgroundColor={THEME_COLOR} />
       <View style={{zIndex: 30}}>
         <TouchableOpacity
           style={{alignItems: 'center'}}
