@@ -24,6 +24,7 @@ import {
 import img4 from '../../../assets/img/cover/cover6.jpg';
 import img5 from '../../../assets/img/cover/cover7.jpg';
 import img6 from '../../../assets/img/cover/cover8.jpg';
+import Currency from '../currency/Currency';
 import CurrencySymbol from '../currency/CurrencySymbol';
 
 const data = [
@@ -129,7 +130,7 @@ export const OnSale = () => {
                 width: '100%',
               }}>
               <Text style={styles.price}>
-                {item.price} <CurrencySymbol />
+                <Currency price={item.price} /> <CurrencySymbol />
               </Text>
               <Text style={styles.price}>&#9825;</Text>
             </View>

@@ -6,6 +6,7 @@ import img2 from '../../../assets/img/cover/cover4.jpg';
 import img3 from '../../../assets/img/cover/cover5.jpg';
 import config from '../../helper/config';
 import {getAllEventCards} from '../../helper/event';
+import Currency from '../currency/Currency';
 import CurrencySymbol from '../currency/CurrencySymbol';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
@@ -76,7 +77,7 @@ const renderItem = ({item}) => {
             width: '100%',
           }}>
           <Text style={styles.price}>
-            {item.price + addonPrice} <CurrencySymbol />
+            <Currency price={item.price + addonPrice} /> <CurrencySymbol />
           </Text>
           <View style={{flexDirection: 'row'}}>
             <Text style={styles.price}>&#9825;</Text>

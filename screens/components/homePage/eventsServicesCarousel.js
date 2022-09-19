@@ -16,6 +16,7 @@ import likeImg from '../../../assets/img/icons/liked-white.png';
 import config from '../../helper/config';
 import {getLatestEventCards, updateEventLike} from '../../helper/event';
 import {getLikesNumber} from '../../utils';
+import Currency from '../currency/Currency';
 import CurrencySymbol from '../currency/CurrencySymbol';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
@@ -67,7 +68,7 @@ const EventsServicesCarousel = () => {
             <View>
               <Text style={styles.info}>Current price</Text>
               <Text style={styles.price}>
-                {item.price + addonPrice} <CurrencySymbol />
+                <Currency price={item.price + addonPrice} /> <CurrencySymbol />
               </Text>
             </View>
             <View style={styles.flexRow}>

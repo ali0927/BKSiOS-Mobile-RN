@@ -25,6 +25,7 @@ import clockImg from '../../assets/img/icons/clock.png';
 import likeImg from '../../assets/img/icons/like-empty.png';
 import likeBlueImg from '../../assets/img/icons/like-fill.png';
 import badgeMark from '../../assets/img/icons/verified.png';
+import Currency from '../components/currency/Currency';
 import CurrencySymbol from '../components/currency/CurrencySymbol';
 import ParamModal from '../components/modals/prams';
 import config from '../helper/config';
@@ -610,7 +611,8 @@ export const EventDetailsScreen = ({route}) => {
                   <View style={styles.modalRow}>
                     <Text style={styles.modalSubtitle}>Price :</Text>
                     <Text style={styles.modalTxt}>
-                      {selectedAddon?.price + ' '} <CurrencySymbol />
+                      <Currency price={selectedAddon?.price} />{' '}
+                      <CurrencySymbol />
                     </Text>
                   </View>
                 </View>
@@ -633,7 +635,7 @@ export const EventDetailsScreen = ({route}) => {
               {tempData.total_tickets - tempData.buy_count} tickets left
             </Text>
             <Text style={styles.priceText}>
-              {tempData.price} <CurrencySymbol />
+              <Currency price={tempData.price} /> <CurrencySymbol />
             </Text>
           </View>
           <View style={styles.divider} />

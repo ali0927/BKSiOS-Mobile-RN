@@ -15,6 +15,7 @@ import collectionAvatar from '../../assets/img/avatars/avatar2.jpg';
 import likeBlueImg from '../../assets/img/icons/like-fill.png';
 import likeImg from '../../assets/img/icons/liked-white.png';
 import badgeMark from '../../assets/img/icons/verified.png';
+import Currency from '../components/currency/Currency';
 import CurrencySymbol from '../components/currency/CurrencySymbol';
 import {Loading} from '../components/loading';
 import config from '../helper/config';
@@ -199,7 +200,7 @@ export const ExplorerScreen = () => {
             <View>
               <Text style={styles.info}>Reserve Price</Text>
               <Text style={styles.price}>
-                {getEventPrice(item)} <CurrencySymbol />
+                <Currency price={getEventPrice(item)} /> <CurrencySymbol />
               </Text>
             </View>
             <View style={styles.flexRow}>

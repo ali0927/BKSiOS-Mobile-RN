@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import {useNavigation} from '@react-navigation/core';
+import Currency from '../currency/Currency';
 import CurrencySymbol from '../currency/CurrencySymbol';
 // import { eventData } from '../../constant/eventData';
 
@@ -37,7 +38,7 @@ const EventCard = ({item, index}) => {
           <View style={styles.divider}></View>
           <Text style={styles.info}>Current price</Text>
           <Text style={styles.price}>
-            {item.price} <CurrencySymbol />
+            <Currency price={item.price} /> <CurrencySymbol />
           </Text>
         </View>
       </TouchableOpacity>

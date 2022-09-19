@@ -11,6 +11,7 @@ import {
 import {useSelector} from 'react-redux';
 import likedImg from '../../assets/img/icons/like-empty.png';
 import badgeMark from '../../assets/img/icons/verified.png';
+import Currency from '../components/currency/Currency';
 import CurrencySymbol from '../components/currency/CurrencySymbol';
 import config from '../helper/config';
 import {getEventCardInCollection} from '../helper/event';
@@ -212,7 +213,8 @@ export const CollectionScreen = ({route}) => {
                       justifyContent: 'space-between',
                     }}>
                     <Text style={styles.price}>
-                      {getEventPrice(eventcard)} <CurrencySymbol />
+                      <Currency price={getEventPrice(eventcard)} />{' '}
+                      <CurrencySymbol />
                     </Text>
                     <View style={styles.likedImg}>
                       <Image source={likedImg} />
