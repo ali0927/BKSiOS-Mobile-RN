@@ -1,34 +1,35 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StatusBar,
-  SafeAreaView,
-  StyleSheet,
-  TextInput,
-  Platform,
-  Dimensions,
-} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {ExplorerScreen} from '../../pages/explorer';
-import {NewsStackScreen} from './newsStack';
-import {HomeStackScreen} from './homeStack';
-import {SearchScreen} from '../../pages/search';
-import homeImg from '../../../assets/img/icons/home.png';
-import homeActImg from '../../../assets/img/icons/home-act.png';
-import searchImg from '../../../assets/img/icons/search.png';
-import searchTopImg from '../../../assets/img/icons/search-top.png';
-import searchActImg from '../../../assets/img/icons/search-act.png';
-import menuImg from '../../../assets/img/icons/menu.png';
-import menuActImg from '../../../assets/img/icons/menu-act.png';
-import exploreImg from '../../../assets/img/icons/explore.png';
+import {NavigationContainer} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+// import {useTranslation} from 'react-i18next';
+import {
+  Dimensions,
+  Image,
+  Platform,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import exploreActImg from '../../../assets/img/icons/explore-act.png';
-import newsImg from '../../../assets/img/icons/news.png';
+import exploreImg from '../../../assets/img/icons/explore.png';
+import homeActImg from '../../../assets/img/icons/home-act.png';
+import homeImg from '../../../assets/img/icons/home.png';
+import menuActImg from '../../../assets/img/icons/menu-act.png';
+import menuImg from '../../../assets/img/icons/menu.png';
 import newsActImg from '../../../assets/img/icons/news-act.png';
-import { MenuStackScreen } from './menuStack';
-import { useDispatch } from 'react-redux';
+import newsImg from '../../../assets/img/icons/news.png';
+import searchActImg from '../../../assets/img/icons/search-act.png';
+import searchTopImg from '../../../assets/img/icons/search-top.png';
+import searchImg from '../../../assets/img/icons/search.png';
+import {ExplorerScreen} from '../../pages/explorer';
+import {SearchScreen} from '../../pages/search';
+import {HomeStackScreen} from './homeStack';
+import {MenuStackScreen} from './menuStack';
+import {NewsStackScreen} from './newsStack';
 
 const Tab = createBottomTabNavigator();
 const THEME_COLOR = '#14142f';
@@ -40,11 +41,35 @@ export default function MainTabs() {
   const [searchValue, setSearchValue] = useState('');
   // const [searchValidation, setSearchValidation] = useState('');
   const dispatch = useDispatch();
+  // const {t, i18n} = useTranslation();
+  const countryInfo = useSelector(
+    state => state.locationInfoReducer,
+  ).locationInfo;
 
   const handleChange = value => {
     setSearchValue(value);
     dispatch({type: 'SET_SEARCH_INFO', payload: value});
   };
+
+  useEffect(() => {
+    console.log('CountryInfo:::', countryInfo);
+    // if (countryInfo === 'TR') {
+    //   i18n.changeLanguage('tr');
+    // } else {
+    //   i18n.changeLanguage('en');
+    // }
+  }, [countryInfo]);
+
+  const getIPaddress = async () => {
+    const request = await fetch('https://ipinfo.io/json?token=eb1a719d60ef95');
+    const json = await request.json();
+    console.log('location: ', json.country);
+    dispatch({type: 'SET_LOCATION_INFO', payload: json.country});
+  };
+
+  useEffect(() => {
+    getIPaddress();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

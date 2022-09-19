@@ -1,29 +1,29 @@
+import {useNavigation} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
 import {
-  ScrollView,
-  Text,
-  View,
   Dimensions,
   Image,
-  StyleSheet,
-  TouchableOpacity,
   Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import Video from 'react-native-video';
-import {useNavigation} from '@react-navigation/core';
+import {useSelector} from 'react-redux';
+import collectionAvatar from '../../assets/img/avatars/avatar2.jpg';
+import likeBlueImg from '../../assets/img/icons/like-fill.png';
+import likeImg from '../../assets/img/icons/liked-white.png';
+import badgeMark from '../../assets/img/icons/verified.png';
+import CurrencySymbol from '../components/currency/CurrencySymbol';
+import {Loading} from '../components/loading';
+import config from '../helper/config';
 import {
-  getEventPrice,
   getAllEventCards,
+  getEventPrice,
   updateEventLike,
 } from '../helper/event';
-import config from '../helper/config';
-import badgeMark from '../../assets/img/icons/verified.png';
-import likeImg from '../../assets/img/icons/liked-white.png';
-import likeBlueImg from '../../assets/img/icons/like-fill.png';
-import collectionAvatar from '../../assets/img/avatars/avatar2.jpg';
-import {Loading} from '../components/loading';
-import {isVideoFile, getLikesNumber} from '../utils';
-import {useSelector} from 'react-redux';
+import {getLikesNumber} from '../utils';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
@@ -198,7 +198,9 @@ export const ExplorerScreen = () => {
           <View style={styles.footerContainer}>
             <View>
               <Text style={styles.info}>Reserve Price</Text>
-              <Text style={styles.price}>{getEventPrice(item)} &#8364;</Text>
+              <Text style={styles.price}>
+                {getEventPrice(item)} <CurrencySymbol />
+              </Text>
             </View>
             <View style={styles.flexRow}>
               <TouchableOpacity onPress={() => onClickLike(index)}>

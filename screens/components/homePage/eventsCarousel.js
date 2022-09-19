@@ -1,21 +1,22 @@
+import {useNavigation} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
+import Countdown from 'react-countdown';
 import {
-  Text,
-  View,
   Dimensions,
   Image,
   StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import {useNavigation} from '@react-navigation/core';
-import {getLatestEventCards, updateEventLike} from '../../helper/event';
-import Countdown from 'react-countdown';
-import likeImg from '../../../assets/img/icons/liked-white.png';
-import likeBlueImg from '../../../assets/img/icons/like-fill.png';
-import config from '../../helper/config';
 import {useSelector} from 'react-redux';
+import likeBlueImg from '../../../assets/img/icons/like-fill.png';
+import likeImg from '../../../assets/img/icons/liked-white.png';
+import config from '../../helper/config';
+import {getLatestEventCards, updateEventLike} from '../../helper/event';
 import {getLikesNumber} from '../../utils';
+import CurrencySymbol from '../currency/CurrencySymbol';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
@@ -65,7 +66,9 @@ const EventsCarousel = () => {
           <View style={styles.footerDetails}>
             <View>
               <Text style={styles.info}>Current price</Text>
-              <Text style={styles.price}>{item.price + addonPrice} €</Text>
+              <Text style={styles.price}>
+                {item.price + addonPrice} <CurrencySymbol />
+              </Text>
             </View>
             <View style={styles.flexRow}>
               <TouchableOpacity onPress={() => onClickLike(index)}>

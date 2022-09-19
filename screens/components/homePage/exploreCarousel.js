@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, Dimensions, Image, StyleSheet} from 'react-native';
+import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import img1 from '../../../assets/img/cover/cover3.jpg';
 import img2 from '../../../assets/img/cover/cover4.jpg';
 import img3 from '../../../assets/img/cover/cover5.jpg';
-import {getAllEventCards} from '../../helper/event';
 import config from '../../helper/config';
+import {getAllEventCards} from '../../helper/event';
+import CurrencySymbol from '../currency/CurrencySymbol';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
@@ -52,7 +53,8 @@ const renderItem = ({item}) => {
         <Image
           source={{
             uri:
-              config.API_BASE_URL + '/api/upload/get_file?path=' +
+              config.API_BASE_URL +
+              '/api/upload/get_file?path=' +
               item.picture_small,
           }}
           style={styles.img}
@@ -73,7 +75,9 @@ const renderItem = ({item}) => {
             justifyContent: 'space-between',
             width: '100%',
           }}>
-          <Text style={styles.price}>{item.price + addonPrice} €</Text>
+          <Text style={styles.price}>
+            {item.price + addonPrice} <CurrencySymbol />
+          </Text>
           <View style={{flexDirection: 'row'}}>
             <Text style={styles.price}>&#9825;</Text>
             <Text style={{...styles.price, marginLeft: 10}}>

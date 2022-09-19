@@ -1,19 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Linking,
   Image,
-  TouchableOpacity,
-  ScrollView,
   Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import badgeMark from '../../assets/img/icons/verified.png';
+import {useSelector} from 'react-redux';
 import likedImg from '../../assets/img/icons/like-empty.png';
+import badgeMark from '../../assets/img/icons/verified.png';
+import CurrencySymbol from '../components/currency/CurrencySymbol';
 import config from '../helper/config';
 import {getEventCardInCollection} from '../helper/event';
-import {useSelector} from 'react-redux';
 
 export const CollectionScreen = ({route}) => {
   const userInfo = useSelector(state => state.userInfoReducer).userInfo;
@@ -212,7 +212,7 @@ export const CollectionScreen = ({route}) => {
                       justifyContent: 'space-between',
                     }}>
                     <Text style={styles.price}>
-                      {getEventPrice(eventcard)} €
+                      {getEventPrice(eventcard)} <CurrencySymbol />
                     </Text>
                     <View style={styles.likedImg}>
                       <Image source={likedImg} />
@@ -221,7 +221,6 @@ export const CollectionScreen = ({route}) => {
                 </View>
               </TouchableOpacity>
             );
-            return <></>;
           })}
         </View>
       </ScrollView>

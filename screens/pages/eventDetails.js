@@ -1,53 +1,49 @@
-import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import React, {useEffect, useState} from 'react';
 import {
-  ScrollView,
-  Text,
-  View,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
   ActivityIndicator,
-  Linking,
+  Image,
   Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import Modal from 'react-native-modal';
 // import {eventData} from '../constant/eventData';
-import clockImg from '../../assets/img/icons/clock.png';
-import addonsImg from '../../assets/img/avatars/avatar5.jpg';
-import badgeMark from '../../assets/img/icons/verified.png';
-import {
-  getEventCardById,
-  getCollectionById,
-  getLatestEventCards,
-  getBuyState,
-  updateEventLike,
-} from '../helper/event';
+import {useNavigation} from '@react-navigation/core';
+import {ethers} from 'ethers';
 import Countdown from 'react-countdown';
+import DateObject from 'react-date-object';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
+import Feather from 'react-native-vector-icons/Feather';
+import {WebView} from 'react-native-webview';
+import {useSelector} from 'react-redux';
+import addonsImg from '../../assets/img/avatars/avatar5.jpg';
+import clockImg from '../../assets/img/icons/clock.png';
 import likeImg from '../../assets/img/icons/like-empty.png';
 import likeBlueImg from '../../assets/img/icons/like-fill.png';
-import config from '../helper/config';
-import {PayPalButtons, PayPalScriptProvider} from '@paypal/react-paypal-js';
-import {getEventPrice} from '../helper/event';
-import {buyTicket} from '../helper/event';
-import {Toast} from 'react-native-toast-message/lib/src/Toast';
-import metamaskImg from '../../assets/img/metamask.png';
-import bitkeepImg from '../../assets/img/bitkeep.png';
-import paypalImg from '../../assets/img/paypal-color.png';
-import DateObject from 'react-date-object';
-import {ethers} from 'ethers';
-import {
-  BUSD_TEST_ABI,
-  BUSD_MAIN_ABI,
-  BUSDPayment_TEST_ABI,
-  BUSDPayment_testnet,
-} from '../utils/payment_contract';
-import {useSelector, useDispatch} from 'react-redux';
-import {WebView} from 'react-native-webview';
-import Feather from 'react-native-vector-icons/Feather';
-import {getLikesNumber} from '../utils';
-import {useNavigation} from '@react-navigation/core';
+import badgeMark from '../../assets/img/icons/verified.png';
+import CurrencySymbol from '../components/currency/CurrencySymbol';
 import ParamModal from '../components/modals/prams';
+import config from '../helper/config';
+import {
+  buyTicket,
+  getBuyState,
+  getCollectionById,
+  getEventCardById,
+  getEventPrice,
+  getLatestEventCards,
+  updateEventLike,
+} from '../helper/event';
+import {getLikesNumber} from '../utils';
+import {
+  BUSDPayment_testnet,
+  BUSDPayment_TEST_ABI,
+  BUSD_MAIN_ABI,
+  BUSD_TEST_ABI,
+} from '../utils/payment_contract';
 
 export const EventDetailsScreen = ({route}) => {
   const [userInfo, setUserInfo] = useState();
@@ -614,7 +610,7 @@ export const EventDetailsScreen = ({route}) => {
                   <View style={styles.modalRow}>
                     <Text style={styles.modalSubtitle}>Price :</Text>
                     <Text style={styles.modalTxt}>
-                      {selectedAddon?.price + ' €'}
+                      {selectedAddon?.price + ' '} <CurrencySymbol />
                     </Text>
                   </View>
                 </View>
@@ -636,7 +632,9 @@ export const EventDetailsScreen = ({route}) => {
             <Text style={styles.remainTickets}>
               {tempData.total_tickets - tempData.buy_count} tickets left
             </Text>
-            <Text style={styles.priceText}>{tempData.price} €</Text>
+            <Text style={styles.priceText}>
+              {tempData.price} <CurrencySymbol />
+            </Text>
           </View>
           <View style={styles.divider} />
           {showGateway ? (
