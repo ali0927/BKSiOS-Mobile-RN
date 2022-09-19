@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
 import Countdown from 'react-countdown';
+import {useTranslation} from 'react-i18next';
 import {
   Dimensions,
   Image,
@@ -25,6 +26,8 @@ export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 const EventsArtsCarousel = () => {
   const [latestEvents, setLatestEvents] = useState([]);
   const [userInfo, setUserInfo] = useState();
+
+  const {t} = useTranslation();
   const _userInfo = useSelector(state => state.userInfoReducer).userInfo;
 
   const EventCard = ({item, index}) => {
@@ -53,20 +56,20 @@ const EventsArtsCarousel = () => {
           <EventCountDown date={new Date(item.date).toISOString()} />
           <View style={styles.details}>
             <View style={styles.detailContainer}>
-              <Text style={styles.info}>Date </Text>
+              <Text style={styles.info}>{t('date')} </Text>
               <Text style={styles.infoVal}>
                 {new Date(item.date).toISOString().toString().split('T')[0]}
               </Text>
             </View>
             <View style={styles.detailContainer}>
-              <Text style={styles.info}>Location</Text>
+              <Text style={styles.info}>{t('location')}</Text>
               <Text style={styles.infoVal}>{item.location}</Text>
             </View>
           </View>
           <View style={styles.divider} />
           <View style={styles.footerDetails}>
             <View>
-              <Text style={styles.info}>Current price</Text>
+              <Text style={styles.info}>{t('current price')}</Text>
               <Text style={styles.price}>
                 <Currency price={item.price + addonPrice} /> <CurrencySymbol />
               </Text>
@@ -112,7 +115,7 @@ const EventsArtsCarousel = () => {
   };
 
   const CompletionList = () => (
-    <Text style={styles.leftTime}>EVENT STARTED</Text>
+    <Text style={styles.leftTime}>{t('event started')}</Text>
   );
 
   const pad = (num, size = 2) => {

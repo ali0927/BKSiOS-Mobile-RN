@@ -2,7 +2,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
-// import {useTranslation} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {
   Dimensions,
   Image,
@@ -42,7 +42,7 @@ export default function MainTabs() {
   const [searchValue, setSearchValue] = useState('');
   // const [searchValidation, setSearchValidation] = useState('');
   const dispatch = useDispatch();
-  // const {t, i18n} = useTranslation();
+  const {t, i18n} = useTranslation();
   const countryInfo = useSelector(
     state => state.locationInfoReducer,
   ).locationInfo;
@@ -54,11 +54,11 @@ export default function MainTabs() {
 
   useEffect(() => {
     console.log('CountryInfo:', countryInfo);
-    // if (countryInfo === 'TR') {
-    //   i18n.changeLanguage('tr');
-    // } else {
-    //   i18n.changeLanguage('en');
-    // }
+    if (countryInfo === 'TR') {
+      i18n.changeLanguage('tr');
+    } else {
+      i18n.changeLanguage('en');
+    }
   }, [countryInfo]);
 
   const getRate = async () => {

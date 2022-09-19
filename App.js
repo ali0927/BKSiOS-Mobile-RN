@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet, StatusBar} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 import Toast from 'react-native-toast-message';
-import MainTabs from './screens/components/tapButtons/mainTabs';
-
-import {MainPage} from './screens/pages/mainPage';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import rootReducer from './redux/reducers';
+import MainTabs from './screens/components/tapButtons/mainTabs';
+import {MainPage} from './screens/pages/mainPage';
 
 const store = createStore(rootReducer);
 
@@ -19,7 +18,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor={THEME_COLOR}/>
+        <StatusBar barStyle="light-content" backgroundColor={THEME_COLOR} />
         <MainTabs />
       </SafeAreaView>
       <Toast />

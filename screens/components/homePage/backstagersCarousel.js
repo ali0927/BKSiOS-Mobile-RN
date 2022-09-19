@@ -1,26 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import {
-  Text,
-  View,
   Dimensions,
   Image,
   StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import img1 from '../../../assets/img/avatars/avatar2.jpg';
-import img2 from '../../../assets/img/avatars/avatar4.jpg';
-import img3 from '../../../assets/img/avatars/avatar5.jpg';
-import img4 from '../../../assets/img/avatars/avatar7.jpg';
-import img5 from '../../../assets/img/avatars/avatar8.jpg';
 import img6 from '../../../assets/img/avatars/avatar10.jpg';
 import img7 from '../../../assets/img/avatars/avatar11.jpg';
 import img8 from '../../../assets/img/avatars/avatar13.jpg';
 import img9 from '../../../assets/img/avatars/avatar14.jpg';
 import img10 from '../../../assets/img/avatars/avatar15.jpg';
+import img1 from '../../../assets/img/avatars/avatar2.jpg';
+import img2 from '../../../assets/img/avatars/avatar4.jpg';
+import img3 from '../../../assets/img/avatars/avatar5.jpg';
+import img4 from '../../../assets/img/avatars/avatar7.jpg';
+import img5 from '../../../assets/img/avatars/avatar8.jpg';
 
-import badgeMark from '../../../assets/img/icons/verified.png';
-import arrowRight from '../../../assets/img/icons/arrow-right.png';
+import {useTranslation} from 'react-i18next';
 import arrowLeft from '../../../assets/img/icons/arrow-left.png';
+import arrowRight from '../../../assets/img/icons/arrow-right.png';
+import badgeMark from '../../../assets/img/icons/verified.png';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
@@ -81,6 +82,8 @@ const data = [
 const BackstagersCarousel = () => {
   const [isViewAll, setViewAll] = useState(false);
   const [viewData, setViewData] = useState(data);
+
+  const {t} = useTranslation();
   useEffect(() => {
     if (isViewAll) {
       setViewData(data);
@@ -93,7 +96,7 @@ const BackstagersCarousel = () => {
     <View style={styles.container}>
       <View style={styles.extraBtn}>
         <Text style={styles.extraText} onPress={() => setViewAll(!isViewAll)}>
-          {!isViewAll ? 'View All' : 'View Less'}
+          {!isViewAll ? t('view all') : t('view less')}
         </Text>
         <Image
           source={!isViewAll ? arrowRight : arrowLeft}
@@ -102,6 +105,7 @@ const BackstagersCarousel = () => {
           style={styles.arrowImg}
         />
       </View>
+      <View style={{height: 20}}></View>
 
       {viewData &&
         viewData.map((item, i) => (
@@ -127,7 +131,7 @@ const styles = StyleSheet.create({
   extraBtn: {
     position: 'absolute',
     right: 0,
-    top: -30,
+    top: 0,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',

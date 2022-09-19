@@ -1,24 +1,26 @@
-import React, { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useEffect} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
+  Dimensions,
   Image,
   ScrollView,
   StyleSheet,
   Text,
   View,
-  Dimensions,
 } from 'react-native';
-import {HomeHero} from '../components/homePage/homeHero';
-import CollectionCarousel from '../components/homePage/collectionCarousel';
-import EventsCarousel from '../components/homePage/eventsCarousel';
-import BackstagersCarousel from '../components/homePage/backstagersCarousel';
+import {useDispatch} from 'react-redux';
 import backImg from '../../assets/img/home/home-background.png';
+import BackstagersCarousel from '../components/homePage/backstagersCarousel';
+import CollectionCarousel from '../components/homePage/collectionCarousel';
 import EventsArtsCarousel from '../components/homePage/eventsArtsCarousel';
+import EventsCarousel from '../components/homePage/eventsCarousel';
 import EventsServicesCarousel from '../components/homePage/eventsServicesCarousel';
-import { useDispatch } from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {HomeHero} from '../components/homePage/homeHero';
 
 const deviceWidth = Dimensions.get('window').width;
-export const HomeScreen = ({ navigation }) => {
+export const HomeScreen = ({navigation}) => {
+  const {t} = useTranslation();
   const dispatch = useDispatch();
 
   const getData = async () => {
@@ -26,7 +28,7 @@ export const HomeScreen = ({ navigation }) => {
     try {
       const data = await AsyncStorage.getItem('userInfo');
       if (data !== null) {
-        console.log("Saved AsyncStorage Data:::", data);
+        console.log('Saved AsyncStorage Data:::', data);
         dispatch({type: 'SET_USER_INFO', payload: data});
         // return data;
       }
@@ -37,7 +39,7 @@ export const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     getData();
-  }, [])
+  }, []);
   // const result = AsyncStorage.getItem('userInfo');
   // dispatch({type: 'SET_USER_INFO', payload: JSON.stringify(result)});
   return (
@@ -48,23 +50,23 @@ export const HomeScreen = ({ navigation }) => {
           <HomeHero navigation={navigation} />
         </View>
         <View>
-          <Text style={styles.subtitle}>Hot Collections</Text>
+          <Text style={styles.subtitle}>{t('hot collections')}</Text>
           <CollectionCarousel />
         </View>
         <View>
-          <Text style={styles.subtitle}>Latest Events</Text>
+          <Text style={styles.subtitle}>{t('latest events')}</Text>
           <EventsCarousel navigation={navigation} />
         </View>
         <View>
-          <Text style={styles.subtitle}>Latest Arts</Text>
+          <Text style={styles.subtitle}>{t('latest digital arts')}</Text>
           <EventsArtsCarousel navigation={navigation} />
         </View>
         <View>
-          <Text style={styles.subtitle}>Latest Services</Text>
+          <Text style={styles.subtitle}>{t('latest services')}</Text>
           <EventsServicesCarousel navigation={navigation} />
         </View>
         <View>
-          <Text style={styles.subtitle}>Backstagers</Text>
+          <Text style={styles.subtitle}>{t('Top Backstagers')}</Text>
           <BackstagersCarousel />
         </View>
       </ScrollView>
