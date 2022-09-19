@@ -1,5 +1,6 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
+import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 // import {useTranslation} from 'react-i18next';
 import {
@@ -52,13 +53,28 @@ export default function MainTabs() {
   };
 
   useEffect(() => {
-    console.log('CountryInfo:::', countryInfo);
+    console.log('CountryInfo:', countryInfo);
     // if (countryInfo === 'TR') {
     //   i18n.changeLanguage('tr');
     // } else {
     //   i18n.changeLanguage('en');
     // }
   }, [countryInfo]);
+
+  const getRate = async () => {
+    const config = {
+      method: 'get',
+      url: 'https://api.apilayer.com/exchangerates_data/latest?base=EUR&symbols=TRY,GBP,USD',
+      headers: {
+        apikey: '8VsK9lieiuTIQ49CLs4aIoP5jAmLawjT',
+      },
+    };
+    const res = await axios(config);
+    console.log('Get Rate: ', res.data.rates);
+    dispatch({type: 'SET_RATE_TRY', payload: res.data.rates.TRY});
+    dispatch({type: 'SET_RATE_GBP', payload: res.data.rates.GBP});
+    dispatch({type: 'SET_RATE_USD', payload: res.data.rates.USD});
+  };
 
   const getIPaddress = async () => {
     const request = await fetch('https://ipinfo.io/json?token=eb1a719d60ef95');
@@ -69,6 +85,7 @@ export default function MainTabs() {
 
   useEffect(() => {
     getIPaddress();
+    getRate();
   }, []);
 
   return (
