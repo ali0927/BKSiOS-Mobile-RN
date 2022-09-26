@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   Image,
   Platform,
@@ -19,6 +20,7 @@ import {getEventCardInCollection} from '../helper/event';
 export const CollectionScreen = ({route}) => {
   const userInfo = useSelector(state => state.userInfoReducer).userInfo;
   const collectionData = route.params.item;
+  const {t} = useTranslation();
 
   const [eventCards, setEventCards] = useState([]);
   const [ownerCnt, setOwnerCnt] = useState(0);
@@ -121,7 +123,7 @@ export const CollectionScreen = ({route}) => {
               <Image source={badgeMark} style={styles.badgeMark} />
             </View>
             <View style={styles.flexRow}>
-              <Text style={styles.byText}>by</Text>
+              <Text style={styles.byText}>{t('by')}</Text>
               <Text style={styles.idText}>
                 @{collectionData?.creator?.name}
               </Text>
@@ -164,7 +166,7 @@ export const CollectionScreen = ({route}) => {
                   <TouchableOpacity to={`/event/eventcard/${eventcard.id}`}>
                     <Text style={styles.eventCardName}>{eventcard.name}</Text>
                   </TouchableOpacity>
-                  <Text style={styles.eventCardSubName}>creator</Text>
+                  <Text style={styles.eventCardSubName}>{t('creator')}</Text>
                   <View
                     style={{...styles.flexRow, justifyContent: 'flex-start'}}>
                     <Image
@@ -205,7 +207,7 @@ export const CollectionScreen = ({route}) => {
                   </View>
                   <View style={{...styles.divider, marginBottom: 0}} />
                   <Text style={{...styles.eventCardSubName, marginBottom: 0}}>
-                    Reserve price
+                    {t('reserve price')}
                   </Text>
                   <View
                     style={{

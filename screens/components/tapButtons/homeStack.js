@@ -95,7 +95,7 @@ export const HomeStackScreen = () => {
         name="Collection"
         component={CollectionScreen}
         options={{
-          headerTitle: () => <Header title="Collection" />,
+          headerTitle: () => <Header title={t('collection')} />,
           headerBackVisible: false,
         }}
       />
