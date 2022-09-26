@@ -1,29 +1,31 @@
+import axios from 'axios';
 import React, {useEffect, useState} from 'react';
+import DateObject from 'react-date-object';
 import {
-  ScrollView,
-  View,
-  Text,
   Image,
-  TouchableOpacity,
-  StyleSheet,
   Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import HTMLView from 'react-native-htmlview';
-import axios from 'axios';
-import DateObject from 'react-date-object';
+import Toast from 'react-native-toast-message';
 import clockImg from '../../assets/img/icons/clock.png';
 import messageImg from '../../assets/img/icons/message.png';
 import {Loading} from '../components/loading';
-import Toast from 'react-native-toast-message';
 // import shareImg1 from '../../assets/img/icons/facebook.png';
 // import shareImg2 from '../../assets/img/icons/twitter.png';
 // import shareImg3 from '../../assets/img/icons/medium.png';
+import {useTranslation} from 'react-i18next';
 import config from '../helper/config';
 
 export const NewsDetailScreen = ({route, navigation}) => {
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const {t} = useTranslation();
   const dateString = d => {
     var date = new DateObject({
       date: new Date(d),
@@ -85,7 +87,7 @@ export const NewsDetailScreen = ({route, navigation}) => {
             <TouchableOpacity
               style={styles.newsButton}
               onPress={() => console.log('Clicked News Button')}>
-              <Text style={styles.newsText}>News</Text>
+              <Text style={styles.newsText}>{t('news')}</Text>
             </TouchableOpacity>
             <Text style={styles.articleTitle}>{article.title}</Text>
             <HTMLView value={article.description} stylesheet={htmlStyleSheet} />

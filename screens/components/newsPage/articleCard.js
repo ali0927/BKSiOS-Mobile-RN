@@ -1,19 +1,22 @@
+import {useNavigation} from '@react-navigation/core';
 import React from 'react';
 import DateObject from 'react-date-object';
+import {useTranslation} from 'react-i18next';
 import {
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
   TouchableOpacity,
   View,
-  Text,
-  Image,
-  StyleSheet,
-  Platform,
 } from 'react-native';
-import messageImg from '../../../assets/img/icons/message.png';
 import clockImg from '../../../assets/img/icons/clock.png';
-import {useNavigation} from '@react-navigation/core';
+import messageImg from '../../../assets/img/icons/message.png';
 import config from '../../helper/config';
 
 export const ArticleCard = data => {
+  const {t} = useTranslation();
+
   const navigation = useNavigation();
   const dateString = d => {
     var date = new DateObject({
@@ -40,7 +43,7 @@ export const ArticleCard = data => {
           <TouchableOpacity
             style={styles.categoryBtn}
             onPress={() => console.log('Clicked News Button')}>
-            <Text style={styles.categoryBtnTxt}>News</Text>
+            <Text style={styles.categoryBtnTxt}>{t('news')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() =>

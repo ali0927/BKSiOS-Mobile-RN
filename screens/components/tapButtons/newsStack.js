@@ -1,17 +1,19 @@
-import React from 'react';
-import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/core';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React from 'react';
+import {useTranslation} from 'react-i18next';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import arrowLeft from '../../../assets/img/icons/arrow-left.png';
+import shareImg from '../../../assets/img/icons/share.png';
 import {NewsScreen} from '../../pages/news';
 import {NewsDetailScreen} from '../../pages/newsDetail';
-import shareImg from '../../../assets/img/icons/share.png';
-import arrowLeft from '../../../assets/img/icons/arrow-left.png';
 
 const NewsStack = createNativeStackNavigator();
 const THEME_COLOR = '#14142f';
 
 export const NewsStackScreen = () => {
   const navigation = useNavigation();
+  const {t} = useTranslation();
   return (
     <NewsStack.Navigator
       initialRouteName="NewsHome"
@@ -27,7 +29,7 @@ export const NewsStackScreen = () => {
           headerTitle: () => (
             <View style={styles.headerContainer}>
               <View />
-              <Text style={styles.titleText}>News</Text>
+              <Text style={styles.titleText}>{t('news')}</Text>
               <View />
             </View>
           ),
@@ -42,7 +44,7 @@ export const NewsStackScreen = () => {
               <TouchableOpacity onPress={() => navigation.navigate('NewsHome')}>
                 <Image source={arrowLeft} />
               </TouchableOpacity>
-              <Text style={styles.titleText}>Article</Text>
+              <Text style={styles.titleText}>{t('article')}</Text>
               <TouchableOpacity
                 onPress={() => console.log('Share Button Clicked...')}>
                 <Image source={shareImg} />

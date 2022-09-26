@@ -1,22 +1,24 @@
-import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
-  View,
-  Text,
-  StyleSheet,
   ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import {ArticleCard} from '../components/newsPage/articleCard';
-import {Loading} from '../components/loading';
 import Toast from 'react-native-toast-message';
+import {Loading} from '../components/loading';
+import {ArticleCard} from '../components/newsPage/articleCard';
 import config from '../helper/config';
 
 export const NewsScreen = () => {
+  const {t} = useTranslation();
   const [categoryList, setCategoryList] = useState([
     {
       id: 0,
-      title: 'All',
+      title: t('all'),
     },
   ]);
   const [currentCategory, setCurrentCategory] = useState(0);
