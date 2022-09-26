@@ -1,45 +1,46 @@
+import Clipboard from '@react-native-clipboard/clipboard';
 import React, {useEffect, useState} from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
   Image,
-  TouchableOpacity,
-  ScrollView,
   Linking,
   Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
 
 import Toast from 'react-native-toast-message';
 
+import Modal from 'react-native-modal';
 import imgAvatar from '../../assets/img/avatars/avatar.jpg';
-import badgeMark from '../../assets/img/icons/verified.png';
-import telegramImg from '../../assets/img/icons/telegram.png';
-import globalImg from '../../assets/img/icons/globe.png';
-import mediumImg from '../../assets/img/icons/medium.png';
-import twitterImg from '../../assets/img/icons/twitter.png';
-import facebookImg from '../../assets/img/icons/facebook.png';
-import instagramImg from '../../assets/img/icons/instagram.png';
 import copyImg from '../../assets/img/icons/copy.png';
 import editImg from '../../assets/img/icons/edit.png';
+import facebookImg from '../../assets/img/icons/facebook.png';
+import globalImg from '../../assets/img/icons/globe.png';
+import instagramImg from '../../assets/img/icons/instagram.png';
+import mediumImg from '../../assets/img/icons/medium.png';
+import telegramImg from '../../assets/img/icons/telegram.png';
+import twitterImg from '../../assets/img/icons/twitter.png';
 import uploadImg from '../../assets/img/icons/upload.png';
-import Modal from 'react-native-modal';
+import badgeMark from '../../assets/img/icons/verified.png';
 import {
   changeAvatar,
-  changeSocial,
   changePassword,
+  changeSocial,
   getAllUserAvatars,
   getAllUserBackgrounds,
 } from '../helper/user';
-import {validateEmail} from '../utils';
+// import {validateEmail} from '../utils';
+import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {updateProfile} from '../helper/auth';
 
-const SERVER_URL = 'http://localhost:3000';
-
 export const ProfileScreen = () => {
+  const {t} = useTranslation();
+
   const userInfo = useSelector(state => state.userInfoReducer).userInfo;
 
   const [backModalVisible, setBackModalVisible] = useState(false);
@@ -106,10 +107,10 @@ export const ProfileScreen = () => {
   };
 
   const initalSocialValidations = {
-    facebook: "",
-    twitter: "",
-    instagram: "",
-    medium: "",
+    facebook: '',
+    twitter: '',
+    instagram: '',
+    medium: '',
   };
 
   const handleGeneralChange = (prop, value) => {
@@ -119,7 +120,7 @@ export const ProfileScreen = () => {
   };
   const handleSocialChange = (prop, value) => {
     setSocialChanged(true);
-    setSocialValidations({ ...initalSocialValidations });
+    setSocialValidations({...initalSocialValidations});
     setSocialValues({...socialValues, [prop]: value});
   };
   const handlePwdChange = (prop, value) => {
@@ -127,8 +128,6 @@ export const ProfileScreen = () => {
     setPwdValidations(prevState => ({...prevState, [prop]: ''}));
     setPwdValues({...pwdValues, [prop]: value});
   };
-
- 
 
   const checkGeneralValidations = () => {
     if (generalValues.name === '') {
@@ -296,7 +295,7 @@ export const ProfileScreen = () => {
   };
   const saveSocial = async () => {
     if (!checkSocialValidations()) return;
-    
+
     changeSocial(socialValues).then(res => {
       if (res.success) {
         Toast.show({
@@ -543,7 +542,7 @@ export const ProfileScreen = () => {
           </View>
           <Text style={styles.idText}>{currentUser?.email}</Text>
           <Text style={styles.description}>{currentUser?.description}</Text>
-          <Text style={styles.walletTitle}>Wallet</Text>
+          <Text style={styles.walletTitle}>{t('wallet')}</Text>
           <View style={styles.clipboardDiv}>
             <Text
               style={styles.inputWallet}
@@ -557,7 +556,7 @@ export const ProfileScreen = () => {
               <Image source={copyImg} />
             </TouchableOpacity>
           </View>
-          <Text style={styles.walletTitle}>Links</Text>
+          <Text style={styles.walletTitle}>{t('links')}</Text>
           <View style={styles.socialDiv}>
             <TouchableOpacity
               style={styles.socialImg}
@@ -598,17 +597,17 @@ export const ProfileScreen = () => {
               <Image source={instagramImg} />
             </TouchableOpacity>
           </View>
-          <Text style={styles.title}>Profile Settings</Text>
+          <Text style={styles.title}>{t('profile settings')}</Text>
           {/* General Settings */}
           <View>
             {/* separate title View */}
             <View style={styles.flexBase}>
-              <Text style={styles.categoryTitle}>General</Text>
+              <Text style={styles.categoryTitle}>{t('general')}</Text>
               <View style={styles.restLine} />
             </View>
             {/* General Forms */}
             <View style={styles.inputContainer}>
-              <Text style={styles.subTitle}>Name</Text>
+              <Text style={styles.subTitle}>{t('name')}</Text>
               <TextInput
                 onFocus={() => setFocusedItem('nameInput')}
                 onBlur={() => setFocusedItem('')}
@@ -622,13 +621,13 @@ export const ProfileScreen = () => {
                 onChangeText={val => handleGeneralChange('name', val)}
               />
               {generalValidations.name === 'has-empty' ? (
-                <Text style={styles.errorText}>Name required*</Text>
+                <Text style={styles.errorText}>{t('name required')}*</Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.subTitle}>Email</Text>
+              <Text style={styles.subTitle}>{t('email')}</Text>
               <TextInput
                 onFocus={() => setFocusedItem('emailInput')}
                 onBlur={() => setFocusedItem('')}
@@ -642,13 +641,15 @@ export const ProfileScreen = () => {
                 onChangeText={val => handleGeneralChange('email', val)}
               />
               {generalValidations.email === 'has-empty' ? (
-                <Text style={styles.errorText}>Valid Email required*</Text>
+                <Text style={styles.errorText}>
+                  {t('valid email required')}*
+                </Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.subTitle}>Mobile Number</Text>
+              <Text style={styles.subTitle}>{t('mobile number')}</Text>
               <TextInput
                 onFocus={() => setFocusedItem('mobileInput')}
                 onBlur={() => setFocusedItem('')}
@@ -663,14 +664,14 @@ export const ProfileScreen = () => {
               />
               {generalValidations.mobileNumber === 'has-empty' ? (
                 <Text style={styles.errorText}>
-                  Valid Mobile Number Required*
+                  {t('valid mobile number required')}*
                 </Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.subTitle}>Website</Text>
+              <Text style={styles.subTitle}>{t('website')}</Text>
               <TextInput
                 onFocus={() => setFocusedItem('websiteInput')}
                 onBlur={() => setFocusedItem('')}
@@ -685,7 +686,7 @@ export const ProfileScreen = () => {
               />
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.subTitle}>BSC Wallet Address</Text>
+              <Text style={styles.subTitle}>{t('BSC wallet address')}</Text>
               <TextInput
                 onFocus={() => setFocusedItem('walletInput')}
                 onBlur={() => setFocusedItem('')}
@@ -700,20 +701,20 @@ export const ProfileScreen = () => {
               />
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.subTitle}>Background Image</Text>
+              <Text style={styles.subTitle}>{t('background image')}</Text>
               <View style={styles.backImgUploadContiner}>
                 <TouchableOpacity
                   onPress={() => setBackModalVisible(true)}
                   style={styles.backImgUpload}>
                   <Image source={uploadImg} />
-                  <Text style={styles.backImgUploadTxt}>Upload</Text>
+                  <Text style={styles.backImgUploadTxt}>{t('upload')}</Text>
                 </TouchableOpacity>
                 {backgroundImgModal()}
                 {/* <Button title="Save" onPress={handleUploadPhoto} /> */}
               </View>
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.subTitle}>Description</Text>
+              <Text style={styles.subTitle}>{t('description')}</Text>
               <TextInput
                 onFocus={() => setFocusedItem('DescriptionInput')}
                 onBlur={() => setFocusedItem('')}
@@ -729,7 +730,9 @@ export const ProfileScreen = () => {
                 onChangeText={val => handleGeneralChange('description', val)}
               />
               {generalValidations.description === 'has-empty' ? (
-                <Text style={styles.errorText}>Description required*</Text>
+                <Text style={styles.errorText}>
+                  {t('description required')}*
+                </Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -742,7 +745,7 @@ export const ProfileScreen = () => {
                   : console.log('there is nothing to save');
               }}>
               <Text style={generalChanged ? styles.text31 : styles.text3}>
-                Save
+                {t('save')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -750,7 +753,7 @@ export const ProfileScreen = () => {
           <View>
             {/* separate title View */}
             <View style={styles.flexBase}>
-              <Text style={styles.categoryTitle}>Social Media</Text>
+              <Text style={styles.categoryTitle}>{t('social media')}</Text>
               <View style={styles.restLine} />
             </View>
             {/* General Forms */}
@@ -769,7 +772,9 @@ export const ProfileScreen = () => {
                 onChangeText={val => handleSocialChange('facebook', val)}
               />
               {socialValidations.facebook === 'has-empty' ? (
-                <Text style={styles.errorText}>Correct URL Required*</Text>
+                <Text style={styles.errorText}>
+                  {t('correct URL required')}*
+                </Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -789,7 +794,9 @@ export const ProfileScreen = () => {
                 onChangeText={val => handleSocialChange('instagram', val)}
               />
               {socialValidations.instagram === 'has-empty' ? (
-                <Text style={styles.errorText}>Correct URL Required*</Text>
+                <Text style={styles.errorText}>
+                  {t('correct URL required')}*
+                </Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -809,7 +816,9 @@ export const ProfileScreen = () => {
                 onChangeText={val => handleSocialChange('twitter', val)}
               />
               {socialValidations.twitter === 'has-empty' ? (
-                <Text style={styles.errorText}>Correct URL Required*</Text>
+                <Text style={styles.errorText}>
+                  {t('correct URL required')}*
+                </Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -829,7 +838,9 @@ export const ProfileScreen = () => {
                 onChangeText={val => handleSocialChange('medium', val)}
               />
               {socialValidations.medium === 'has-empty' ? (
-                <Text style={styles.errorText}>Correct URL Required*</Text>
+                <Text style={styles.errorText}>
+                  {t('correct URL required')}*
+                </Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
@@ -842,7 +853,7 @@ export const ProfileScreen = () => {
                   : console.log('there is nothing to save');
               }}>
               <Text style={socialChanged ? styles.text31 : styles.text3}>
-                Save
+                {t('save')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -850,12 +861,12 @@ export const ProfileScreen = () => {
           <View>
             {/* separate title View */}
             <View style={styles.flexBase}>
-              <Text style={styles.categoryTitle}>Change Password</Text>
+              <Text style={styles.categoryTitle}>{t('change password')}</Text>
               <View style={styles.restLine} />
             </View>
             {/* Change Password Forms */}
             <View style={styles.inputContainer}>
-              <Text style={styles.subTitle}>Old Password</Text>
+              <Text style={styles.subTitle}>{t('old password')}</Text>
               <TextInput
                 onFocus={() => setFocusedItem('oldPwdInput')}
                 onBlur={() => setFocusedItem('')}
@@ -870,13 +881,15 @@ export const ProfileScreen = () => {
                 onChangeText={val => handlePwdChange('oldPassword', val)}
               />
               {pwdValidations.oldPassword === 'has-empty' ? (
-                <Text style={styles.errorText}>Old Password required*</Text>
+                <Text style={styles.errorText}>
+                  {t('old password required')}*
+                </Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.subTitle}>New Password</Text>
+              <Text style={styles.subTitle}>{t('new password')}</Text>
               <TextInput
                 onFocus={() => setFocusedItem('newPwdInput')}
                 onBlur={() => setFocusedItem('')}
@@ -891,13 +904,15 @@ export const ProfileScreen = () => {
                 onChangeText={val => handlePwdChange('newPassword', val)}
               />
               {pwdValidations.newPassword === 'has-empty' ? (
-                <Text style={styles.errorText}>New Password required*</Text>
+                <Text style={styles.errorText}>
+                  {t('new password required')}*
+                </Text>
               ) : (
                 <Text style={styles.errorText} />
               )}
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.subTitle}>Confirm Password</Text>
+              <Text style={styles.subTitle}>{t('confirm password')}</Text>
               <TextInput
                 onFocus={() => setFocusedItem('confirmPwdInput')}
                 onBlur={() => setFocusedItem('')}
@@ -913,7 +928,7 @@ export const ProfileScreen = () => {
               />
               {pwdValidations.confirmPassword === 'has-empty' ? (
                 <Text style={styles.errorText}>
-                  Confirm Password must equal with New Password*
+                  {t('confirm password does not match')}*
                 </Text>
               ) : (
                 <Text style={styles.errorText} />
@@ -927,7 +942,7 @@ export const ProfileScreen = () => {
                   : console.log('There is nothing to save');
               }}>
               <Text style={pwdChanged ? styles.text31 : styles.text3}>
-                Change Password
+                {t('change password')}
               </Text>
             </TouchableOpacity>
           </View>

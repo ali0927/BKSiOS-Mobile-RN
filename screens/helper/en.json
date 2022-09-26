@@ -28,6 +28,7 @@
   "capcha text": "Before you proceed, please complete the capcha below",
   "bids": "Bids",
   "BSC wallet": "BSC Wallet",
+  "BSC wallet address": "BSC Wallet Address",
   "BSC wallet owner": "BSC Wallet Owner",
   "buy": "buy",
   "buy ticket": "buy ticket",
@@ -158,6 +159,7 @@
   "new collection": "New Collection",
   "new email": "New Email",
   "new password": "New password",
+  "new password required": "New Password Required",
   "news": "News",
   "normal user": "NORMAL USER",
   "number of copies": "Number of copies",
@@ -258,5 +260,6 @@
   "You are in test mode": "You are in test mode",
   "You can also reach us through our social media channels": "You can also reach us through our social media channels",
   "Your browser does not support thte video tag.": "Your browser does not support thte video tag.",
-  "Your message": "Your message"
+  "Your message": "Your message",
+  "your profile": "Your Profile"
 }

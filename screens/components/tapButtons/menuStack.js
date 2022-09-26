@@ -161,7 +161,7 @@ export const MenuStackScreen = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
-          headerTitle: () => <Header title="Your Profile" />,
+          headerTitle: () => <Header title={t('your profile')} />,
           headerBackVisible: false,
         }}
       />

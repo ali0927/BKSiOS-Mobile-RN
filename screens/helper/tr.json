@@ -28,6 +28,7 @@
   "capcha text": "Devam etmeden önce lütfen aşağıdaki captcha'yı tamamlayın",
   "bids": "Teklifler",
   "BSC wallet": "BSC Cüzdanı",
+  "BSC wallet address": "BSC Cuzdan adresi",
   "BSC wallet owner": "BSC Cüzdan Sahibi",
   "buy": "şimdi al",
   "buy ticket": "bilet al",
@@ -158,6 +159,7 @@
   "new collection": "Yeni koleksyon",
   "new email": "yeni eposta",
   "new password": "yeni sifre",
+  "new password required": "Yeni şifre gerekli",
   "news": "Haberler",
   "normal user": "normal kullanici",
   "number of copies": "Kopya sayısı",
@@ -258,5 +260,6 @@
   "You are in test mode": "test modundasın",
   "You can also reach us through our social media channels": "Bize sosyal medya kanallarımızdan da ulaşabilirsiniz.",
   "Your browser does not support thte video tag.": "Tarayıcınız video etiketini desteklemiyor.",
-  "Your message": "Mesajıniz"
+  "Your message": "Mesajıniz",
+  "your profile": "Senin Profil"
 }
