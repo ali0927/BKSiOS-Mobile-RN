@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/core';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   Image,
   Platform,
@@ -117,6 +118,8 @@ export const MenuStackScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const navigation = useNavigation();
+  const {t} = useTranslation();
+
   const Header = ({title}) => {
     return (
       <View style={styles.headerContainer}>
@@ -148,7 +151,7 @@ export const MenuStackScreen = () => {
           headerTitle: () => (
             <View style={styles.headerContainer}>
               <View />
-              <Text style={styles.titleText}>More</Text>
+              <Text style={styles.titleText}>{t('more')}</Text>
               <View />
             </View>
           ),

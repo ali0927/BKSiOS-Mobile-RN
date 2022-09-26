@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   Image,
   Platform,
@@ -22,6 +23,7 @@ export const MenuHomeScreen = ({navigation}) => {
   const userInfo = useSelector(state => state.userInfoReducer).userInfo;
 
   const dispatch = useDispatch();
+  const {t} = useTranslation();
   const signOut = async () => {
     if (userInfo) {
       // console.log('SignOut Function...', userInfo);
@@ -41,7 +43,7 @@ export const MenuHomeScreen = ({navigation}) => {
             onPress={() => navigation.navigate('Profile')}>
             <View style={styles.subContainer}>
               <Image source={profileImg} />
-              <Text style={styles.title}>Profile</Text>
+              <Text style={styles.title}>{t('profile')}</Text>
             </View>
             <Image source={rightArrowImg} />
           </TouchableOpacity>
@@ -52,7 +54,7 @@ export const MenuHomeScreen = ({navigation}) => {
             onPress={() => navigation.navigate('Activity')}>
             <View style={styles.subContainer}>
               <Image source={activityImg} />
-              <Text style={styles.title}>Activity</Text>
+              <Text style={styles.title}>{t('activity')}</Text>
             </View>
             <Image source={rightArrowImg} />
           </TouchableOpacity>
@@ -63,7 +65,7 @@ export const MenuHomeScreen = ({navigation}) => {
             onPress={() => navigation.navigate('Liked')}>
             <View style={styles.subContainer}>
               <Image source={likedImg} />
-              <Text style={styles.title}>Liked</Text>
+              <Text style={styles.title}>{t('liked')}</Text>
             </View>
             <Image source={rightArrowImg} />
           </TouchableOpacity>
@@ -82,7 +84,7 @@ export const MenuHomeScreen = ({navigation}) => {
           onPress={() => navigation.navigate('About')}>
           <View style={styles.subContainer}>
             <Image source={aboutImg} />
-            <Text style={styles.title}>About</Text>
+            <Text style={styles.title}>{t('about.title')}</Text>
           </View>
           <Image source={rightArrowImg} />
         </TouchableOpacity>
@@ -93,12 +95,12 @@ export const MenuHomeScreen = ({navigation}) => {
             style={styles.button2}
             onPress={() => navigation.navigate('SignIn')}>
             <Image source={loginImg} />
-            <Text style={styles.text3}>Sign in</Text>
+            <Text style={styles.text3}>{t('sign in')}</Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity style={styles.button1} onPress={() => signOut()}>
             <Image source={logoutImg} />
-            <Text style={styles.text3}>Sign Out</Text>
+            <Text style={styles.text3}>{t('sign out')}</Text>
           </TouchableOpacity>
         )}
       </View>
