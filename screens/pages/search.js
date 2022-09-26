@@ -1,19 +1,20 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Platform,
-} from 'react-native';
-import avatarImg from '../../assets/img/avatars/avatar3.jpg';
-import {allTickets, getAllCollections, getAllEventCards} from '../helper/event';
 import {useNavigation} from '@react-navigation/core';
-import config from '../helper/config';
-import {Loading} from '../components/loading';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {useSelector} from 'react-redux';
+import avatarImg from '../../assets/img/avatars/avatar3.jpg';
+import {Loading} from '../components/loading';
+import config from '../helper/config';
+import {allTickets, getAllCollections, getAllEventCards} from '../helper/event';
 
 export const SearchScreen = () => {
   const navigation = useNavigation();
@@ -29,6 +30,7 @@ export const SearchScreen = () => {
   const [ticketLoading, setTicketLoading] = useState(true);
   const searchInfo = useSelector(state => state.searchInfoReducer).searchInfo;
 
+  const {t} = useTranslation();
   const filterTickets = tickets_ => {
     let res = [];
     if (searchInfo !== null) {
@@ -98,33 +100,39 @@ export const SearchScreen = () => {
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.mb20}>
-          <Text style={styles.subtitle}>Categories</Text>
+          <Text style={styles.subtitle}>{t('categories')}</Text>
           <View style={styles.categoryContainer}>
             {selectedTag !== 'collections' && (
               <TouchableOpacity
                 style={styles.categoryItem}
                 onPress={() => setSelectedTag('collections')}>
-                <Text style={styles.categoryTitle}>Collections</Text>
+                <Text style={styles.categoryTitle}>{t('collections')}</Text>
               </TouchableOpacity>
             )}
             {selectedTag !== 'events' && (
               <TouchableOpacity
                 style={styles.categoryItem}
                 onPress={() => setSelectedTag('events')}>
-                <Text style={styles.categoryTitle}>Events</Text>
+                <Text style={styles.categoryTitle}>{t('events')}</Text>
               </TouchableOpacity>
             )}
             {selectedTag !== 'tickets' && (
               <TouchableOpacity
                 style={styles.categoryItem}
                 onPress={() => setSelectedTag('tickets')}>
-                <Text style={styles.categoryTitle}>Tickets</Text>
+                <Text style={styles.categoryTitle}>{t('tickets')}</Text>
               </TouchableOpacity>
             )}
           </View>
         </View>
         <View style={styles.mb20}>
-          <Text style={styles.subtitle}>{selectedTag}</Text>
+          <Text style={styles.subtitle}>
+            {selectedTag == 'collections'
+              ? t('collections')
+              : selectedTag == 'events'
+              ? t('events')
+              : t('tickets')}
+          </Text>
           {selectedTag === 'collections' && (
             <View style={styles.resultContainer}>
               {colLoading && <Loading />}

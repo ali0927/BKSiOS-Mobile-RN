@@ -117,12 +117,12 @@ export default function MainTabs() {
               tabBarLabel: t('search'),
               headerTitle: () => (
                 <View style={{alignItems: 'center', width: windowWidth - 40}}>
-                  <Text style={styles.headerTitle}>Search</Text>
+                  <Text style={styles.headerTitle}>{t('search')}</Text>
                   <View style={styles.searchContainer}>
                     <TextInput
                       onFocus={() => setFocusedItem(true)}
                       onBlur={() => setFocusedItem(false)}
-                      placeholder="Search collections, items or users"
+                      placeholder={t('search items, collections, and creators')}
                       placeholderTextColor=" rgba(255, 255, 255, 0.33)"
                       style={focusedItem ? styles.inputOnFocus : styles.input}
                       value={searchValue}
@@ -146,7 +146,7 @@ export default function MainTabs() {
               tabBarLabel: t('explore'),
               headerTitle: () => (
                 <View style={{alignItems: 'center'}}>
-                  <Text style={styles.headerTitle}>Explore</Text>
+                  <Text style={styles.headerTitle}>{t('explore')}</Text>
                   <View style={styles.searchContainer}>
                     <TextInput
                       onFocus={() => setFocusedItem(true)}
