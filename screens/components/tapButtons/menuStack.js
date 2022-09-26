@@ -27,6 +27,7 @@ const MenuStack = createNativeStackNavigator();
 const THEME_COLOR = '#14142f';
 
 const FilterModal = ({toggleModal}) => {
+  const {t} = useTranslation();
   const [isFilter, setIsFiilter] = useState(false);
   const [checked, setChecked] = useState({
     listings: true,
@@ -39,29 +40,40 @@ const FilterModal = ({toggleModal}) => {
   });
 
   const checkList = [
-    {id: 0, title: 'listings'},
-    {id: 1, title: 'purchases'},
-    {id: 2, title: 'sales'},
-    {id: 3, title: 'transfers'},
-    {id: 4, title: 'bids'},
-    {id: 5, title: 'likes'},
-    {id: 6, title: 'follows'},
+    {id: 0, title: t('listings'), label: 'listings'},
+    {id: 1, title: t('purchases'), label: 'purchases'},
+    {id: 2, title: t('sales'), label: 'sales'},
+    {id: 3, title: t('transfers'), label: 'transfers'},
+    {id: 4, title: t('bids'), label: 'bids'},
+    {id: 5, title: t('likes'), label: 'likes'},
+    {id: 6, title: t('follows'), label: 'follows'},
   ];
   const handleChecked = item => {
-    if (item === 0) {
-      setChecked({...checked, listings: !checked.listings});
-    } else if (item === 1) {
-      setChecked({...checked, purchases: !checked.purchases});
-    } else if (item === 2) {
-      setChecked({...checked, sales: !checked.sales});
-    } else if (item === 3) {
-      setChecked({...checked, transfers: !checked.transfers});
-    } else if (item === 4) {
-      setChecked({...checked, bids: !checked.bids});
-    } else if (item === 5) {
-      setChecked({...checked, likes: !checked.likes});
-    } else if (item === 6) {
-      setChecked({...checked, follows: !checked.follows});
+    console.log('Click item::', item);
+    switch (item) {
+      case 0:
+        setChecked({...checked, listings: !checked.listings});
+        break;
+      case 1:
+        setChecked({...checked, purchases: !checked.purchases});
+        break;
+      case 2:
+        setChecked({...checked, sales: !checked.sales});
+        break;
+      case 3:
+        setChecked({...checked, transfers: !checked.transfers});
+        break;
+      case 4:
+        setChecked({...checked, bids: !checked.bids});
+        break;
+      case 5:
+        setChecked({...checked, likes: !checked.likes});
+        break;
+      case 6:
+        setChecked({...checked, follows: !checked.follows});
+        break;
+      default:
+        break;
     }
   };
   const handleApply = () => {
@@ -76,38 +88,39 @@ const FilterModal = ({toggleModal}) => {
     <View style={styles.modalContainer}>
       <View>
         <View style={styles.modalTitle}>
-          <Text style={styles.modalTitleText}>Filter</Text>
+          <Text style={styles.modalTitleText}>{t('filter')}</Text>
           <Text style={styles.modalClose} onPress={toggleModal}>
-            Close
+            {t('close')}
           </Text>
         </View>
         {checkList &&
-          checkList.map(item => (
-            <View key={item.id} style={styles.checkBoxContainer}>
+          checkList.map((item, i) => (
+            <TouchableOpacity
+              onPress={() => handleChecked(i)}
+              key={item.id}
+              style={styles.checkBoxContainer}>
               <CheckBox
                 label=""
-                value={checked[item.title]}
-                onChangeValue={() => handleChecked(item.id)}
+                value={checked[item.label]}
+                onChangeValue={() => console.log('SDAFAS')}
                 colorInactive={'#09091a'}
                 colorActive={'#6a4dfd'}
                 boxStyle={{
                   ...styles.checkBox,
-                  borderColor: checked[item.title] ? '#6a4dfd' : '#ffffff54',
+                  borderColor: checked[item.label] ? '#6a4dfd' : '#ffffff54',
                 }}
                 containerStyle={styles.checkBoxMark}
-                checkImage={checked[item.title] ? checkImg : blackImg}
+                checkImage={checked[item.label] ? checkImg : blackImg}
               />
-              <TouchableOpacity
-                onPress={() => handleChecked(item.id)}
-                style={{flex: 1}}>
+              <View style={{flex: 1}}>
                 <Text style={styles.checkBoxText}>{item.title}</Text>
-              </TouchableOpacity>
-            </View>
+              </View>
+            </TouchableOpacity>
           ))}
       </View>
       <View style={styles.applyButton}>
         <TouchableOpacity style={styles.button} onPress={() => handleApply()}>
-          <Text style={styles.text3}>Apply</Text>
+          <Text style={styles.text3}>{t('apply')}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -174,7 +187,7 @@ export const MenuStackScreen = () => {
               <TouchableOpacity onPress={() => navigation.navigate('MoreMain')}>
                 <Image source={arrowLeft} />
               </TouchableOpacity>
-              <Text style={styles.titleText}>Activity</Text>
+              <Text style={styles.titleText}>{t('activity')}</Text>
               <Modal
                 isVisible={isModalVisible}
                 backdropOpacity={0}
