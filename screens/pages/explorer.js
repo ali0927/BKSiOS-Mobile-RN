@@ -1,5 +1,6 @@
 import {useNavigation} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   Dimensions,
   Image,
@@ -38,6 +39,7 @@ export const ExplorerScreen = () => {
   const _userInfo = useSelector(state => state.userInfoReducer).userInfo;
   const searchInfo = useSelector(state => state.searchInfoReducer).searchInfo;
 
+  const {t} = useTranslation();
   const filterEvents = events_ => {
     let res = [];
     if (searchInfo !== null) {
@@ -175,14 +177,14 @@ export const ExplorerScreen = () => {
           <Text style={styles.name}>{item.name}</Text>
           <View style={styles.detailContainer}>
             <View style={styles.collectionContainer}>
-              <Text style={styles.info}>Collection</Text>
+              <Text style={styles.info}>{t('collection')}</Text>
               <View style={styles.collectionSub}>
                 <Image source={collectionAvatar} style={styles.avatar} />
                 <Text style={styles.owner}>{item.collection.name}</Text>
               </View>
             </View>
             <View>
-              <Text style={styles.info}>Creator</Text>
+              <Text style={styles.info}>{t('creator')}</Text>
               <View style={styles.creatorContainer}>
                 <Image source={creatorAvatar()} style={styles.avatar} />
                 <Text style={styles.owner}>{item.creator.name}</Text>
@@ -192,13 +194,15 @@ export const ExplorerScreen = () => {
           </View>
           {item.totoal_ticekts === item.buy_count && (
             <View>
-              <Text style={{color: 'brown', fontSize: 16}}>Sold out!</Text>
+              <Text style={{color: 'brown', fontSize: 16}}>
+                {t('sold out')}!
+              </Text>
             </View>
           )}
           <View style={styles.divider} />
           <View style={styles.footerContainer}>
             <View>
-              <Text style={styles.info}>Reserve Price</Text>
+              <Text style={styles.info}>{t('reserve price')}</Text>
               <Text style={styles.price}>
                 <Currency price={getEventPrice(item)} /> <CurrencySymbol />
               </Text>

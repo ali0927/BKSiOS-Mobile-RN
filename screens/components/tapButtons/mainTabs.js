@@ -151,7 +151,7 @@ export default function MainTabs() {
                     <TextInput
                       onFocus={() => setFocusedItem(true)}
                       onBlur={() => setFocusedItem(false)}
-                      placeholder="Search collections, items or users"
+                      placeholder={t('search items, collections, and creators')}
                       placeholderTextColor=" rgba(255, 255, 255, 0.33)"
                       style={focusedItem ? styles.inputOnFocus : styles.input}
                       value={searchValue}
