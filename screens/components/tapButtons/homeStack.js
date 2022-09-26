@@ -79,7 +79,7 @@ export const HomeStackScreen = () => {
         name="EventDetail"
         component={EventDetailsScreen}
         options={{
-          headerTitle: () => <Header title="Item" />,
+          headerTitle: () => <Header title={t('item')} />,
           headerBackVisible: false,
         }}
       />

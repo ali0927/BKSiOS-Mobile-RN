@@ -16,6 +16,7 @@ import {useNavigation} from '@react-navigation/core';
 import {ethers} from 'ethers';
 import Countdown from 'react-countdown';
 import DateObject from 'react-date-object';
+import {useTranslation} from 'react-i18next';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import Feather from 'react-native-vector-icons/Feather';
 import {WebView} from 'react-native-webview';
@@ -54,6 +55,7 @@ export const EventDetailsScreen = ({route}) => {
   const tempData = route.params.item;
 
   const navigation = useNavigation();
+  const {t} = useTranslation();
 
   const [isSold, setSold] = useState(false);
   const [addons, setAddons] = useState([]);
@@ -81,7 +83,9 @@ export const EventDetailsScreen = ({route}) => {
     setAddonModalVisible(!isAddonModalVisible);
   };
 
-  const CompletionList = () => <Text style={styles.text1}>Event Started</Text>;
+  const CompletionList = () => (
+    <Text style={styles.text1}>{t('event started')}</Text>
+  );
 
   const pad = (num, size = 2) => {
     const s = '000000000' + num;
@@ -509,27 +513,27 @@ export const EventDetailsScreen = ({route}) => {
 
           <View style={styles.infoContainer}>
             <View style={styles.halfWidth}>
-              <Text style={styles.text2}>Creator</Text>
+              <Text style={styles.text2}>{t('creator')}</Text>
               <View style={styles.rowCenter}>
                 <Text style={styles.infoText}>{tempData.creator.name}</Text>
                 <Image source={badgeMark} style={styles.badgeMark} />
               </View>
             </View>
             <View>
-              <Text style={styles.text2}>Location</Text>
+              <Text style={styles.text2}>{t('location')}</Text>
               <Text style={styles.infoText}>{tempData.location}</Text>
             </View>
           </View>
           <View style={styles.infoContainer}>
             <View style={styles.halfWidth}>
-              <Text style={styles.text2}>Date</Text>
+              <Text style={styles.text2}>{t('date')}</Text>
               <Text style={styles.infoText}>
                 {/* {new Date(tempData.date).toISOString().toString().split('T')[0]} */}
                 {dateString(tempData.date)}
               </Text>
             </View>
             <View>
-              <Text style={styles.text2}>Time</Text>
+              <Text style={styles.text2}>{t('time')}</Text>
               <Text style={styles.infoText}>
                 {timeString(new Date(tempData.date))}
                 {/* {new Date(tempData.date).toISOString().toString().split('T')[1]} */}
@@ -540,14 +544,14 @@ export const EventDetailsScreen = ({route}) => {
           <View style={styles.divider} />
           <View style={styles.infoContainer}>
             <View style={styles.halfWidth}>
-              <Text style={styles.text2}>Collection</Text>
+              <Text style={styles.text2}>{t('collection')}</Text>
               <View style={styles.rowCenter}>
                 <Image source={addonsImg} style={styles.avatarImg} />
                 <Text style={styles.infoText}>{collectionName}</Text>
               </View>
             </View>
             <View>
-              <Text style={styles.text2}>Addons</Text>
+              <Text style={styles.text2}>{t('addons')}</Text>
               {addons &&
                 addons.map(item => {
                   let addonImg;
@@ -599,17 +603,19 @@ export const EventDetailsScreen = ({route}) => {
                     </TouchableOpacity>
                   </View>
                   <View style={styles.modalRow}>
-                    <Text style={styles.modalSubtitle}>Name :</Text>
+                    <Text style={styles.modalSubtitle}>{t('name')} :</Text>
                     <Text style={styles.modalTxt}>{selectedAddon?.name}</Text>
                   </View>
                   <View style={styles.modalRow}>
-                    <Text style={styles.modalSubtitle}>Description :</Text>
+                    <Text style={styles.modalSubtitle}>
+                      {t('description')} :
+                    </Text>
                     <Text style={styles.modalTxt}>
                       {selectedAddon?.description}
                     </Text>
                   </View>
                   <View style={styles.modalRow}>
-                    <Text style={styles.modalSubtitle}>Price :</Text>
+                    <Text style={styles.modalSubtitle}>{t('price')} :</Text>
                     <Text style={styles.modalTxt}>
                       <Currency price={selectedAddon?.price} />{' '}
                       <CurrencySymbol />
@@ -623,7 +629,7 @@ export const EventDetailsScreen = ({route}) => {
           <View style={styles.eventCounter}>
             <View style={styles.rowCenter}>
               <Image source={clockImg} />
-              <Text style={styles.evStartTxt}>Event starts in</Text>
+              <Text style={styles.evStartTxt}>{t('event starts in')}</Text>
             </View>
             <View style={styles.counterContainer}>
               <EventCountDown date={new Date(tempData.date).toISOString()} />
@@ -632,7 +638,8 @@ export const EventDetailsScreen = ({route}) => {
           <View style={styles.divider} />
           <View style={styles.flexRow}>
             <Text style={styles.remainTickets}>
-              {tempData.total_tickets - tempData.buy_count} tickets left
+              {tempData.total_tickets - tempData.buy_count}{' '}
+              {t('ticket(s) left')}
             </Text>
             <Text style={styles.priceText}>
               <Currency price={tempData.price} /> <CurrencySymbol />
@@ -689,7 +696,7 @@ export const EventDetailsScreen = ({route}) => {
                 <Text style={styles.counterRightControl}>+</Text>
               </View>
               <View style={styles.soldButton}>
-                <Text style={styles.text3}>Sold out</Text>
+                <Text style={styles.text3}>{t('sold out')}</Text>
               </View>
             </View>
           ) : (
@@ -723,7 +730,7 @@ export const EventDetailsScreen = ({route}) => {
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => onClickBuyTicket()}>
-                <Text style={styles.text3}>Buy Ticket</Text>
+                <Text style={styles.text3}>{t('buy ticket')}</Text>
               </TouchableOpacity>
             </View>
           )}
