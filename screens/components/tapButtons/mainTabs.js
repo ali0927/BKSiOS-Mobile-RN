@@ -103,7 +103,7 @@ export default function MainTabs() {
             name="Home"
             component={HomeStackScreen}
             options={{
-              tabBarLabel: 'Home',
+              tabBarLabel: t('home'),
               tabBarIcon: status => (
                 <Image source={status.focused ? homeActImg : homeImg} />
               ),
@@ -114,7 +114,7 @@ export default function MainTabs() {
             name="Search"
             component={SearchScreen}
             options={{
-              tabBarLabel: 'Search',
+              tabBarLabel: t('search'),
               headerTitle: () => (
                 <View style={{alignItems: 'center', width: windowWidth - 40}}>
                   <Text style={styles.headerTitle}>Search</Text>
@@ -143,7 +143,7 @@ export default function MainTabs() {
             name="Explore"
             component={ExplorerScreen}
             options={{
-              tabBarLabel: 'Explore',
+              tabBarLabel: t('explore'),
               headerTitle: () => (
                 <View style={{alignItems: 'center'}}>
                   <Text style={styles.headerTitle}>Explore</Text>
@@ -172,7 +172,7 @@ export default function MainTabs() {
             name="News"
             component={NewsStackScreen}
             options={{
-              tabBarLabel: 'News',
+              tabBarLabel: t('news'),
               tabBarIcon: status => (
                 <Image source={status.focused ? newsActImg : newsImg} />
               ),
@@ -183,7 +183,7 @@ export default function MainTabs() {
             name="More"
             component={MenuStackScreen}
             options={{
-              tabBarLabel: 'More',
+              tabBarLabel: t('more'),
               tabBarIcon: status => (
                 <Image source={status.focused ? menuActImg : menuImg} />
               ),
