@@ -87,7 +87,7 @@ export const HomeStackScreen = () => {
         name="AuthorProfile"
         component={ProfileAuthorScreen}
         options={{
-          headerTitle: () => <Header title="Profile" />,
+          headerTitle: () => <Header title={t('profile')} />,
           headerBackVisible: false,
         }}
       />

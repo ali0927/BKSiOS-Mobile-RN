@@ -1,29 +1,31 @@
-import React, {useEffect} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Linking,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  Platform,
-} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
+import React, {useEffect} from 'react';
+import {useTranslation} from 'react-i18next';
+import {
+  Image,
+  Linking,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Toast from 'react-native-toast-message';
-import badgeMark from '../../assets/img/icons/verified.png';
-import telegramImg from '../../assets/img/icons/telegram.png';
-import globalImg from '../../assets/img/icons/globe.png';
-import mediumImg from '../../assets/img/icons/medium.png';
-import twitterImg from '../../assets/img/icons/twitter.png';
-import facebookImg from '../../assets/img/icons/facebook.png';
-import instagramImg from '../../assets/img/icons/instagram.png';
 import copyImg from '../../assets/img/icons/copy.png';
+import facebookImg from '../../assets/img/icons/facebook.png';
+import globalImg from '../../assets/img/icons/globe.png';
+import instagramImg from '../../assets/img/icons/instagram.png';
+import mediumImg from '../../assets/img/icons/medium.png';
+import telegramImg from '../../assets/img/icons/telegram.png';
+import twitterImg from '../../assets/img/icons/twitter.png';
+import badgeMark from '../../assets/img/icons/verified.png';
 import CollectionCarousel from '../components/homePage/collectionCarousel';
 import config from '../helper/config';
 
 export const ProfileAuthorScreen = ({route}) => {
   const collectionData = route.params.item;
+  const {t} = useTranslation();
 
   const copyToClipboard = key => {
     Toast.show({
@@ -82,7 +84,7 @@ export const ProfileAuthorScreen = ({route}) => {
             </View>
             <Text style={styles.idText}>{collectionData.category}</Text>
             <Text style={styles.description}>{collectionData.description}</Text>
-            <Text style={styles.subTitle}>Wallet</Text>
+            <Text style={styles.subTitle}>{t('wallet')}</Text>
             <View style={styles.clipboardDiv}>
               <Text style={styles.input} ellipsizeMode="tail" numberOfLines={1}>
                 {collectionData?.creator.wallet_address}
@@ -93,7 +95,7 @@ export const ProfileAuthorScreen = ({route}) => {
                 <Image source={copyImg} />
               </TouchableOpacity>
             </View>
-            <Text style={styles.subTitle}>Links</Text>
+            <Text style={styles.subTitle}>{t('links')}</Text>
             <View style={styles.socialDiv}>
               <TouchableOpacity
                 style={styles.socialImg}
@@ -142,17 +144,17 @@ export const ProfileAuthorScreen = ({route}) => {
                   {collectionData.creator.followers}
                 </Text>
                 <Text style={{...styles.description, marginTop: 0}}>
-                  followers
+                  {t('followers')}
                 </Text>
               </View>
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => console.log('FollowButton Clicked')}>
-                <Text style={styles.text3}>Follow</Text>
+                <Text style={styles.text3}>{t('follow')}</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.divider} />
-            <Text style={styles.text1}>Hot Collections</Text>
+            <Text style={styles.text1}>{t('hot collections')}</Text>
             <CollectionCarousel />
           </View>
         )}
