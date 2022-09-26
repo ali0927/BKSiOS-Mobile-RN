@@ -1,16 +1,17 @@
+import {t} from 'i18next';
 import React, {useEffect, useState} from 'react';
 import {
-  View,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
   ScrollView,
+  StyleSheet,
   Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
+import {useSelector} from 'react-redux';
 import {signup} from '../../helper/auth';
 import {validateEmail} from '../../utils';
-import {useSelector} from 'react-redux';
-import Toast from 'react-native-toast-message';
 
 export const SignUpScreen = ({navigation}) => {
   const [values, setValues] = useState({
@@ -102,7 +103,7 @@ export const SignUpScreen = ({navigation}) => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.inputContainer}>
-          <Text style={styles.subTitle}>Name</Text>
+          <Text style={styles.subTitle}>{t('name')}</Text>
           <TextInput
             onFocus={() => setFocusedItem('TextInput1')}
             onBlur={() => setFocusedItem('')}
@@ -114,13 +115,13 @@ export const SignUpScreen = ({navigation}) => {
             onChangeText={val => handleChange('name', val)}
           />
           {validations.name === 'has-empty' ? (
-            <Text style={styles.errorText}>Name required*</Text>
+            <Text style={styles.errorText}>{t('name required')}*</Text>
           ) : (
             <Text style={styles.errorText} />
           )}
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.subTitle}>Email</Text>
+          <Text style={styles.subTitle}>{t('email')}</Text>
           <TextInput
             onFocus={() => setFocusedItem('TextInput2')}
             onBlur={() => setFocusedItem('')}
@@ -132,18 +133,18 @@ export const SignUpScreen = ({navigation}) => {
             onChangeText={val => handleChange('email', val.toLowerCase())}
           />
           {validations.email === 'has-empty' ? (
-            <Text style={styles.errorText}>Email required*</Text>
+            <Text style={styles.errorText}>{t('email required')}*</Text>
           ) : (
             <Text style={styles.errorText} />
           )}
           {validations.email === 'has-danger' ? (
-            <Text style={styles.errorText}>Input Correct Format</Text>
+            <Text style={styles.errorText}>{t('input correct format')}</Text>
           ) : (
             <Text style={styles.errorText} />
           )}
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.subTitle}>Password</Text>
+          <Text style={styles.subTitle}>{t('password')}</Text>
           <TextInput
             onFocus={() => setFocusedItem('TextInput3')}
             onBlur={() => setFocusedItem('')}
@@ -156,13 +157,13 @@ export const SignUpScreen = ({navigation}) => {
             onChangeText={val => handleChange('password', val)}
           />
           {validations.password === 'has-empty' ? (
-            <Text style={styles.errorText}>Password required*</Text>
+            <Text style={styles.errorText}>{t('password required')}*</Text>
           ) : (
             <Text style={styles.errorText} />
           )}
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.subTitle}>Confirm Password</Text>
+          <Text style={styles.subTitle}>{t('confirm password')}</Text>
           <TextInput
             onFocus={() => setFocusedItem('TextInput4')}
             onBlur={() => setFocusedItem('')}
@@ -175,24 +176,26 @@ export const SignUpScreen = ({navigation}) => {
             onChangeText={val => handleChange('confirmPwd', val)}
           />
           {validations.confirmPwd === 'has-empty' ? (
-            <Text style={styles.errorText}>Password doesn't match</Text>
+            <Text style={styles.errorText}>
+              {t('confirm password does not match')}
+            </Text>
           ) : (
             <Text style={styles.errorText} />
           )}
         </View>
         <TouchableOpacity style={styles.button} onPress={() => signUp()}>
-          <Text style={styles.text3}>Sign Up</Text>
+          <Text style={styles.text3}>{t('sign up')}</Text>
         </TouchableOpacity>
         <View style={styles.askContainer}>
           <View style={styles.partLine} />
-          <Text style={styles.text1}>Already have an account?</Text>
+          <Text style={styles.text1}>{t('already have an account?')}</Text>
           <View style={styles.partLine} />
         </View>
         <TouchableOpacity style={styles.button1}>
           <Text
             style={styles.text3}
             onPress={() => navigation.navigate('SignIn')}>
-            Sign in
+            {t('sign in')}
           </Text>
         </TouchableOpacity>
       </ScrollView>

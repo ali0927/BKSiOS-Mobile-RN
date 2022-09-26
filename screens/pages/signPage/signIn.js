@@ -127,7 +127,7 @@ export const SignInScreen = ({navigation}) => {
         <Text
           style={styles.text2}
           onPress={() => navigation.navigate('ForgetPassword')}>
-          {t('forgot password?')}
+          {t('forgot password')}?
         </Text>
         <View style={styles.askContainer}>
           <View style={styles.partLine} />

@@ -1,15 +1,16 @@
-import React from 'react';
 import {useNavigation} from '@react-navigation/core';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Image, Text, TouchableOpacity, View, StyleSheet} from 'react-native';
+import React from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import arrowLeft from '../../../assets/img/icons/arrow-left.png';
 import logoImg from '../../../assets/img/icons/logo.png';
+import {CollectionScreen} from '../../pages/collection';
 import {EventDetailsScreen} from '../../pages/eventDetails';
 import {HomeScreen} from '../../pages/home';
 import {ProfileAuthorScreen} from '../../pages/profileAuthor';
-import {CollectionScreen} from '../../pages/collection';
 import {ForgetPasswordScreen} from '../../pages/signPage/ForgetPassword';
 // import {PrivacyScreen} from '../../pages/signPage/privacy';
+import {useTranslation} from 'react-i18next';
 import {SignInScreen} from '../../pages/signPage/signIn';
 import {SignUpScreen} from '../../pages/signPage/signUp';
 
@@ -17,6 +18,7 @@ const HomeStack = createNativeStackNavigator();
 
 export const HomeStackScreen = () => {
   const navigation = useNavigation();
+  const {t} = useTranslation();
   const Header = ({title}) => {
     return (
       <View style={styles.headerContainer}>
@@ -41,7 +43,7 @@ export const HomeStackScreen = () => {
         name="SignIn"
         component={SignInScreen}
         options={{
-          headerTitle: () => <Header title="Sign In" />,
+          headerTitle: () => <Header title={t('sign in')} />,
           headerBackVisible: false,
         }}
       />
@@ -49,7 +51,7 @@ export const HomeStackScreen = () => {
         name="SignUp"
         component={SignUpScreen}
         options={{
-          headerTitle: () => <Header title="Sign Up" />,
+          headerTitle: () => <Header title={t('sign up')} />,
           headerBackVisible: false,
         }}
       />
@@ -57,7 +59,7 @@ export const HomeStackScreen = () => {
         name="ForgetPassword"
         component={ForgetPasswordScreen}
         options={{
-          headerTitle: () => <Header title="Forgot Password" />,
+          headerTitle: () => <Header title={t('forgot password')} />,
           headerBackVisible: false,
         }}
       />

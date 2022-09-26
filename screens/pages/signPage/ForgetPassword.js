@@ -1,16 +1,18 @@
 import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
-  View,
-  TextInput,
   StyleSheet,
-  TouchableOpacity,
   Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import {forgetPassword} from '../../helper/auth';
 import {validateEmail} from '../../utils';
-import Toast from 'react-native-toast-message';
 
 export const ForgetPasswordScreen = () => {
+  const {t} = useTranslation();
   const [values, setValues] = useState({
     email: '',
   });
@@ -69,7 +71,7 @@ export const ForgetPasswordScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text style={styles.subTitle}>Email</Text>
+        <Text style={styles.subTitle}>{t('email')}</Text>
         <TextInput
           onFocus={() => setFocusedItem('TextInput1')}
           onBlur={() => setFocusedItem('')}
@@ -81,18 +83,18 @@ export const ForgetPasswordScreen = () => {
           onChangeText={val => handleChange('email', val.toLowerCase())}
         />
         {validations.email === 'has-empty' ? (
-          <Text style={styles.errorText}>Email required</Text>
+          <Text style={styles.errorText}>{t('email required')}</Text>
         ) : (
           <Text style={styles.errorText} />
         )}
         {validations.email === 'has-danger' ? (
-          <Text style={styles.errorText}>Input Correct Format</Text>
+          <Text style={styles.errorText}>{t('input correct format')}</Text>
         ) : (
           <Text style={styles.errorText} />
         )}
       </View>
       <TouchableOpacity style={styles.button} onPress={() => send()}>
-        <Text style={styles.text3}>Submit</Text>
+        <Text style={styles.text3}>{t('submit')}</Text>
       </TouchableOpacity>
     </View>
   );
