@@ -207,7 +207,7 @@ export const MenuStackScreen = () => {
         name="Liked"
         component={LikedScreen}
         options={{
-          headerTitle: () => <Header title="Liked" />,
+          headerTitle: () => <Header title={t('liked')} />,
           headerBackVisible: false,
         }}
       />
