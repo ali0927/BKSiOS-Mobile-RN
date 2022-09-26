@@ -223,7 +223,7 @@ export const MenuStackScreen = () => {
         name="About"
         component={AboutScreen}
         options={{
-          headerTitle: () => <Header title="About" />,
+          headerTitle: () => <Header title={t('about.title')} />,
           headerBackVisible: false,
         }}
       />

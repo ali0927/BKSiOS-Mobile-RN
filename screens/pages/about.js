@@ -1,49 +1,39 @@
 import React from 'react';
+import {useTranslation} from 'react-i18next';
 import {
+  Dimensions,
+  Image,
+  Linking,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Image,
-  ScrollView,
-  Linking,
-  Dimensions,
 } from 'react-native';
+import facebookImg from '../../assets/img/icons/facebook.png';
+import globalImg from '../../assets/img/icons/globe.png';
+import instagramImg from '../../assets/img/icons/instagram.png';
 import logoImg from '../../assets/img/icons/logo.png';
+import mediumImg from '../../assets/img/icons/medium.png';
 import backImg from '../../assets/img/icons/start-back.png';
 import telegramImg from '../../assets/img/icons/telegram.png';
-import globalImg from '../../assets/img/icons/globe.png';
-import mediumImg from '../../assets/img/icons/medium.png';
 import twitterImg from '../../assets/img/icons/twitter.png';
-import facebookImg from '../../assets/img/icons/facebook.png';
-import instagramImg from '../../assets/img/icons/instagram.png';
 
 const THEME_COLOR = '#14142f';
 const deviceWidth = Dimensions.get('window').width;
 
 export const AboutScreen = () => {
+  const {t} = useTranslation();
   return (
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.mainContainer}>
           <Image source={logoImg} style={styles.logoImg} />
           <Text style={styles.text1}>BACKSTAGE</Text>
-          <Text style={styles.text2}>
-            Backstage is powering the crypto revolution in the events industry.
-            Through the BKS token and our blockchain ecosystem, Backstage aims
-            to solve the current challenges facing the events and entertainment
-            sectors.
-          </Text>
-          <Text style={styles.text2}>
-            From financing and payments to NFT ticketing and marketplaces,
-            Backstage $BKS will take the events industry toward a more
-            sustainable, profitable and fair future. Backstage has a very strong
-            and open community and everyone can join and contribute to the
-            platform's development by purchasing tokens and helping fund the
-            entertainment industry.
-          </Text>
+          <Text style={styles.text2}>{t('about.text1')}</Text>
+          <Text style={styles.text2}>{t('about.text2')}</Text>
           <View style={styles.divider} />
-          <Text style={styles.followText}>Follow Us</Text>
+          <Text style={styles.followText}>{t('follow us')}</Text>
           <View style={styles.socialDiv}>
             <TouchableOpacity
               style={styles.socialImg}
@@ -160,7 +150,7 @@ const styles = StyleSheet.create({
   backImage: {
     position: 'absolute',
     bottom: 0,
-    zIndex: 0,    
+    zIndex: 0,
     width: deviceWidth,
   },
   overlay: {
