@@ -552,7 +552,10 @@ export const ProfileScreen = () => {
             </Text>
             <TouchableOpacity
               style={styles.copyImg}
-              onPress={() => copyToClipboard('wallet')}>
+              onPress={() => {
+                currentUser?.wallet_address !== null &&
+                  copyToClipboard('wallet');
+              }}>
               <Image source={copyImg} />
             </TouchableOpacity>
           </View>
