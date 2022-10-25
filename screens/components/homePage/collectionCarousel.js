@@ -145,7 +145,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.66)',
   },
   collectionName: {
-    width: '80%',
     textAlign: 'center',
     fontSize: 16,
     color: '#fff',
