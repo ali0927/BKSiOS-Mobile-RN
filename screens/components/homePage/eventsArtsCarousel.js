@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import Carousel from 'react-native-snap-carousel';
 import {useSelector} from 'react-redux';
 import likeBlueImg from '../../../assets/img/icons/like-fill.png';
@@ -42,12 +43,13 @@ const EventsArtsCarousel = () => {
       <TouchableOpacity
         onPress={() => navigation.navigate('EventDetail', {item: item})}
         style={styles.cardContainer}>
-        <Image
+        <FastImage
           source={{
             uri:
               config.API_BASE_URL +
               '/api/upload/get_file?path=' +
               item.picture_small,
+            priority: FastImage.priority.normal,
           }}
           style={styles.img}
         />
