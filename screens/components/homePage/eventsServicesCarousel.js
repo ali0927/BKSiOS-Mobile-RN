@@ -15,7 +15,7 @@ import {useSelector} from 'react-redux';
 import likeBlueImg from '../../../assets/img/icons/like-fill.png';
 import likeImg from '../../../assets/img/icons/liked-white.png';
 import config from '../../helper/config';
-import {getLatestEventCards, updateEventLike} from '../../helper/event';
+import {getAllEventCards, updateEventLike} from '../../helper/event';
 import {getLikesNumber} from '../../utils';
 import Currency from '../currency/Currency';
 import CurrencySymbol from '../currency/CurrencySymbol';
@@ -153,12 +153,16 @@ const EventsServicesCarousel = () => {
   };
 
   useEffect(() => {
-    getLatestEventCards().then(res => {
+    getAllEventCards().then(res => {
       if (res.success) {
+        console.log(res.eventcards);
+        let temp = [];
+        temp = res.eventcards.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
         setLatestEvents(
-          res.eventcards.filter(
-            eventcard => eventcard.category === 'Category3',
-          ),
+          temp.filter(eventcard => eventcard.category === 'Category3'),
         );
       }
     });
