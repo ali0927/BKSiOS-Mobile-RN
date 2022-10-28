@@ -18,6 +18,7 @@ import likeImg from '../../assets/img/icons/liked-white.png';
 import badgeMark from '../../assets/img/icons/verified.png';
 import Currency from '../components/currency/Currency';
 import CurrencySymbol from '../components/currency/CurrencySymbol';
+import {EventCard} from '../components/eventCard';
 import {Loading} from '../components/loading';
 import config from '../helper/config';
 import {
@@ -134,47 +135,9 @@ export const ExplorerScreen = () => {
             style={styles.img}
             resizeMode="cover"
           />
-          {/* {isVideoFile(item.picture_large) ? (
-            <View>
-              <Video
-                source={{
-                  uri:
-                    config.API_BASE_URL +
-                    '/api/upload/get_file?path=' +
-                    item.picture_large,
-                }}
-                autoPlay
-                playInBackground
-                repeat
-                muted
-                style={{width: 'auto', height: '100%'}}
-                ref={ref => {
-                  this.player = ref;
-                }}>
-                {/* <source
-                    src={`${config.API_BASE_URL}/api/upload/get_file?path=${eventCard.picture_large}`}
-                    type="video/mp4"
-                  /> //
-                Your browser does not support the video tag.
-              </Video>
-            </View>
-          ) : (
-            <View>
-              <Image
-                source={{
-                  uri:
-                    config.API_BASE_URL +
-                    '/api/upload/get_file?path=' +
-                    item.picture_large,
-                }}
-                style={styles.img}
-                resizeMode="cover"
-              />
-            </View>
-          )} */}
         </View>
         <View style={styles.cardMeta}>
-          <Text style={styles.name}>{item.name}</Text>
+          <Text style={styles.name}>{item.name}sfd</Text>
           <View style={styles.detailContainer}>
             <View style={styles.collectionContainer}>
               <Text style={styles.info}>{t('collection')}</Text>
@@ -231,7 +194,14 @@ export const ExplorerScreen = () => {
       <View style={styles.eventContainer}>
         {loading && <Loading />}
         {events.map((item, index) => (
-          <Card item={item} index={index} key={item.id} />
+          <EventCard
+            userInfo={userInfo}
+            item={item}
+            index={index}
+            onClickLike={onClickLike}
+            key={'exc' + index}
+          />
+          // <Card item={item} index={index} key={item.id} />
         ))}
       </View>
     </ScrollView>
