@@ -1,8 +1,13 @@
+import {useNavigation} from '@react-navigation/core';
 import axios from 'axios';
+import {ethers} from 'ethers';
 import React, {useEffect, useState} from 'react';
+import Countdown from 'react-countdown';
+import DateObject from 'react-date-object';
+import {useTranslation} from 'react-i18next';
 import {
-  ActivityIndicator,
   Image,
+  Linking,
   Platform,
   ScrollView,
   StyleSheet,
@@ -11,23 +16,19 @@ import {
   View,
 } from 'react-native';
 import Modal from 'react-native-modal';
-// import {eventData} from '../constant/eventData';
-import {useNavigation} from '@react-navigation/core';
-import {ethers} from 'ethers';
-import Countdown from 'react-countdown';
-import DateObject from 'react-date-object';
-import {useTranslation} from 'react-i18next';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
-import Feather from 'react-native-vector-icons/Feather';
-import {WebView} from 'react-native-webview';
 import {useSelector} from 'react-redux';
-import addonsImg from '../../assets/img/avatars/avatar5.jpg';
+import bitkeepImg from '../../assets/img/bitkeep.png';
+import creditImg from '../../assets/img/credit-card.png';
 import clockImg from '../../assets/img/icons/clock.png';
 import likeImg from '../../assets/img/icons/like-empty.png';
 import likeBlueImg from '../../assets/img/icons/like-fill.png';
 import badgeMark from '../../assets/img/icons/verified.png';
+import bksImg from '../../assets/img/logo-without-text.png';
+import metamaskImg from '../../assets/img/metamask-white.png';
 import Currency from '../components/currency/Currency';
 import CurrencySymbol from '../components/currency/CurrencySymbol';
+import {AddonModal} from '../components/modals/addonModal';
 import ParamModal from '../components/modals/prams';
 import config from '../helper/config';
 import {
@@ -50,6 +51,7 @@ import {
 export const EventDetailsScreen = ({route}) => {
   const [userInfo, setUserInfo] = useState();
   const _userInfo = useSelector(state => state.userInfoReducer).userInfo;
+  const country = useSelector(state => state.locationInfoReducer).locationInfo;
 
   const id = route.params.item.id;
   const tempData = route.params.item;
@@ -62,20 +64,18 @@ export const EventDetailsScreen = ({route}) => {
   const [addonPrice, setAddonPrice] = useState(0);
   const [collectionName, setCollectionName] = useState();
   const [latestEvents, setLatestEvents] = useState([]);
-  // const [currentEvent, setCurrentEvent] = useState(null);
   const [isAddonModalVisible, setAddonModalVisible] = useState(false);
   const [selectedAddon, setSelectedAddon] = useState();
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [payModalVisible, setPayModalVisible] = useState(false);
   const [eventCard, setEventCard] = useState(false);
   const [ticketAmount, setTicketAmount] = useState(1);
   const [wallet, setWallet] = useState('');
-  const [showGateway, setShowGateway] = useState(false);
   const [showCreditModal, setShowCreditModal] = useState(false);
-  const [prog, setProg] = useState(false);
-  const [progClr, setProgClr] = useState('#000');
+  const [collectionPicture, setCollectionPicture] = useState('');
+  // Credit card
 
   const toggleModal = () => {
-    setModalVisible(!isModalVisible);
+    setPayModalVisible(!payModalVisible);
   };
 
   const toggleAddonModal = item => {
@@ -109,46 +109,20 @@ export const EventDetailsScreen = ({route}) => {
     return <Countdown date={d} renderer={renderer} />;
   };
 
-  const gotoPaypal = () => {
-    setModalVisible(false);
-    setTimeout(() => {
-      setShowGateway(true);
-    }, 500);
-  };
-
-  const gotoCredit = () => {
-    setModalVisible(false);
-    setTimeout(() => {
-      setShowCreditModal(true);
-    }, 500);
-  };
-
-  const createOrder = (data, actions) => {
-    return actions.order.create({
-      purchase_units: [
-        {
-          amount: {
-            value: getEventPrice(eventCard) * ticketAmount,
-            currency_code: 'EUR',
-          },
-        },
-      ],
-    });
-  };
-  const onApprove = (data, actions) => {
-    const orderid = data.orderID;
-    handleBuyTicket(orderid, 'paypal', 'Paypal');
-  };
-
   const handleBuyTicket = (orderid, _wallet, _chain) => {
     const param = {
       wallet_address: _wallet,
       blockchain: _chain,
       eventcard: eventCard.id,
-      price: getEventPrice(eventCard),
+      collection: eventCard.collection.id,
+      price: getEventPrice(eventCard) * Number(ticketAmount),
       pay_order_id: orderid,
       count: ticketAmount.toString(),
+      buyerId: userInfo?.user.id,
+      other_website: 'other_website',
     };
+
+    console.log('Param: ', param);
     buyTicket(param)
       .then(res => {
         if (res.success) {
@@ -156,14 +130,13 @@ export const EventDetailsScreen = ({route}) => {
             type: 'success',
             text1: 'You bought the ticket!',
           });
-          setModalVisible(false);
-          // handleBought();
+          setPayModalVisible(false);
         } else {
           Toast.show({
             type: 'error',
             text1: 'Failed!',
           });
-          setModalVisible(false);
+          setPayModalVisible(false);
         }
       })
       .catch(error => {
@@ -171,7 +144,7 @@ export const EventDetailsScreen = ({route}) => {
           type: 'error',
           text1: 'Failed!',
         });
-        setModalVisible(false);
+        setPayModalVisible(false);
       });
   };
 
@@ -199,9 +172,7 @@ export const EventDetailsScreen = ({route}) => {
         text1: 'Please wait ... It might takes some time',
       });
       try {
-        // console.log('Provider', provider);
         const account = await provider.getSigner().getAddress();
-        // console.log('Provider Account', account);
         const BUSD = new ethers.Contract(
           chainId === 97
             ? '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee'
@@ -218,7 +189,6 @@ export const EventDetailsScreen = ({route}) => {
         );
         const rate = await getEurRate();
         const price = getEventPrice(eventCard) * ticketAmount * rate;
-        // console.log(price);
         const ETH = ethers.BigNumber.from('1000000000000000000');
         const totalWei = await BUSD.balanceOf(account);
         const totalBUSD =
@@ -226,7 +196,6 @@ export const EventDetailsScreen = ({route}) => {
             .mul(ethers.BigNumber.from(100))
             .div(ETH)
             .toNumber() / 100;
-        // console.log('Total Amount', totalBUSD);
         if (totalBUSD < price) {
           Toast.show({
             type: 'error',
@@ -238,7 +207,6 @@ export const EventDetailsScreen = ({route}) => {
             .div(ethers.BigNumber.from(100));
           let txn = await BUSD.approve(BUSDPayment_testnet, amount);
           await txn.wait();
-          // console.log(txn.hash);
           const payees =
             eventCard.payees === ''
               ? []
@@ -266,7 +234,6 @@ export const EventDetailsScreen = ({route}) => {
         });
       }
     }
-    // console.log('Buy with BUSD');
   };
 
   const buyWithBUSD = async _provide => {
@@ -286,55 +253,27 @@ export const EventDetailsScreen = ({route}) => {
     }
 
     const accounts = await provide.request({method: 'eth_accounts'});
-    // console.log('Accounts', accounts);
     if (accounts.length === 0) {
       await provide.request({method: 'eth_requestAccounts'});
     }
     buyInBUSD(provide);
   };
 
-  const PaypalContent = `
-    <p>This is Paypal Button Content</p>
-    <div>
-      <p>Buttons</p>
-    </div>
-    <PayPalScriptProvider
-      options={{
-        'client-id':
-          'AffFVjpeVWCzGzYRB3hs1btcwdt1R0adzgVROBak5Fn0hClbBVFea-DznT-WXjcH1h1qjrkqKvPQ6ia-',
-        currency: 'EUR',
-      }}>
-      <div>
-        <PayPalButtons
-          style={styles.paypalStyle}
-          createOrder={createOrder}
-          onApprove={onApprove}
-        />
-      </div>
-    </PayPalScriptProvider>
-    `;
+  const butWithBKSWallet = () => {
+    let totalBUSD = eventCard.price * ticketAmount;
 
-  const _onApprove = async (data, actions) => {
-    let order = await actions.order.capture();
-    // console.log('Payment Order', order);
-    window.ReactNativeWebView &&
-      window.ReactNativeWebView.postMessage(JSON.stringify(order));
-    return order;
-  };
+    let urlStr = config.WALLET_SITE_URL + '/login-buyticket?';
+    urlStr = urlStr + 'name=' + eventCard.name;
+    urlStr = urlStr + '&description=' + eventCard.description;
+    urlStr = urlStr + '&creator=' + eventCard.creator.name;
+    urlStr = urlStr + '&location=' + eventCard.location;
+    urlStr = urlStr + '&wallet_address=' + eventCard.owner_wallet;
+    urlStr = urlStr + '&price=' + eventCard.price;
+    urlStr = urlStr + '&buy_amount=' + ticketAmount;
+    urlStr = urlStr + '&total_price=' + totalBUSD;
 
-  const _onError = err => {
-    console.log('Payment Error', err);
-    let errObj = {
-      err: err,
-      status: 'FAILED',
-    };
-    window.ReactNativeWebView &&
-      window.ReactNativeWebView.postMessage(JSON.stringify(errObj));
-  };
-  const onMessage = e => {
-    let data = e.nativeEvent.data;
-    setShowGateway(false);
-    console.log('OnMessage Func', data);
+    console.log('URLSTR', urlStr);
+    return urlStr;
   };
   const dateString = d => {
     var date = new DateObject({
@@ -390,11 +329,13 @@ export const EventDetailsScreen = ({route}) => {
   };
 
   const onClickBuyTicket = () => {
-    console.log('TempData;;;', tempData, tempData.date);
     const now = new Date().getTime() / 1000;
     const startTime = new Date(tempData.date).getTime() / 1000;
 
-    if (now > startTime || (startTime > now && startTime - now < 7200)) {
+    if (
+      (now > startTime || (startTime > now && startTime - now < 7200)) &&
+      (tempData.category === 'Category1' || tempData.category === 'Category3')
+    ) {
       Toast.show({
         type: 'error',
         text1: 'You can buy tickets before 2 hours past event started.',
@@ -427,12 +368,15 @@ export const EventDetailsScreen = ({route}) => {
       navigation.navigate('SignIn');
     }
   };
+
+  const buyWithParam = () => {
+    console.log('CREDIT');
+  };
   useEffect(() => {
-    setWallet(userInfo?.wallet_address);
+    setWallet(userInfo?.user.wallet_address);
     // setCurrentEvent(eventData.find(item => id === item.id));
 
     getEventCardById(id).then(res => {
-      // console.log('EventCardById', res);
       if (res.success) {
         setEventCard(res.eventcard);
         if (res.eventcard.total_tickets === res.eventcard.buy_count) {
@@ -441,12 +385,15 @@ export const EventDetailsScreen = ({route}) => {
         const _addons =
           res.eventcard.addons === '' ? [] : JSON.parse(res.eventcard.addons);
         setAddons(_addons);
+
         let _addonPrice = 0;
         _addons.forEach(addon => {
           _addonPrice += Number(addon.price);
         });
         setAddonPrice(_addonPrice);
         // console.log('Before setting colle.name', res.eventcard.collection);
+        setCollectionPicture(res.eventcard.collection.picture_small);
+        setCollectionName(res.eventcard.collection.name);
         getCollectionById(res.eventcard.collection).then(res => {
           if (res.success) {
             setCollectionName(res.collection.name);
@@ -490,6 +437,7 @@ export const EventDetailsScreen = ({route}) => {
                 tempData.picture_large,
             }}
             style={styles.eventImg}
+            resizeMode="stretch"
           />
           <View style={styles.flexRow}>
             <Text style={styles.name}>{tempData.name}</Text>
@@ -527,16 +475,12 @@ export const EventDetailsScreen = ({route}) => {
           <View style={styles.infoContainer}>
             <View style={styles.halfWidth}>
               <Text style={styles.text2}>{t('date')}</Text>
-              <Text style={styles.infoText}>
-                {/* {new Date(tempData.date).toISOString().toString().split('T')[0]} */}
-                {dateString(tempData.date)}
-              </Text>
+              <Text style={styles.infoText}>{dateString(tempData.date)}</Text>
             </View>
             <View>
               <Text style={styles.text2}>{t('time')}</Text>
               <Text style={styles.infoText}>
                 {timeString(new Date(tempData.date))}
-                {/* {new Date(tempData.date).toISOString().toString().split('T')[1]} */}
               </Text>
               <Text style={styles.infoText}></Text>
             </View>
@@ -546,85 +490,54 @@ export const EventDetailsScreen = ({route}) => {
             <View style={styles.halfWidth}>
               <Text style={styles.text2}>{t('collection')}</Text>
               <View style={styles.rowCenter}>
-                <Image source={addonsImg} style={styles.avatarImg} />
-                <Text style={styles.infoText}>{collectionName}</Text>
+                <Image
+                  source={{
+                    uri:
+                      config.API_BASE_URL +
+                      '/api/upload/get_file?path=' +
+                      collectionPicture,
+                  }}
+                  style={styles.avatarImg}
+                />
+                <Text style={{...styles.infoText, width: '80%'}}>
+                  {collectionName}
+                </Text>
               </View>
             </View>
-            <View>
+            <View style={{width: '50%'}}>
               <Text style={styles.text2}>{t('addons')}</Text>
-              {addons &&
-                addons.map(item => {
-                  let addonImg;
-                  switch (item.icon) {
-                    case '/img/avatars/avatar.jpg':
-                      addonImg = require('../../assets/img/avatars/avatar.jpg');
-                      break;
-                    case '/img/avatars/avatar1.jpg':
-                      addonImg = require('../../assets/img/avatars/avatar2.jpg');
-                      break;
-                    case '/img/avatars/avatar2.jpg':
-                      addonImg = require('../../assets/img/avatars/avatar2.jpg');
-                      break;
-                    case '/img/avatars/avatar3.jpg':
-                      addonImg = require('../../assets/img/avatars/avatar3.jpg');
-                      break;
-                    case '/img/avatars/avatar4.jpg':
-                      addonImg = require('../../assets/img/avatars/avatar4.jpg');
-                      break;
-                    case '/img/avatars/avatar5.jpg':
-                      addonImg = require('../../assets/img/avatars/avatar5.jpg');
-                      break;
-                    case '/img/avatars/avatar6.jpg':
-                      addonImg = require('../../assets/img/avatars/avatar6.jpg');
-                      break;
-                    case '/img/avatars/avatar7.jpg':
-                      addonImg = require('../../assets/img/avatars/avatar7.jpg');
-                  }
-                  return (
-                    <TouchableOpacity onPress={() => toggleAddonModal(item)}>
-                      <Image source={addonImg} style={styles.avatarImg} />
-                    </TouchableOpacity>
-                  );
-                })}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  width: '100%',
+                }}>
+                {addons.map((addon, i) => (
+                  <TouchableOpacity
+                    onPress={() => toggleAddonModal(addon)}
+                    key={'addon' + i}>
+                    <Image
+                      source={{uri: config.SITE_URL + addon.icon}}
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderWidth: 2,
+                        borderColor: 'rgba(255, 255, 255, 0.1)',
+                        borderRadius: 16,
+                        marginRight: 12,
+                        marginBottom: 10,
+                      }}
+                    />
+                  </TouchableOpacity>
+                ))}
+              </View>
             </View>
           </View>
-          <Modal
-            isVisible={isAddonModalVisible}
-            onBackdropPress={() => setAddonModalVisible(false)}>
-            <View style={styles.modalContainer}>
-              <View style={styles.modalTitleContainer}>
-                <View>
-                  <View style={styles.modalRow}>
-                    <Text style={styles.text3}>A D D O N</Text>
-                    <TouchableOpacity
-                      onPress={toggleAddonModal}
-                      style={{marginTop: -5}}>
-                      <Text style={styles.modalClose}>&times;</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.modalRow}>
-                    <Text style={styles.modalSubtitle}>{t('name')} :</Text>
-                    <Text style={styles.modalTxt}>{selectedAddon?.name}</Text>
-                  </View>
-                  <View style={styles.modalRow}>
-                    <Text style={styles.modalSubtitle}>
-                      {t('description')} :
-                    </Text>
-                    <Text style={styles.modalTxt}>
-                      {selectedAddon?.description}
-                    </Text>
-                  </View>
-                  <View style={styles.modalRow}>
-                    <Text style={styles.modalSubtitle}>{t('price')} :</Text>
-                    <Text style={styles.modalTxt}>
-                      <Currency price={selectedAddon?.price} />{' '}
-                      <CurrencySymbol />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </Modal>
+          <AddonModal
+            addon={selectedAddon}
+            modalVisible={isAddonModalVisible}
+            setModalVisible={setAddonModalVisible}
+          />
           <View style={styles.divider} />
           <View style={styles.eventCounter}>
             <View style={styles.rowCenter}>
@@ -646,48 +559,7 @@ export const EventDetailsScreen = ({route}) => {
             </Text>
           </View>
           <View style={styles.divider} />
-          {showGateway ? (
-            <Modal
-              isVisible={showGateway}
-              onBackdropPress={() => setShowGateway(false)}>
-              <View style={styles.webViewCon}>
-                <View style={styles.wbHead}>
-                  <TouchableOpacity
-                    style={{padding: 13}}
-                    onPress={() => setShowGateway(false)}>
-                    <Feather name={'x'} size={24} />
-                  </TouchableOpacity>
-                  <Text style={styles.paypalHeader}>Pay with PayPal</Text>
-                  <View style={{padding: 13, opacity: prog ? 1 : 0}}>
-                    <ActivityIndicator size={24} color={progClr} />
-                  </View>
-                </View>
-                <WebView
-                  source={{
-                    uri:
-                      'https://my-paypal.netlify.app/' +
-                      getEventPrice(eventCard) * ticketAmount,
-                  }}
-                  onLoadStart={() => {
-                    setProg(true);
-                    setProgClr('#000');
-                  }}
-                  onLoadProgress={() => {
-                    setProg(true);
-                    setProgClr('#00457c');
-                  }}
-                  onLoadEnd={() => {
-                    setProg(false);
-                  }}
-                  onLoad={() => {
-                    setProg(false);
-                  }}
-                  style={{flex: 1}}
-                  onMessage={onMessage}
-                />
-              </View>
-            </Modal>
-          ) : null}
+
           {tempData.total_tickets - tempData.buy_count === 0 ? (
             <View style={styles.buyContainer}>
               <View style={styles.rowCenter}>
@@ -696,7 +568,9 @@ export const EventDetailsScreen = ({route}) => {
                 <Text style={styles.counterRightControl}>+</Text>
               </View>
               <View style={styles.soldButton}>
-                <Text style={styles.text3}>{t('sold out')}</Text>
+                <Text style={{...styles.text3, width: '100%'}}>
+                  {t('sold out')}
+                </Text>
               </View>
             </View>
           ) : (
@@ -730,14 +604,16 @@ export const EventDetailsScreen = ({route}) => {
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => onClickBuyTicket()}>
-                <Text style={styles.text3}>{t('buy ticket')}</Text>
+                <Text style={{...styles.text3, width: '100%'}}>
+                  {t('buy ticket')}
+                </Text>
               </TouchableOpacity>
             </View>
           )}
 
           <Modal
-            isVisible={isModalVisible}
-            onBackdropPress={() => setModalVisible(false)}>
+            isVisible={payModalVisible}
+            onBackdropPress={() => setPayModalVisible(false)}>
             <View style={styles.modalContainer}>
               <View style={styles.modalTitleContainer}>
                 <Text style={styles.modalTitle}>Proceed to Pay</Text>
@@ -747,44 +623,61 @@ export const EventDetailsScreen = ({route}) => {
               </View>
               <TouchableOpacity
                 style={styles.payButton}
-                onPress={() => gotoCredit()}>
-                <Text style={styles.text3}>Buy With Credit Card</Text>
-              </TouchableOpacity>
-              {/* <TouchableOpacity
-                style={styles.payButton}
-                onPress={() => gotoPaypal()}>
+                onPress={() => {
+                  setShowCreditModal(true);
+                  setPayModalVisible(false);
+                }}>
                 <Image
-                  source={paypalImg}
-                  style={styles.metaImg}
-                  resizeMode="contain"
-                  height={30}
+                  source={creditImg}
+                  style={{width: 30, marginRight: 10}}
                 />
+                <Text style={styles.text3}>Credit Card</Text>
               </TouchableOpacity>
-              <Text style={styles.text4}>OR</Text>
-              <TouchableOpacity
-                style={styles.payButton}
-                // onPress={() => buyWithBUSD('Metamask')}>
-                // onPress={() => Linking.openURL('https://metamask.app.link/dapp/bkstage.io')}>
-                onPress={() => Linking.openURL('https://metamask.app.link/send/0x44E9b67e6beEcD5EFE8eE010a4e01D89A1C63993@56?value=1e19')}>
-                <Image source={metamaskImg} style={styles.metaImg} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.payButton}
-                // onPress={() => buyWithBUSD('Bitkeep')}>
-                onPress={() => Linking.openURL('https://link.trustwallet.com/send?asset=c714_tBUSD-BD1&address=0x4fabb145d64652a948d72533023f6e7a623c7c53&amount=1.4')}>
-                <Image
-                  source={bitkeepImg}
-                  style={styles.metaImg}
-                  resizeMode="contain"
-                  height={100}
-                />
-              </TouchableOpacity> */}
+              {country !== 'TR' && (
+                <>
+                  <Text style={styles.text4}>OR pay with BUSD</Text>
+                  <TouchableOpacity
+                    style={styles.payWallet}
+                    onPress={() => Linking.openURL(butWithBKSWallet())}>
+                    <Image
+                      source={bksImg}
+                      resizeMode="contain"
+                      style={{height: 30, width: 30, marginRight: 10}}
+                    />
+                    <Text style={styles.text3}>BKS wallet</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.payWallet}
+                    // onPress={() => Linking.openURL(butWithBKSWallet())}>
+                    onPress={() =>
+                      Linking.openURL(
+                        'https://metamask.app.link/send/0x55E9b67e6beEcD5EFE8eE010a4e01D89A1C63993@56?value=1e19',
+                      )
+                    }>
+                    <Image source={metamaskImg} />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.payWallet}
+                    onPress={() =>
+                      Linking.openURL(
+                        'https://link.trustwallet.com/send?asset=c714_tBUSD-BD1&address=0x4fabb145d64652a948d72533023f6e7a623c7c53&amount=1.4',
+                      )
+                    }>
+                    <Image
+                      source={bitkeepImg}
+                      resizeMode="contain"
+                      style={{height: 35, width: 150}}
+                    />
+                  </TouchableOpacity>
+                </>
+              )}
             </View>
           </Modal>
           <ParamModal
             eventCard={eventCard}
             showCreditModal={showCreditModal}
             setShowCreditModal={setShowCreditModal}
+            amount={ticketAmount}
           />
         </View>
       )}
@@ -985,37 +878,25 @@ const styles = StyleSheet.create({
     marginRight: 10,
     borderRadius: 16,
   },
-  input: {
-    width: 350,
-    height: 55,
-    backgroundColor: '#534f77',
-    padding: 8,
-    paddingLeft: 20,
-    color: 'white',
-    borderRadius: 14,
-    fontSize: 18,
-    fontWeight: '500',
-  },
   text3: {
     fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
-    fontSize: 16,
-    fontWeight: Platform.OS === 'ios' ? '700' : '500',
+    fontWeight: '700',
+    fontSize: 18,
     textAlign: 'center',
     textTransform: 'uppercase',
-    height: 40,
-    width: '100%',
     letterSpacing: 1.6,
+    fontFamily: 'SpaceGrotesk-Medium',
   },
   text4: {
     fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: Platform.OS === 'ios' ? '700' : '500',
     textAlign: 'center',
     textTransform: 'uppercase',
-    marginTop: 15,
-    marginBottom: -15,
+    marginTop: 20,
+    marginBottom: 10,
     width: '100%',
     letterSpacing: 1.6,
   },
@@ -1047,31 +928,22 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   modalRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '79%',
   },
-  modalSubtitle: {
+  subTitle: {
     fontFamily: 'SpaceGrotesk-Medium',
     textAlign: 'justify',
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
     marginVertical: 5,
-    width: 100,
   },
-  modalTxt: {
-    flex: 1,
-    fontFamily: 'SpaceGrotesk-Medium',
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-    marginVertical: 5,
-    marginLeft: 20,
-  },
+
   modalClose: {
     color: '#fff',
     width: 25,
@@ -1080,19 +952,28 @@ const styles = StyleSheet.create({
     fontSize: 26,
   },
   payButton: {
-    display: 'flex',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 0,
-    paddingTop: 15,
     textAlignVertical: 'center',
     height: 44,
     backgroundColor: '#6a4dfd',
     borderRadius: 4,
     width: '100%',
   },
-  metaImg: {
-    marginTop: -10,
+  payWallet: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 0,
+    textAlignVertical: 'center',
+    height: 44,
+    borderColor: '#555',
+    borderWidth: 1,
+    borderRadius: 4,
+    width: '100%',
+    marginBottom: 15,
   },
   soldButton: {
     flex: 1,

@@ -57,7 +57,7 @@ const getAllEventCards = () => {
 };
 
 const getEventPrice = eventCard => {
-  const addons = eventCard.addons === '' ? [] : JSON.parse(eventCard.addons);
+  const addons = eventCard.addons === '' ? [] : JSON.parse(eventCard?.addons);
   let addonPrice = 0;
   const len = addons.length;
   for (let i = 0; i < len; i++) {
@@ -157,33 +157,33 @@ const allTickets = data => {
   });
 };
 
-const userTickets = (data) => {
+const userTickets = data => {
   return new Promise((resolve, reject) => {
     api
-      .get("/api/event/eventcard_multi/user_tickets")
-      .then((response) => {
+      .get('/api/event/eventcard_multi/user_tickets')
+      .then(response => {
         resolve(response.data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
         reject(error);
       });
   });
 };
 
-const updateUserTickets = (data) => {
+const updateUserTickets = data => {
   return new Promise((resolve, reject) => {
     api
-      .post("/api/event/eventcard_multi/user_tickets", {
+      .post('/api/event/eventcard_multi/user_tickets', {
         id: data.id,
         tokenURL: data.tokenURL,
         ipfsURL: data.ipfsURL,
         is_minted: data.is_minted,
       })
-      .then((response) => {
+      .then(response => {
         resolve(response.data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
         reject(error);
       });
@@ -204,7 +204,6 @@ const updateUserTickets = (data) => {
 // };
 
 export {
-  // createCollection,
   getAllCollections,
   // getAllAddonIcons,
   getCollectionById,
