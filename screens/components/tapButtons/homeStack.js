@@ -19,10 +19,15 @@ const HomeStack = createNativeStackNavigator();
 export const HomeStackScreen = () => {
   const navigation = useNavigation();
   const {t} = useTranslation();
-  const Header = ({title}) => {
+  const Header = ({title, type = ''}) => {
     return (
       <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          onPress={() =>
+            type === 'eventDetail'
+              ? navigation.navigate('Explore')
+              : navigation.goBack()
+          }>
           <Image source={arrowLeft} />
         </TouchableOpacity>
         <Text style={styles.titleText}>{title}</Text>
@@ -79,7 +84,7 @@ export const HomeStackScreen = () => {
         name="EventDetail"
         component={EventDetailsScreen}
         options={{
-          headerTitle: () => <Header title={t('item')} />,
+          headerTitle: () => <Header title={t('item')} type="eventDetail" />,
           headerBackVisible: false,
         }}
       />
