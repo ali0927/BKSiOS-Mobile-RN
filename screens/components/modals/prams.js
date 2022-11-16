@@ -114,7 +114,7 @@ const ParamModal = ({
   };
 
   const buyWithParam = async () => {
-    checkValidation();
+    if (!checkValidation()) return;
     console.log(
       'Country',
       country,

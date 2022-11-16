@@ -651,7 +651,7 @@ export const EventDetailsScreen = ({route}) => {
                     // onPress={() => Linking.openURL(butWithBKSWallet())}>
                     onPress={() =>
                       Linking.openURL(
-                        'https://metamask.app.link/send/0x55E9b67e6beEcD5EFE8eE010a4e01D89A1C63993@56?value=1e19',
+                        'https://metamask.app.link/send/0x5247D66a62b3349e97b80E6bf7A3E4Bb0123ccA1@56?value=1e19',
                       )
                     }>
                     <Image source={metamaskImg} />
