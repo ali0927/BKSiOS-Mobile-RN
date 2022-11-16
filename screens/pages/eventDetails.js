@@ -689,7 +689,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#14142f',
-    overflow: 'hidden',
+    // overflow: 'hidden',
     padding: 20,
   },
   flexRow: {
