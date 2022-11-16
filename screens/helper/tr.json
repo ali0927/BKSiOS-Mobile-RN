@@ -1,5 +1,4 @@
 {
-  "A decentralized Ecosystem powering the events industry": "Etkinlik endüstrisine güç veren merkezi olmayan bir Ekosistem",
   "about": {
     "title": "Hakkında",
     "text1": "Sahne arkası, etkinlik endüstrisindeki kripto devrimine güç veriyor. BKS belirteci ve blok zinciri ekosistemimiz aracılığıyla Backstage, etkinlikler ve eğlence sektörlerinin karşı karşıya olduğu mevcut zorlukları çözmeyi amaçlıyor.",
@@ -252,12 +251,9 @@
   "wallet address": "Cuzdan adresi",
   "website": "web sitesi",
   "welcome": {
-    "text1": "DUNYANIN ETKINLIGINE,",
-    "text2": "AKILLI NFT BILET SISTEMINE",
-    "text3": "HOSGELDINIZ",
-    "textm1": "DUNYANIN ETKINLIGINE,",
-    "textm2": "AKILLI NFT BILET SISTEMINE",
-    "textm3": "HOSGELDINIZ"
+    "textm1": "Backstage.Global",
+    "textm2": "Etkinlikler ve Deneyim İçin",
+    "textm3": "Akıllı Biletler"
   },
   "wrong image size": "Yanlış Resim Boyutu",
   "You are in test mode": "test modundasın",

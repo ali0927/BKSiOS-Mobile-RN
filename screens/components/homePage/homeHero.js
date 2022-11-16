@@ -14,11 +14,6 @@ export const HomeHero = ({navigation}) => {
         <Text style={styles.homeTitle}>{t('welcome.textm2')}</Text>
         <Text style={styles.homeTitle}>{t('welcome.textm3')}</Text>
       </View>
-      <View style={styles.homeTitleContainer}>
-        <Text style={styles.homeDesc}>
-          {t('A decentralized Ecosystem powering the events industry')}
-        </Text>
-      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
@@ -55,15 +50,6 @@ const styles = StyleSheet.create({
     lineHeight: 28,
     fontWeight: '700',
     color: '#fff',
-  },
-  homeDesc: {
-    fontSize: 14,
-    lineHeight: 18,
-    fontWeight: '400',
-    color: 'rgba(255, 255, 255, 0.66)',
-    fontFamily: 'SpaceGrotesk-Medium',
-    maxWidth: 280,
-    textAlign: 'center',
   },
   buttonText: {
     color: '#fff',

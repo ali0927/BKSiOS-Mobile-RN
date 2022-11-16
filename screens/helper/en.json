@@ -1,5 +1,4 @@
 {
-  "A decentralized Ecosystem powering the events industry": "A decentralized Ecosystem powering the events industry",
   "about": {
     "title": "About",
     "text1": "Backstage is powering the crypto revolution in the events industry. Through the BKS token and our blockchain ecosystem, Backstage aims to  solve the current challenges facing the events and entertainment sectors.",
@@ -252,12 +251,9 @@
   "wallet address": "Wallet address",
   "website": "Website",
   "welcome": {
-    "text1": "Welcome to the Backstage",
-    "text2": "events & experience",
-    "text3": "NFT marketplace",
-    "textm1": "Welcome to the",
-    "textm2": "Backstage events & experience",
-    "textm3": "NFT marketplace"
+    "textm1": "Backstage.Global",
+    "textm2": "Smart Tickets",
+    "textm3": "For Events & Experience"
   },
   "wrong image size": "Wrong Image Size",
   "You are in test mode": "You are in test mode",
