@@ -23,6 +23,7 @@ import creditImg from '../../assets/img/credit-card.png';
 import clockImg from '../../assets/img/icons/clock.png';
 import likeImg from '../../assets/img/icons/like-empty.png';
 import likeBlueImg from '../../assets/img/icons/like-fill.png';
+import mapImg from '../../assets/img/icons/map.png';
 import badgeMark from '../../assets/img/icons/verified.png';
 import bksImg from '../../assets/img/logo-without-text.png';
 import metamaskImg from '../../assets/img/metamask-white.png';
@@ -67,6 +68,7 @@ export const EventDetailsScreen = ({route}) => {
   const [isAddonModalVisible, setAddonModalVisible] = useState(false);
   const [selectedAddon, setSelectedAddon] = useState();
   const [payModalVisible, setPayModalVisible] = useState(false);
+  const [mapModalVisible, setMapModalVisible] = useState(true);
   const [eventCard, setEventCard] = useState(false);
   const [ticketAmount, setTicketAmount] = useState(1);
   const [wallet, setWallet] = useState('');
@@ -504,7 +506,7 @@ export const EventDetailsScreen = ({route}) => {
                 </Text>
               </View>
             </View>
-            <View style={{width: '50%'}}>
+            <View style={styles.halfWidth}>
               <Text style={styles.text2}>{t('addons')}</Text>
               <View
                 style={{
@@ -533,6 +535,34 @@ export const EventDetailsScreen = ({route}) => {
               </View>
             </View>
           </View>
+          {eventCard.picture_floormap !== null && (
+            <>
+              <View style={styles.divider} />
+              <View style={styles.infoContainer}>
+                <View style={{...styles.rowCenter, ...styles.halfWidth}}>
+                  <Image
+                    source={mapImg}
+                    style={{width: 18, height: 18, marginRight: 10}}
+                  />
+                  <Text style={{...styles.text2, marginBottom: 0}}>
+                    {t('floor plan')}
+                  </Text>
+                </View>
+                <View style={styles.halfWidth}>
+                  <TouchableOpacity
+                    onPress={() => setMapModalVisible(true)}
+                    style={{
+                      borderColor: '#555',
+                      borderWidth: 2,
+                      padding: 5,
+                      borderRadius: 8,
+                    }}>
+                    <Text style={styles.text3}>View</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </>
+          )}
           <AddonModal
             addon={selectedAddon}
             modalVisible={isAddonModalVisible}
@@ -610,6 +640,25 @@ export const EventDetailsScreen = ({route}) => {
               </TouchableOpacity>
             </View>
           )}
+          <Modal
+            isVisible={mapModalVisible}
+            onBackdropPress={() => setMapModalVisible(false)}>
+            <View style={styles.modalContainer}>
+              {/* <View style={styles.modalTitleContainer}>
+                <TouchableOpacity onPress={() => setMapModalVisible(false)}>
+                  <Text style={styles.modalClose}>&times;</Text>
+                </TouchableOpacity>
+              </View> */}
+              <Image
+                source={{
+                  uri:
+                    config.API_BASE_URL +
+                    '/api/upload/get_file?path=' +
+                    eventCard.picture_floormap,
+                }}
+              />
+            </View>
+          </Modal>
 
           <Modal
             isVisible={payModalVisible}
