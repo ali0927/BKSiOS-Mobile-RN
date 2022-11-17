@@ -68,7 +68,7 @@ export const EventDetailsScreen = ({route}) => {
   const [isAddonModalVisible, setAddonModalVisible] = useState(false);
   const [selectedAddon, setSelectedAddon] = useState();
   const [payModalVisible, setPayModalVisible] = useState(false);
-  const [mapModalVisible, setMapModalVisible] = useState(true);
+  const [mapModalVisible, setMapModalVisible] = useState(false);
   const [eventCard, setEventCard] = useState(false);
   const [ticketAmount, setTicketAmount] = useState(1);
   const [wallet, setWallet] = useState('');
