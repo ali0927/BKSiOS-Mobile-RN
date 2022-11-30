@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import backImg from '../../assets/img/home/home-background.png';
-import BackstagersCarousel from '../components/homePage/backstagersCarousel';
 import CollectionCarousel from '../components/homePage/collectionCarousel';
 import EventsArtsCarousel from '../components/homePage/eventsArtsCarousel';
 import EventsCarousel from '../components/homePage/eventsCarousel';
@@ -64,10 +63,6 @@ export const HomeScreen = ({navigation}) => {
         <View>
           <Text style={styles.subtitle}>{t('latest services')}</Text>
           <EventsServicesCarousel navigation={navigation} />
-        </View>
-        <View>
-          <Text style={styles.subtitle}>{t('Top Backstagers')}</Text>
-          <BackstagersCarousel />
         </View>
       </ScrollView>
     </View>
