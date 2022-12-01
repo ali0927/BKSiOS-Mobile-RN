@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {
-  Text,
-  View,
   Dimensions,
   Image,
   StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import {getAllCollections} from '../../helper/event';
@@ -14,7 +14,7 @@ import {useNavigation} from '@react-navigation/core';
 import config from '../../helper/config';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
-export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.4);
+export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 
 const CollectionCard = ({item}) => {
   const navigation = useNavigation();
@@ -52,7 +52,7 @@ const CollectionCard = ({item}) => {
           <Text
             style={styles.collectionName}
             ellipsizeMode="tail"
-            numberOfLines={1}>
+            numberOfLines={2}>
             {item.name}
           </Text>
         </TouchableOpacity>
@@ -100,9 +100,9 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-    width: 140,
+    width: '100%',
     marginRight: 5,
-    height: 140,
+    height: 340,
     borderRadius: 12,
     backgroundColor: 'rgba(255, 255, 255, 0.07)',
     overflow: 'hidden',
@@ -112,19 +112,19 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.15)',
   },
   collectionImg: {
-    height: 60,
+    height: 170,
   },
   collectionMeta: {
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    height: 80,
+    height: 170,
     backgroundColor: '#14142f',
   },
   collectionAvatar: {
     borderRadius: 12,
-    marginTop: -20,
+    marginTop: -50,
     position: 'relative',
   },
   badgeMark: {
@@ -139,24 +139,25 @@ const styles = StyleSheet.create({
     height: 15,
   },
   avatarImg: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
     backgroundColor: 'rgba(255, 255, 255, 0.66)',
+    marginBottom: 5,
   },
   collectionName: {
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 24,
     color: '#fff',
-    lineHeight: 20,
+    lineHeight: 24,
     fontWeight: '700',
-    marginVertical: 7,
+    marginVertical: 10,
     fontFamily: 'SpaceGrotesk-Medium',
   },
   collectionNumber: {
     textAlign: 'center',
-    fontSize: 10,
-    lineHeight: 13,
+    fontSize: 16,
+    lineHeight: 20,
     color: 'rgba(255, 255, 255, 0.66)',
     fontWeight: '400',
     fontFamily: 'SpaceGrotesk-Medium',
