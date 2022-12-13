@@ -26,8 +26,8 @@ import newsImg from '../../../assets/img/icons/news.png';
 import searchActImg from '../../../assets/img/icons/search-act.png';
 import searchTopImg from '../../../assets/img/icons/search-top.png';
 import searchImg from '../../../assets/img/icons/search.png';
-import {ExplorerScreen} from '../../pages/explorer';
 import {SearchScreen} from '../../pages/search';
+import {ExplorerStackScreen} from './explorerStack';
 import {HomeStackScreen} from './homeStack';
 import {MenuStackScreen} from './menuStack';
 import {NewsStackScreen} from './newsStack';
@@ -141,7 +141,7 @@ export default function MainTabs() {
           />
           <Tab.Screen
             name="Explore"
-            component={ExplorerScreen}
+            component={ExplorerStackScreen}
             options={{
               tabBarLabel: t('explore'),
               headerTitle: () => (
@@ -166,6 +166,7 @@ export default function MainTabs() {
                 <Image source={status.focused ? exploreActImg : exploreImg} />
               ),
               headerStyle: styles.headerStyle,
+              headerShown: false,
             }}
           />
           <Tab.Screen

@@ -1,32 +1,10 @@
-import {useNavigation} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {
-  Dimensions,
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Dimensions, Platform, ScrollView, StyleSheet, View} from 'react-native';
 import {useSelector} from 'react-redux';
-import collectionAvatar from '../../assets/img/avatars/avatar2.jpg';
-import likeBlueImg from '../../assets/img/icons/like-fill.png';
-import likeImg from '../../assets/img/icons/liked-white.png';
-import badgeMark from '../../assets/img/icons/verified.png';
-import Currency from '../components/currency/Currency';
-import CurrencySymbol from '../components/currency/CurrencySymbol';
 import {EventCard} from '../components/eventCard';
 import {Loading} from '../components/loading';
-import config from '../helper/config';
-import {
-  getAllEventCards,
-  getEventPrice,
-  updateEventLike,
-} from '../helper/event';
-import {getLikesNumber} from '../utils';
+import {getAllEventCards, updateEventLike} from '../helper/event';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
@@ -99,96 +77,6 @@ export const ExplorerScreen = () => {
       }
     });
   }, []);
-  const Card = ({item, index}) => {
-    const navigation = useNavigation();
-    const creatorAvatar = () => {
-      if (item.creator.avatar === '/img/avatars/avatar.jpg') {
-        return require('../../assets/img/avatars/avatar.jpg');
-      } else if (item.creator.avatar === '/img/avatars/avatar2.jpg') {
-        return require('../../assets/img/avatars/avatar2.jpg');
-      } else if (item.creator.avatar === '/img/avatars/avatar3.jpg') {
-        return require('../../assets/img/avatars/avatar3.jpg');
-      } else if (item.creator.avatar === '/img/avatars/avatar4.jpg') {
-        return require('../../assets/img/avatars/avatar4.jpg');
-      } else if (item.creator.avatar === '/img/avatars/avatar5.jpg') {
-        return require('../../assets/img/avatars/avatar5.jpg');
-      } else if (item.creator.avatar === '/img/avatars/avatar6.jpg') {
-        return require('../../assets/img/avatars/avatar6.jpg');
-      } else if (item.creator.avatar === '/img/avatars/avatar7.jpg') {
-        return require('../../assets/img/avatars/avatar7.jpg');
-      } else if (item.creator.avatar === '/img/avatars/avatar8.jpg') {
-        return require('../../assets/img/avatars/avatar8.jpg');
-      }
-    };
-    return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate('EventDetail', {item: item})}
-        style={styles.cardContainer}>
-        <View style={styles.imageDiv}>
-          <Image
-            source={{
-              uri:
-                config.API_BASE_URL +
-                '/api/upload/get_file?path=' +
-                item.picture_small,
-            }}
-            style={styles.img}
-            resizeMode="cover"
-          />
-        </View>
-        <View style={styles.cardMeta}>
-          <Text style={styles.name}>{item.name}sfd</Text>
-          <View style={styles.detailContainer}>
-            <View style={styles.collectionContainer}>
-              <Text style={styles.info}>{t('collection')}</Text>
-              <View style={styles.collectionSub}>
-                <Image source={collectionAvatar} style={styles.avatar} />
-                <Text style={styles.owner}>{item.collection.name}</Text>
-              </View>
-            </View>
-            <View>
-              <Text style={styles.info}>{t('creator')}</Text>
-              <View style={styles.creatorContainer}>
-                <Image source={creatorAvatar()} style={styles.avatar} />
-                <Text style={styles.owner}>{item.creator.name}</Text>
-                <Image source={badgeMark} style={styles.badgeMark} />
-              </View>
-            </View>
-          </View>
-          {item.totoal_ticekts === item.buy_count && (
-            <View>
-              <Text style={{color: 'brown', fontSize: 16}}>
-                {t('sold out')}!
-              </Text>
-            </View>
-          )}
-          <View style={styles.divider} />
-          <View style={styles.footerContainer}>
-            <View>
-              <Text style={styles.info}>{t('reserve price')}</Text>
-              <Text style={styles.price}>
-                <Currency price={getEventPrice(item)} /> <CurrencySymbol />
-              </Text>
-            </View>
-            <View style={styles.flexRow}>
-              <TouchableOpacity onPress={() => onClickLike(index)}>
-                <Image
-                  source={
-                    userInfo &&
-                    item.likes_number &&
-                    item.likes_number.includes(userInfo?.user?.id)
-                      ? likeBlueImg
-                      : likeImg
-                  }
-                />
-              </TouchableOpacity>
-              <Text style={styles.likeNum}>{getLikesNumber(item)}</Text>
-            </View>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
   return (
     <ScrollView style={styles.container}>
       <View style={styles.eventContainer}>

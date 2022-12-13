@@ -5,7 +5,6 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import arrowLeft from '../../../assets/img/icons/arrow-left.png';
 import logoImg from '../../../assets/img/icons/logo.png';
 import {CollectionScreen} from '../../pages/collection';
-import {EventDetailsScreen} from '../../pages/eventDetails';
 import {HomeScreen} from '../../pages/home';
 import {ProfileAuthorScreen} from '../../pages/profileAuthor';
 import {ForgetPasswordScreen} from '../../pages/signPage/ForgetPassword';
@@ -19,15 +18,10 @@ const HomeStack = createNativeStackNavigator();
 export const HomeStackScreen = () => {
   const navigation = useNavigation();
   const {t} = useTranslation();
-  const Header = ({title, type = ''}) => {
+  const Header = ({title}) => {
     return (
       <View style={styles.headerContainer}>
-        <TouchableOpacity
-          onPress={() =>
-            type === 'eventDetail'
-              ? navigation.navigate('Explore')
-              : navigation.goBack()
-          }>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={arrowLeft} />
         </TouchableOpacity>
         <Text style={styles.titleText}>{title}</Text>
@@ -78,14 +72,6 @@ export const HomeStackScreen = () => {
               <Text style={styles.homeHeaderTitle}>BACKSTAGE</Text>
             </View>
           ),
-        }}
-      />
-      <HomeStack.Screen
-        name="EventDetail"
-        component={EventDetailsScreen}
-        options={{
-          headerTitle: () => <Header title={t('item')} type="eventDetail" />,
-          headerBackVisible: false,
         }}
       />
       <HomeStack.Screen
