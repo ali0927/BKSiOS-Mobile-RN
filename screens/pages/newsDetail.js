@@ -39,6 +39,7 @@ export const NewsDetailScreen = ({route, navigation}) => {
       .then(function (response) {
         setLoading(false);
         setArticle(response.data.article);
+        console.log('Article', response.data.article);
       })
       .catch(function (error) {
         setLoading(false);
@@ -91,20 +92,6 @@ export const NewsDetailScreen = ({route, navigation}) => {
             </TouchableOpacity>
             <Text style={styles.articleTitle}>{article.title}</Text>
             <HTMLView value={article.description} stylesheet={htmlStyleSheet} />
-            {/* <View style={styles.shareButtons}>
-              <TouchableOpacity style={styles.shareButton}>
-                <Image source={shareImg1} style={styles.msgImg} />
-                <Text style={styles.shareButtonText}>share</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.tweetButton}>
-                <Image source={shareImg2} style={styles.msgImg} />
-                <Text style={styles.shareButtonText}>tweet</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.shareButton}>
-                <Image source={shareImg3} style={styles.msgImg} />
-                <Text style={styles.shareButtonText}>share</Text>
-              </TouchableOpacity>
-            </View> */}
             <View style={{height: 100}} />
           </View>
         )}
@@ -181,34 +168,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     letterSpacing: 0.5,
   },
-  // shareButtons: {
-  //   flexDirection: 'row',
-  //   marginBottom: 10,
-  //   marginTop: 80,
-  // },
-  // shareButton: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   backgroundColor: '#3d6199',
-  //   paddingVertical: 5,
-  //   paddingHorizontal: 10,
-  //   borderRadius: 15,
-  //   marginRight: 10,
-  // },
-  // tweetButton: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   backgroundColor: '#57aef5',
-  //   paddingVertical: 5,
-  //   paddingHorizontal: 10,
-  //   borderRadius: 15,
-  //   marginRight: 10,
-  // },
-  // shareButtonText: {
-  //   color: '#fff',
-  //   fontSize: 16,
-  //   fontWeight: '700',
-  // },
 });
 const htmlStyleSheet = StyleSheet.create({
   h1: {
