@@ -1,9 +1,16 @@
 import {useNavigation} from '@react-navigation/core';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import arrowLeft from '../../../assets/img/icons/arrow-left.png';
-import logoImg from '../../../assets/img/icons/logo.png';
+import logoImg from '../../../assets/img/icons/logo-app.png';
 import {CollectionScreen} from '../../pages/collection';
 import {HomeScreen} from '../../pages/home';
 import {ProfileAuthorScreen} from '../../pages/profileAuthor';
@@ -14,6 +21,7 @@ import {SignInScreen} from '../../pages/signPage/signIn';
 import {SignUpScreen} from '../../pages/signPage/signUp';
 
 const HomeStack = createNativeStackNavigator();
+const windowWidth = Dimensions.get('window').width;
 
 export const HomeStackScreen = () => {
   const navigation = useNavigation();
@@ -68,8 +76,11 @@ export const HomeStackScreen = () => {
         options={{
           headerTitle: () => (
             <View style={styles.homeHeaderContainer}>
-              <Image source={logoImg} style={{width: 28, height: 28}} />
-              <Text style={styles.homeHeaderTitle}>BACKSTAGE</Text>
+              <Image
+                source={logoImg}
+                style={{width: 160, height: 46}}
+                resizeMode="center"
+              />
             </View>
           ),
         }}
@@ -115,7 +126,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
+    width: windowWidth - 30,
   },
   homeHeaderTitle: {
     color: '#fff',
