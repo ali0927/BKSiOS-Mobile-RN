@@ -9,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Dimensions
 } from 'react-native';
 import CheckBox from 'react-native-customizable-checkbox';
 import Modal from 'react-native-modal';
@@ -25,6 +26,7 @@ import {ProfileScreen} from '../../pages/profile';
 
 const MenuStack = createNativeStackNavigator();
 const THEME_COLOR = '#14142f';
+const DEVICE_WIDTH = Dimensions.get('window').width;
 
 const FilterModal = ({toggleModal}) => {
   const {t} = useTranslation();
@@ -136,11 +138,10 @@ export const MenuStackScreen = () => {
   const Header = ({title}) => {
     return (
       <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('MoreMain')}>
+        <TouchableOpacity onPress={() => navigation.navigate('MoreMain')} style={{position: "absolute", left: 0, width: 60}}>
           <Image source={arrowLeft} />
         </TouchableOpacity>
         <Text style={styles.titleText}>{title}</Text>
-        <View style={{width: 60}} />
       </View>
     );
   };
@@ -184,7 +185,7 @@ export const MenuStackScreen = () => {
         options={{
           headerTitle: () => (
             <View style={styles.headerContainer}>
-              <TouchableOpacity onPress={() => navigation.navigate('MoreMain')}>
+              <TouchableOpacity onPress={() => navigation.navigate('MoreMain')} style={{position: "absolute", left: 0, width: 60}}>
                 <Image source={arrowLeft} />
               </TouchableOpacity>
               <Text style={styles.titleText}>{t('activity')}</Text>
@@ -195,7 +196,7 @@ export const MenuStackScreen = () => {
                 animationOut={'slideOutDown'}>
                 <FilterModal toggleModal={toggleModal} />
               </Modal>
-              <TouchableOpacity onPress={toggleModal}>
+              <TouchableOpacity onPress={toggleModal} style={{position: "absolute", right: 0}}>
                 <Image source={filterImg} />
               </TouchableOpacity>
             </View>
@@ -329,17 +330,16 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-    paddingRight: 40,
+    justifyContent: 'center',
+    width: DEVICE_WIDTH-30,
+    paddingRight: 0,
   },
   titleText: {
     fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 20,
-    marginLeft: 10,
     fontWeight: Platform.OS === 'ios' ? '700' : '500',
-    textAlign: 'right',
+    textAlign: 'center',
     letterSpacing: 1.03,
   },
 });

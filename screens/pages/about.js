@@ -13,7 +13,7 @@ import {
 import facebookImg from '../../assets/img/icons/facebook.png';
 import globalImg from '../../assets/img/icons/globe.png';
 import instagramImg from '../../assets/img/icons/instagram.png';
-import logoImg from '../../assets/img/icons/logo.png';
+import logoImg from '../../assets/img/icons/logo-about.png';
 import mediumImg from '../../assets/img/icons/medium.png';
 import backImg from '../../assets/img/icons/start-back.png';
 import telegramImg from '../../assets/img/icons/telegram.png';
@@ -28,8 +28,7 @@ export const AboutScreen = () => {
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.mainContainer}>
-          <Image source={logoImg} style={styles.logoImg} />
-          <Text style={styles.text1}>BACKSTAGE</Text>
+          <Image source={logoImg} style={styles.logoImg} resizeMode= "center" />
           <Text style={styles.text2}>{t('about.text1')}</Text>
           <Text style={styles.text2}>{t('about.text2')}</Text>
           <View style={styles.divider} />
@@ -99,17 +98,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   logoImg: {
-    width: 60,
-    height: 60,
-  },
-  text1: {
-    color: '#fff',
-    fontSize: 26,
-    lineHeight: 50,
-    letterSpacing: 1.8,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 8,
+    width: 320,
+    height: 80,
+    marginBottom: 20,
   },
   text2: {
     fontFamily: 'SpaceGrotesk-Medium',
