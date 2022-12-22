@@ -9,11 +9,13 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Dimensions,
 } from 'react-native';
 import clockImg from '../../../assets/img/icons/clock.png';
 import messageImg from '../../../assets/img/icons/message.png';
 import config from '../../helper/config';
 
+const deviceWidth = Dimensions.get('window').width;
 export const ArticleCard = data => {
   const {t} = useTranslation();
 
@@ -77,11 +79,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     marginVertical: 10,
-    height: 400,
   },
   backImg: {
     width: '100%',
-    height: 200,
+    height: deviceWidth - 40,
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
   },
   metaData: {
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     marginBottom: 10,
+    marginTop: 30,
   },
   flexRow: {
     flexDirection: 'row',

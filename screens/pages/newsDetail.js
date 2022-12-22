@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import DateObject from 'react-date-object';
 import {
+  Dimensions,
   Image,
   Platform,
   ScrollView,
@@ -21,6 +22,7 @@ import {Loading} from '../components/loading';
 import {useTranslation} from 'react-i18next';
 import config from '../helper/config';
 
+const deviceWidth = Dimensions.get('window').width;
 export const NewsDetailScreen = ({route, navigation}) => {
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -117,7 +119,7 @@ const styles = StyleSheet.create({
   },
   mainImg: {
     width: '100%',
-    height: 200,
+    height: deviceWidth - 40,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
