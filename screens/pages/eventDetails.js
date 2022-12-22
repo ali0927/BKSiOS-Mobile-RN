@@ -12,6 +12,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  Dimensions,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -48,7 +49,7 @@ import {
   BUSD_MAIN_ABI,
   BUSD_TEST_ABI,
 } from '../utils/payment_contract';
-
+const deviceWidth = Dimensions.get('window').width;
 export const EventDetailsScreen = ({route}) => {
   const [userInfo, setUserInfo] = useState();
   const _userInfo = useSelector(state => state.userInfoReducer).userInfo;
@@ -761,10 +762,10 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   eventImg: {
-    width: '100%',
+    width: deviceWidth - 40,
+    height: deviceWidth - 40,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
-    height: 300,
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
     marginBottom: 20,
   },
