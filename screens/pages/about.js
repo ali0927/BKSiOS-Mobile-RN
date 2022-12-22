@@ -28,7 +28,7 @@ export const AboutScreen = () => {
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.mainContainer}>
-          <Image source={logoImg} style={styles.logoImg} resizeMode= "center" />
+          <Image source={logoImg} style={styles.logoImg} resizeMode="contain" />
           <Text style={styles.text2}>{t('about.text1')}</Text>
           <Text style={styles.text2}>{t('about.text2')}</Text>
           <View style={styles.divider} />
@@ -77,7 +77,7 @@ export const AboutScreen = () => {
           </View>
         </View>
         <View style={styles.overlay} />
-        <Image source={backImg} style={styles.backImage} />
+        {/* <Image source={backImg} style={styles.backImage} /> */}
       </ScrollView>
     </View>
   );
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   logoImg: {
-    width: 320,
+    width: 120,
     height: 80,
     marginBottom: 20,
   },
