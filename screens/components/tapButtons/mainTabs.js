@@ -15,17 +15,18 @@ import {
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import exploreActImg from '../../../assets/img/icons/explore-act.png';
-import exploreImg from '../../../assets/img/icons/explore.png';
-import homeActImg from '../../../assets/img/icons/home-act.png';
-import homeImg from '../../../assets/img/icons/home.png';
-import menuActImg from '../../../assets/img/icons/menu-act.png';
-import menuImg from '../../../assets/img/icons/menu.png';
-import newsActImg from '../../../assets/img/icons/news-act.png';
-import newsImg from '../../../assets/img/icons/news.png';
-import searchActImg from '../../../assets/img/icons/search-act.png';
-import searchTopImg from '../../../assets/img/icons/search-top.png';
-import searchImg from '../../../assets/img/icons/search.png';
+import ExploreActImg from '../../../assets/img/icons/explore-act.svg';
+import ExploreImg from '../../../assets/img/icons/explore.svg';
+import HomeActImg from '../../../assets/img/icons/home-act.svg';
+import HomeImg from '../../../assets/img/icons/home.svg';
+import MenuActImg from '../../../assets/img/icons/menu-act.svg';
+import MenuImg from '../../../assets/img/icons/menu.svg';
+import NewsActImg from '../../../assets/img/icons/news-act.svg';
+import NewsImg from '../../../assets/img/icons/news.svg';
+import SearchActImg from '../../../assets/img/icons/search-act.svg';
+import SearchTopImg from '../../../assets/img/icons/search-top.svg';
+import SearchImg from '../../../assets/img/icons/search.svg';
+// import HomeActImg from '../../../assets/img/home.svg';
 import {SearchScreen} from '../../pages/search';
 import {ExplorerStackScreen} from './explorerStack';
 import {HomeStackScreen} from './homeStack';
@@ -104,9 +105,8 @@ export default function MainTabs() {
             component={HomeStackScreen}
             options={{
               tabBarLabel: t('home'),
-              tabBarIcon: status => (
-                <Image source={status.focused ? homeActImg : homeImg} />
-              ),
+              tabBarIcon: status =>
+                status.focused ? <HomeActImg /> : <HomeImg />,
               headerShown: false,
             }}
           />
@@ -129,13 +129,12 @@ export default function MainTabs() {
                       autoCapitalize="none"
                       onChangeText={val => handleChange(val.toLowerCase())}
                     />
-                    <Image source={searchTopImg} style={styles.searchImage} />
+                    <SearchTopImg style={styles.searchImage} />
                   </View>
                 </View>
               ),
-              tabBarIcon: status => (
-                <Image source={status.focused ? searchActImg : searchImg} />
-              ),
+              tabBarIcon: status =>
+                status.focused ? <SearchActImg /> : <SearchImg />,
               headerStyle: styles.headerStyle,
             }}
           />
@@ -158,13 +157,12 @@ export default function MainTabs() {
                       autoCapitalize="none"
                       onChangeText={val => handleChange(val.toLowerCase())}
                     />
-                    <Image source={searchTopImg} style={styles.searchImage} />
+                    <SearchTopImg style={styles.searchImage} />
                   </View>
                 </View>
               ),
-              tabBarIcon: status => (
-                <Image source={status.focused ? exploreActImg : exploreImg} />
-              ),
+              tabBarIcon: status =>
+                status.focused ? <ExploreActImg /> : <ExploreImg />,
               headerStyle: styles.headerStyle,
               headerShown: false,
             }}
@@ -174,9 +172,8 @@ export default function MainTabs() {
             component={NewsStackScreen}
             options={{
               tabBarLabel: t('news'),
-              tabBarIcon: status => (
-                <Image source={status.focused ? newsActImg : newsImg} />
-              ),
+              tabBarIcon: status =>
+                status.focused ? <NewsActImg /> : <NewsImg />,
               headerShown: false,
             }}
           />
@@ -185,9 +182,8 @@ export default function MainTabs() {
             component={MenuStackScreen}
             options={{
               tabBarLabel: t('more'),
-              tabBarIcon: status => (
-                <Image source={status.focused ? menuActImg : menuImg} />
-              ),
+              tabBarIcon: status =>
+                status.focused ? <MenuActImg /> : <MenuImg />,
               headerShown: false,
             }}
           />
