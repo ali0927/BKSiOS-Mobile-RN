@@ -11,9 +11,8 @@ import {
   View,
   Dimensions,
 } from 'react-native';
-import clockImg from '../../../assets/img/icons/clock.png';
-// import messageImg from '../../../assets/img/icons/message.png';
-// import MessageImg from '../../../assets/img/avatar.svg';
+import ClockImg from '../../../assets/img/icons/clock.svg';
+import MessageImg from '../../../assets/img/icons/message.svg';
 import config from '../../helper/config';
 
 const deviceWidth = Dimensions.get('window').width;
@@ -59,14 +58,13 @@ export const ArticleCard = data => {
         </View>
         <View style={styles.cardFooterContainer}>
           <View style={styles.flexRow}>
-            <Image source={clockImg} style={styles.msgImg} />
+            <ClockImg style={styles.msgImg} />
             <Text style={styles.createdAtTxt}>
               {dateString(data.item.createdAt)}
             </Text>
           </View>
           <View style={styles.flexRow}>
-            {/* <Image source={messageImg} style={styles.msgImg} /> */}
-            {/* <MessageImg /> */}
+            <MessageImg style={styles.msgImg} />
             <Text style={styles.createdAtTxt}>0</Text>
           </View>
         </View>
@@ -138,8 +136,5 @@ const styles = StyleSheet.create({
   },
   msgImg: {
     marginRight: 5,
-    width: 20,
-    height: 20,
-    backgroundColor: 'black',
   },
 });
