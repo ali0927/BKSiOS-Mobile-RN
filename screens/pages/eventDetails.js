@@ -21,11 +21,11 @@ import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {useSelector} from 'react-redux';
 import bitkeepImg from '../../assets/img/bitkeep.png';
 import creditImg from '../../assets/img/credit-card.png';
-import clockImg from '../../assets/img/icons/clock.png';
-import likeImg from '../../assets/img/icons/like-empty.png';
-import likeBlueImg from '../../assets/img/icons/like-fill.png';
+import ClockImg from '../../assets/img/icons/clock.svg';
+import LikeImg from '../../assets/img/icons/liked-white.svg';
+import LikeBlueImg from '../../assets/img/icons/like-fill.svg';
 import mapImg from '../../assets/img/icons/map.png';
-import badgeMark from '../../assets/img/icons/verified.png';
+import BadgeMark from '../../assets/img/icons/verified.svg';
 import bksImg from '../../assets/img/logo-without-text.png';
 import metamaskImg from '../../assets/img/metamask-white.png';
 import Currency from '../components/currency/Currency';
@@ -443,19 +443,18 @@ export const EventDetailsScreen = ({route}) => {
             resizeMode="stretch"
           />
           <View style={styles.flexRow}>
-            <Text style={styles.name}>{tempData.name}</Text>
+            <Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
+              {tempData.name}
+            </Text>
             <View style={styles.rowCenter}>
               <TouchableOpacity onPress={() => onClickLike()}>
-                <Image
-                  source={
-                    userInfo &&
-                    tempData.likes_number &&
-                    tempData.likes_number.includes(userInfo?.user?.id)
-                      ? likeBlueImg
-                      : likeImg
-                  }
-                  style={styles.likedImg}
-                />
+                {userInfo &&
+                tempData.likes_number &&
+                tempData.likes_number.includes(userInfo?.user?.id) ? (
+                  <LikeBlueImg />
+                ) : (
+                  <LikeImg />
+                )}
               </TouchableOpacity>
               <Text style={styles.followers}>{getLikesNumber(tempData)}</Text>
             </View>
@@ -467,7 +466,7 @@ export const EventDetailsScreen = ({route}) => {
               <Text style={styles.text2}>{t('creator')}</Text>
               <View style={styles.rowCenter}>
                 <Text style={styles.infoText}>{tempData.creator.name}</Text>
-                <Image source={badgeMark} style={styles.badgeMark} />
+                <BadgeMark />
               </View>
             </View>
             <View>
@@ -572,7 +571,7 @@ export const EventDetailsScreen = ({route}) => {
           <View style={styles.divider} />
           <View style={styles.eventCounter}>
             <View style={styles.rowCenter}>
-              <Image source={clockImg} />
+              <ClockImg />
               <Text style={styles.evStartTxt}>{t('event starts in')}</Text>
             </View>
             <View style={styles.counterContainer}>
@@ -773,6 +772,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
     lineHeight: 24,
+    width: '90%',
     color: '#fff',
     fontWeight: Platform.OS === 'ios' ? '700' : '500',
   },
@@ -823,7 +823,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '500',
     letterSpacing: 0.5,
-    marginRight: 10,
+    marginRight: 5,
   },
   priceText: {
     color: '#fff',
@@ -911,14 +911,6 @@ const styles = StyleSheet.create({
   buyContainer: {
     flexDirection: 'row',
     marginBottom: 50,
-  },
-  badgeMark: {
-    backgroundColor: '#2f80ed',
-    borderRadius: 20,
-    borderColor: '#fff',
-    borderWidth: 1,
-    width: 16,
-    height: 16,
   },
   avatarImg: {
     position: 'relative',
