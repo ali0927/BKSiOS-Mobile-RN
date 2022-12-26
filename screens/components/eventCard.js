@@ -11,10 +11,10 @@ import {
   View,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import clockImg from '../../assets/img/icons/clock.png';
-import likeBlueImg from '../../assets/img/icons/like-fill.png';
-import likeImg from '../../assets/img/icons/liked-white.png';
-import badgeMarkImg from '../../assets/img/icons/verified.png';
+import ClockImg from '../../assets/img/icons/clock.svg';
+import LikeBlueImg from '../../assets/img/icons/like-fill.svg';
+import LikeImg from '../../assets/img/icons/liked-white.svg';
+import BadgeMarkImg from '../../assets/img/icons/verified.svg';
 import config from '../helper/config';
 import Currency from './currency/Currency';
 import CurrencySymbol from './currency/CurrencySymbol';
@@ -75,15 +75,13 @@ export const EventCard = ({userInfo, item, index, onClickLike}) => {
       />
       <View style={styles.cardLikes}>
         <TouchableOpacity onPress={() => onClickLike(index)}>
-          <Image
-            source={
-              userInfo &&
-              item.likes_number &&
-              item.likes_number.includes(userInfo?.user?.id)
-                ? likeBlueImg
-                : likeImg
-            }
-          />
+          {userInfo &&
+          item.likes_number &&
+          item.likes_number.includes(userInfo?.user?.id) ? (
+            <LikeBlueImg />
+          ) : (
+            <LikeImg />
+          )}
         </TouchableOpacity>
       </View>
       <FastImage
@@ -110,7 +108,7 @@ export const EventCard = ({userInfo, item, index, onClickLike}) => {
             <Text style={styles.info}>{t('creator')}</Text>
             <View style={{flexDirection: 'row'}}>
               <Text style={styles.infoVal}>{item.creator.name}</Text>
-              <Image source={badgeMarkImg} style={styles.badgeMark} />
+              <BadgeMarkImg style={styles.badgeMark} />
             </View>
           </View>
         </View>
@@ -147,8 +145,7 @@ export const EventCard = ({userInfo, item, index, onClickLike}) => {
         </View>
         <View style={styles.footerDetails}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image
-              source={clockImg}
+            <ClockImg
               style={{
                 width: 20,
                 height: 20,
@@ -179,7 +176,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     width: '100%',
     marginRight: 30,
-    marginTop: 10,
+    marginTop: 15,
     borderRadius: 12,
     overflow: 'hidden',
   },
@@ -271,11 +268,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   badgeMark: {
-    backgroundColor: '#2f80ed',
-    borderRadius: 20,
-    width: 16,
-    height: 16,
-    marginTop: 5,
     marginLeft: 5,
   },
   leftTime: {
