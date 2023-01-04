@@ -13,12 +13,9 @@ import {
 } from 'react-native';
 import HTMLView from 'react-native-htmlview';
 import Toast from 'react-native-toast-message';
-import clockImg from '../../assets/img/icons/clock.png';
-import messageImg from '../../assets/img/icons/message.png';
+import ClockImg from '../../assets/img/icons/clock.svg';
+import MessageImg from '../../assets/img/icons/message.svg';
 import {Loading} from '../components/loading';
-// import shareImg1 from '../../assets/img/icons/facebook.png';
-// import shareImg2 from '../../assets/img/icons/twitter.png';
-// import shareImg3 from '../../assets/img/icons/medium.png';
 import {useTranslation} from 'react-i18next';
 import config from '../helper/config';
 
@@ -77,13 +74,13 @@ export const NewsDetailScreen = ({route, navigation}) => {
             />
             <View style={styles.timeContainer}>
               <View style={styles.flexRow}>
-                <Image source={clockImg} style={styles.msgImg} />
+                <ClockImg style={styles.msgImg} />
                 <Text style={styles.timeText}>
                   {dateString(article.createdAt)}
                 </Text>
               </View>
               <View style={styles.flexRow}>
-                <Image source={messageImg} style={styles.msgImg} />
+                <MessageImg style={styles.msgImg} />
                 <Text style={styles.timeText}>0</Text>
               </View>
             </View>
