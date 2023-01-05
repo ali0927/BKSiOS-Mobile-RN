@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Platform
 } from 'react-native';
 import arrowLeft from '../../../assets/img/icons/arrow-left.png';
 import logoImg from '../../../assets/img/icons/logo-app.png';
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     marginLeft: 10,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     textAlign: 'right',
     letterSpacing: 1.03,
   },
