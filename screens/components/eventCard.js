@@ -9,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Platform
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import ClockImg from '../../assets/img/icons/clock.svg';
@@ -238,7 +239,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: 20,
     lineHeight: 24,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     color: '#fff',
     marginBottom: 10,
   },
@@ -255,7 +256,7 @@ const styles = StyleSheet.create({
   infoVal: {
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     color: '#fff',
   },
   price: {
@@ -265,7 +266,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     color: '#fff',
     letterSpacing: 1,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
   },
   badgeMark: {
     marginLeft: 5,
@@ -276,6 +277,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#fff',
     letterSpacing: 1,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
   },
 });
