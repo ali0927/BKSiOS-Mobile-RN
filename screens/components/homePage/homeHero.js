@@ -1,6 +1,6 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View, Platform} from 'react-native';
 import {useSelector} from 'react-redux';
 
 export const HomeHero = ({navigation}) => {

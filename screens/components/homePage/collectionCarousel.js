@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Platform
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import {getAllCollections} from '../../helper/event';
@@ -150,7 +151,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#fff',
     lineHeight: 24,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     marginVertical: 10,
     fontFamily: 'SpaceGrotesk-Medium',
   },
