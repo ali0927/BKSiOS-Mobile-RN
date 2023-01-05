@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Platform
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import backImg from '../../assets/img/home/home-background.png';
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 24,
     lineHeight: 32,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     textAlign: 'left',
     marginTop: 30,
     paddingLeft: 20,
