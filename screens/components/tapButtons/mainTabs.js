@@ -116,7 +116,7 @@ export default function MainTabs() {
             options={{
               tabBarLabel: t('search'),
               headerTitle: () => (
-                <View style={{alignItems: 'center', width: windowWidth - 40}}>
+                <View style={{alignItems: 'center', width: windowWidth - 30}}>
                   <Text style={styles.headerTitle}>{t('search')}</Text>
                   <View style={styles.searchContainer}>
                     <TextInput
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     color: '#fff',
     fontSize: 20,
-    fontWeight: '700',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
     lineHeight: 26,
     marginBottom: 10,
     letterSpacing: 2,

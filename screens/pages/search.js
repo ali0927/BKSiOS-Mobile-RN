@@ -153,7 +153,7 @@ export const SearchScreen = () => {
                             collection.picture_large,
                         }}
                         style={styles.backImg}
-                        resizeMode="stretch"
+                        resizeMode="contain"
                       />
                     </View>
                     <View style={styles.resultMeta}>
@@ -211,6 +211,74 @@ export const SearchScreen = () => {
                       event.creator.avatar === '/img/avatars/avatar8.jpg'
                     ) {
                       return require('../../assets/img/avatars/avatar8.jpg');
+                    } else if (
+                      event.creator.avatar === '/img/avatars/avatar9.jpg'
+                    ) {
+                      return require('../../assets/img/avatars/avatar9.jpg');
+                    } else if (
+                      event.creator.avatar === '/img/avatars/avatar10.jpg'
+                    ) {
+                      return require('../../assets/img/avatars/avatar10.jpg');
+                    } else if (
+                      event.creator.avatar === '/img/avatars/avatar11.jpg'
+                    ) {
+                      return require('../../assets/img/avatars/avatar11.jpg');
+                    } else if (
+                      event.creator.avatar === '/img/avatars/avatar12.jpg'
+                    ) {
+                      return require('../../assets/img/avatars/avatar12.jpg');
+                    } else if (
+                      event.creator.avatar === '/img/avatars/avatar13.jpg'
+                    ) {
+                      return require('../../assets/img/avatars/avatar13.jpg');
+                    } else if (
+                      event.creator.avatar === '/img/avatars/avatar14.jpg'
+                    ) {
+                      return require('../../assets/img/avatars/avatar14.jpg');
+                    } else if (
+                      event.creator.avatar === '/img/avatars/avatar15.jpg'
+                    ) {
+                      return require('../../assets/img/avatars/avatar15.jpg');
+                    } else if (
+                      event.creator.avatar === '/img/avatars/avatar17.png'
+                    ) {
+                      return require('../../assets/img/avatars/avatar17.png');
+                    }else if (
+                      event.creator.avatar === '/img/avatars/avatar18.png'
+                    ) {
+                      return require('../../assets/img/avatars/avatar18.png');
+                    }else if (
+                      event.creator.avatar === '/img/avatars/avatar19.png'
+                    ) {
+                      return require('../../assets/img/avatars/avatar19.png');
+                    }else if (
+                      event.creator.avatar === '/img/avatars/avatar20.png'
+                    ) {
+                      return require('../../assets/img/avatars/avatar20.png');
+                    }else if (
+                      event.creator.avatar === '/img/avatars/avatar21.png'
+                    ) {
+                      return require('../../assets/img/avatars/avatar21.png');
+                    }else if (
+                      event.creator.avatar === '/img/avatars/avatar22.png'
+                    ) {
+                      return require('../../assets/img/avatars/avatar22.png');
+                    }else if (
+                      event.creator.avatar === '/img/avatars/avatar23.png'
+                    ) {
+                      return require('../../assets/img/avatars/avatar23.png');
+                    }else if (
+                      event.creator.avatar === '/img/avatars/avatar24.png'
+                    ) {
+                      return require('../../assets/img/avatars/avatar24.png');
+                    }else if (
+                      event.creator.avatar === '/img/avatars/avatar25.png'
+                    ) {
+                      return require('../../assets/img/avatars/avatar25.png');
+                    }else if (
+                      event.creator.avatar === '/img/avatars/avatar26.png'
+                    ) {
+                      return require('../../assets/img/avatars/avatar26.png');
                     }
                   };
                   return (
@@ -229,7 +297,7 @@ export const SearchScreen = () => {
                               event.picture_small,
                           }}
                           style={styles.backImg}
-                          resizeMode="stretch"
+                          resizeMode="contain"
                         />
                       </View>
                       <View style={styles.resultMeta}>
@@ -237,10 +305,22 @@ export const SearchScreen = () => {
                           source={creatorAvatar()}
                           style={styles.resultAvatarImg}
                         />
-                        <Text style={styles.resultName}>{event.name}</Text>
-                        <Text style={styles.resultDescription}>
-                          Accomodation
-                        </Text>
+                        <View
+                          style={{
+                            flex: 1,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            paddingBottom: 10
+                          }}>
+                          <Text style={styles.resultName} numberOfLines={2}>
+                            {event.name}
+                          </Text>
+                          <Text style={styles.resultDescription}>
+                            {/* Accomodation */}
+                            {event.creator.name}
+                          </Text>
+                        </View>
                       </View>
                     </TouchableOpacity>
                   );
@@ -264,7 +344,7 @@ export const SearchScreen = () => {
                             ticket.eventcard?.picture_small,
                         }}
                         style={styles.backImg}
-                        resizeMode="stretch"
+                        resizeMode="contain"
                       />
                     </View>
                     <View style={styles.resultMeta}>
@@ -341,7 +421,7 @@ const styles = StyleSheet.create({
   resultItem: {
     display: 'flex',
     width: 160,
-    height: 160,
+    height: 260,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.15)',
     marginBottom: 20,
@@ -349,7 +429,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   resultBackImg: {
-    height: 70,
+    height: 160,
     width: '100%',
     overflow: 'hidden',
     backgroundColor: 'rgba(255, 255, 255, 0.07)',
@@ -367,18 +447,19 @@ const styles = StyleSheet.create({
   },
   resultMeta: {
     display: 'flex',
-    justifyContent: 'center',
+    flex: 1,
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   resultName: {
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 16,
     fontWeight: Platform.OS === 'ios' ? '700' : '500',
-    lineHeight: 20,
+    lineHeight: 16,
     textAlign: 'center',
     marginTop: 10,
     color: '#fff',
-    width: '80%',
+    width: 120,
   },
   resultDescription: {
     fontFamily: 'SpaceGrotesk-Medium',

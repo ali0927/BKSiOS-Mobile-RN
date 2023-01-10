@@ -13,7 +13,10 @@ export const Loading = () => {
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
+    marginTop: 50,
+    width: '100%',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
     fontFamily: 'SpaceGrotesk-Medium',
