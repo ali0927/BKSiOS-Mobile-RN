@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import avatarImg from '../../assets/img/avatars/avatar3.jpg';
+import FastImage from 'react-native-fast-image';
 import {Loading} from '../components/loading';
 import config from '../helper/config';
 import {allTickets, getAllCollections, getAllEventCards} from '../helper/event';
@@ -145,15 +146,16 @@ export const SearchScreen = () => {
                     }
                     key={'collections' + i}>
                     <View style={styles.resultBackImg}>
-                      <Image
+                      <FastImage
                         source={{
                           uri:
                             config.API_BASE_URL +
                             '/api/upload/get_file?path=' +
                             collection.picture_large,
+                          priority: FastImage.priority.normal,
                         }}
+                        resizeMode={FastImage.resizeMode.cover}
                         style={styles.backImg}
-                        resizeMode="contain"
                       />
                     </View>
                     <View style={styles.resultMeta}>
@@ -166,10 +168,21 @@ export const SearchScreen = () => {
                         }}
                         style={styles.resultAvatarImg}
                       />
-                      <Text style={styles.resultName} numberOfLines={1}>
-                        {collection.name}
-                      </Text>
-                      <Text style={styles.resultDescription}>Accomodation</Text>
+                      <View
+                        style={{
+                          flex: 1,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          paddingBottom: 10,
+                        }}>
+                        <Text style={styles.resultName} numberOfLines={2}>
+                          {collection.name}
+                        </Text>
+                        <Text style={styles.resultDescription}>
+                          Accomodation
+                        </Text>
+                      </View>
                     </View>
                   </TouchableOpacity>
                 ))}
@@ -243,39 +256,39 @@ export const SearchScreen = () => {
                       event.creator.avatar === '/img/avatars/avatar17.png'
                     ) {
                       return require('../../assets/img/avatars/avatar17.png');
-                    }else if (
+                    } else if (
                       event.creator.avatar === '/img/avatars/avatar18.png'
                     ) {
                       return require('../../assets/img/avatars/avatar18.png');
-                    }else if (
+                    } else if (
                       event.creator.avatar === '/img/avatars/avatar19.png'
                     ) {
                       return require('../../assets/img/avatars/avatar19.png');
-                    }else if (
+                    } else if (
                       event.creator.avatar === '/img/avatars/avatar20.png'
                     ) {
                       return require('../../assets/img/avatars/avatar20.png');
-                    }else if (
+                    } else if (
                       event.creator.avatar === '/img/avatars/avatar21.png'
                     ) {
                       return require('../../assets/img/avatars/avatar21.png');
-                    }else if (
+                    } else if (
                       event.creator.avatar === '/img/avatars/avatar22.png'
                     ) {
                       return require('../../assets/img/avatars/avatar22.png');
-                    }else if (
+                    } else if (
                       event.creator.avatar === '/img/avatars/avatar23.png'
                     ) {
                       return require('../../assets/img/avatars/avatar23.png');
-                    }else if (
+                    } else if (
                       event.creator.avatar === '/img/avatars/avatar24.png'
                     ) {
                       return require('../../assets/img/avatars/avatar24.png');
-                    }else if (
+                    } else if (
                       event.creator.avatar === '/img/avatars/avatar25.png'
                     ) {
                       return require('../../assets/img/avatars/avatar25.png');
-                    }else if (
+                    } else if (
                       event.creator.avatar === '/img/avatars/avatar26.png'
                     ) {
                       return require('../../assets/img/avatars/avatar26.png');
@@ -289,15 +302,16 @@ export const SearchScreen = () => {
                       }
                       key={'events' + i}>
                       <View style={styles.resultBackImg}>
-                        <Image
+                        <FastImage
                           source={{
                             uri:
                               config.API_BASE_URL +
                               '/api/upload/get_file?path=' +
                               event.picture_small,
+                            priority: FastImage.priority.normal,
                           }}
                           style={styles.backImg}
-                          resizeMode="contain"
+                          resizeMode={FastImage.resizeMode.contain}
                         />
                       </View>
                       <View style={styles.resultMeta}>
@@ -311,13 +325,12 @@ export const SearchScreen = () => {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'space-between',
-                            paddingBottom: 10
+                            paddingBottom: 10,
                           }}>
                           <Text style={styles.resultName} numberOfLines={2}>
                             {event.name}
                           </Text>
                           <Text style={styles.resultDescription}>
-                            {/* Accomodation */}
                             {event.creator.name}
                           </Text>
                         </View>
@@ -336,15 +349,16 @@ export const SearchScreen = () => {
                     style={styles.resultItem}
                     key={'tickets' + i}>
                     <View style={styles.resultBackImg}>
-                      <Image
+                      <FastImage
                         source={{
                           uri:
                             config.API_BASE_URL +
                             '/api/upload/get_file?path=' +
                             ticket.eventcard?.picture_small,
+                          priority: FastImage.priority.normal,
                         }}
                         style={styles.backImg}
-                        resizeMode="contain"
+                        resizeMode={FastImage.resizeMode.contain}
                       />
                     </View>
                     <View style={styles.resultMeta}>
@@ -352,10 +366,21 @@ export const SearchScreen = () => {
                         source={avatarImg}
                         style={styles.resultAvatarImg}
                       />
-                      <Text style={styles.resultName}>
-                        {ticket.eventcard.name}
-                      </Text>
-                      <Text style={styles.resultDescription}>Accomodation</Text>
+                      <View
+                        style={{
+                          flex: 1,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          paddingBottom: 10,
+                        }}>
+                        <Text style={styles.resultName}>
+                          {ticket.eventcard.name}
+                        </Text>
+                        <Text style={styles.resultDescription}>
+                          {ticket.eventcard.creator.name}
+                        </Text>
+                      </View>
                     </View>
                   </TouchableOpacity>
                 ))}
@@ -459,11 +484,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
     color: '#fff',
-    width: 120,
+    width: 140,
   },
   resultDescription: {
     fontFamily: 'SpaceGrotesk-Medium',
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: '400',
     lineHeight: 13,
     color: 'rgba(255, 255, 255, 0.66)',
