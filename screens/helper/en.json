@@ -7,8 +7,8 @@
   "activity": "Activity",
   "activity click": {
     "click here": "Click here to see ",
-    "BSC NFT": "BSC NFT token",
-    "IPFS": "IPFS address"
+    "BSC NFT": "View Smart contract NFT address",
+    "IPFS": "View NFT image"
   },
   "add": "Add",
   "add addons": "Add Addons",

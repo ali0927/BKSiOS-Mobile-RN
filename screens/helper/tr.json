@@ -7,8 +7,8 @@
   "activity": "Aktivite",
   "activity click": {
     "click here": "görmek için buraya tıklayın ",
-    "BSC NFT": "BSC NFT token",
-    "IPFS": "IPFS adres"
+    "BSC NFT": "Akıllı sözleşme NFT adresini görüntüleyin",
+    "IPFS": "NFT resmini görüntüle"
   },
   "add": "Ekle",
   "add addons": "Eklenti Ekle",
