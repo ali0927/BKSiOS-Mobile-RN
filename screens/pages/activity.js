@@ -39,10 +39,9 @@ const ActivityCard = ({
   t,
   sendMail,
   setIsModalVisible,
-  isModalVisible,
   mintNFT,
+  setIpfs,
 }) => {
-  // console.log('Ticket', ticket.eventcard);
   return (
     <View style={styles.cardContainer}>
       <View style={styles.cardAvatar}>
@@ -52,9 +51,7 @@ const ActivityCard = ({
               config.API_BASE_URL +
               '/api/upload/get_file?path=' +
               ticket.eventcard?.picture_small,
-            // priority: FastImage.priority.normal,
           }}
-          // resizeMode={FastImage.resizeMode.stretch}
           style={{width: '100%', height: '100%'}}
         />
       </View>
@@ -123,8 +120,10 @@ const ActivityCard = ({
             </Text>
             <TouchableOpacity
               style={styles.payWallet}
-              // onPress={() => Linking.openURL(ticket.ipfsURL)}>
-              onPress={() => setIsModalVisible(true)}>
+              onPress={() => {
+                setIpfs(ticket.ipfsURL);
+                setIsModalVisible(true);
+              }}>
               <Text style={{...styles.byNameText, color: '#0056b3'}}>
                 {t('activity click.IPFS')}
               </Text>
@@ -144,32 +143,6 @@ const ActivityCard = ({
             <ReactTimeAgo time={ticket.createdAt} locale="en-US" />
           </Text>
         </View>
-        <Modal
-          isVisible={isModalVisible}
-          onBackdropPress={() => setIsModalVisible(false)}>
-          <View style={styles.modalContainer}>
-            <FastImage
-              source={{
-                uri: ticket.ipfsURL,
-                priority: FastImage.priority.normal,
-              }}
-              resizeMode={FastImage.resizeMode.contain}
-              style={{
-                width: '100%',
-                height: deviceWidth - 40,
-                borderWidth: 1,
-                borderColor: '#6a4dfd',
-                shadowColor: '#6a4dfd',
-                shadowOffset: {
-                  width: 5,
-                  height: 5,
-                },
-                shadowOpacity: 0.8,
-                shadowRadius: 5,
-              }}
-            />
-          </View>
-        </Modal>
       </View>
     </View>
   );
@@ -177,6 +150,7 @@ const ActivityCard = ({
 export const ActivityScreen = () => {
   const [loading, setLoading] = useState(false);
   const [tickets, setTickets] = useState([]);
+  const [ipfs, setIpfs] = useState('');
   const [userInfo, setUserInfo] = useState();
   const [currency, setCurrency] = useState('€');
   const [rate, setRate] = useState(1);
@@ -533,10 +507,36 @@ export const ActivityScreen = () => {
               t={t}
               sendMail={sendMail}
               setIsModalVisible={setIsModalVisible}
-              isModalVisible={isModalVisible}
               mintNFT={mintNFT}
+              setIpfs={setIpfs}
             />
           ))}
+        <Modal
+          isVisible={isModalVisible}
+          onBackdropPress={() => setIsModalVisible(false)}>
+          <View style={styles.modalContainer}>
+            <FastImage
+              source={{
+                uri: ipfs,
+                priority: FastImage.priority.normal,
+              }}
+              resizeMode={FastImage.resizeMode.contain}
+              style={{
+                width: '100%',
+                height: deviceWidth - 40,
+                borderWidth: 3,
+                borderColor: '#6a4dfd',
+                shadowColor: '#6a4dfd',
+                shadowOffset: {
+                  width: 0,
+                  height: 0,
+                },
+                shadowOpacity: 0.43,
+                elevation: 10,
+              }}
+            />
+          </View>
+        </Modal>
       </ScrollView>
     </View>
   );
