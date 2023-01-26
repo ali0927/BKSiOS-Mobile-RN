@@ -182,19 +182,32 @@ const htmlStyleSheet = StyleSheet.create({
     color: '#fff',
     fontWeight: Platform.OS === 'ios' ? '700' : '500',
   },
+  h2: {
+    fontFamily: 'SpaceGrotesk-Medium',
+    fontSize: 20,
+    lineHeight: 22,
+    color: '#fff',
+    fontWeight: Platform.OS === 'ios' ? '700' : '500',
+  },
   strong: {
     fontFamily: 'SpaceGrotesk-Medium',
+  },
+  img: {
+    maxWidth: deviceWidth - 40,
+    resizeMode: 'contain',
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+    overflow: 'hidden'
   },
   p: {
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 16,
     color: 'rgba(255, 255, 255, 0.66)',
     lineHeight: 20,
-    fontWeight: '400',
+    fontWeight: '500',
   },
   ul: {
     color: 'rgba(255, 255, 255, 0.66)',
-    marginBottom: -40,
   },
   li: {
     fontFamily: 'SpaceGrotesk-Medium',
@@ -204,8 +217,6 @@ const htmlStyleSheet = StyleSheet.create({
   ol: {
     color: 'rgba(255, 255, 255, 0.66)',
     fontSize: 16,
-    marginTop: -20,
-    marginBottom: -50,
   },
   blockquote: {
     fontFamily: 'SpaceGrotesk-Medium',
