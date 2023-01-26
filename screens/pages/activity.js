@@ -16,7 +16,6 @@ import Metamask from '../../assets/img/icons/metamask-seeklogo.com.svg';
 import Bitkeep from '../../assets/img/icons/bitkeep-seeklogo.com.svg';
 import ReactTimeAgo from 'react-native-timeago';
 import {updateUserTickets, userTickets} from '../helper/event';
-// import {useWeb3React} from '@web3-react/core';
 import config from '../helper/config';
 import {useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
@@ -34,6 +33,7 @@ import Modal from 'react-native-modal';
 import {sendOnlyMail} from '../helper/message';
 
 const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
 const ActivityCard = ({
   ticket,
   t,
@@ -512,6 +512,10 @@ export const ActivityScreen = () => {
             />
           ))}
         <Modal
+          backdropColor="#6a4dfd"
+          transparent={false}
+          deviceHeight={deviceHeight + 50}
+          statusBarTranslucent
           isVisible={isModalVisible}
           onBackdropPress={() => setIsModalVisible(false)}>
           <View style={styles.modalContainer}>
