@@ -443,7 +443,7 @@ export const EventDetailsScreen = ({route}) => {
             resizeMode="stretch"
           />
           <View style={styles.flexRow}>
-            <Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
+            <Text style={styles.name} ellipsizeMode="tail" numberOfLines={3}>
               {tempData.name}
             </Text>
             <View style={styles.rowCenter}>
@@ -772,7 +772,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
     lineHeight: 24,
-    width: '90%',
+    width: deviceWidth - 80,
     color: '#fff',
     fontWeight: Platform.OS === 'ios' ? '700' : '500',
   },
@@ -785,6 +785,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'rgba(255, 255, 255, 0.66)',
     fontWeight: '400',
+    marginLeft: 5,
   },
   halfWidth: {
     width: '50%',

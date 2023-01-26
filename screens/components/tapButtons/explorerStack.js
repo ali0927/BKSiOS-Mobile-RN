@@ -80,6 +80,7 @@ export const ExplorerStackScreen = () => {
             </View>
           ),
           //   headerShown: false,
+          headerBackVisible: false,
         }}
       />
       <ExplorerStack.Screen
