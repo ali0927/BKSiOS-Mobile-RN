@@ -11,19 +11,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import HTMLView from 'react-native-htmlview';
 import Toast from 'react-native-toast-message';
 import ClockImg from '../../assets/img/icons/clock.svg';
 import MessageImg from '../../assets/img/icons/message.svg';
 import {Loading} from '../components/loading';
 import {useTranslation} from 'react-i18next';
 import config from '../helper/config';
+import RenderHTML from 'react-native-render-html';
+import {useWindowDimensions} from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width;
 export const NewsDetailScreen = ({route, navigation}) => {
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const width = useWindowDimensions();
   const {t} = useTranslation();
   const dateString = d => {
     var date = new DateObject({
@@ -90,7 +92,11 @@ export const NewsDetailScreen = ({route, navigation}) => {
               <Text style={styles.newsText}>{t('news')}</Text>
             </TouchableOpacity>
             <Text style={styles.articleTitle}>{article.title}</Text>
-            <HTMLView value={article.description} stylesheet={htmlStyleSheet} />
+            <RenderHTML
+              contentWidth={width}
+              source={{html: article.description}}
+              tagsStyles={htmlStyleSheet}
+            />
             <View style={{height: 100}} />
           </View>
         )}
@@ -175,7 +181,6 @@ const htmlStyleSheet = StyleSheet.create({
     lineHeight: 26,
     color: '#fff',
     fontWeight: Platform.OS === 'ios' ? '700' : '500',
-    marginBottom: -50,
   },
   strong: {
     fontFamily: 'SpaceGrotesk-Medium',
@@ -186,7 +191,6 @@ const htmlStyleSheet = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.66)',
     lineHeight: 20,
     fontWeight: '400',
-    marginBottom: -60,
   },
   ul: {
     color: 'rgba(255, 255, 255, 0.66)',
