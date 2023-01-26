@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Platform
+  Platform,
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import {getAllCollections} from '../../helper/event';
@@ -64,7 +64,9 @@ const CollectionCard = ({item}) => {
 };
 
 const renderItem = ({item, index}) => {
-  return <CollectionCard item={item} index={index} />;
+  return (
+    <CollectionCard item={item} index={index} key={'collection' + index} />
+  );
 };
 
 const CollectionCarousel = ({navigation}) => {

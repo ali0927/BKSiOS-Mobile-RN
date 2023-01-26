@@ -9,7 +9,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Platform
+  Platform,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import ClockImg from '../../assets/img/icons/clock.svg';
@@ -23,7 +23,7 @@ import {AddonModal} from './modals/addonModal';
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 
-export const EventCard = ({userInfo, item, index, onClickLike}) => {
+export const EventCard = ({userInfo, item, index, onClickLike, key}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentAddon, setCurrentAddon] = useState();
   const navigation = useNavigation();
@@ -69,7 +69,8 @@ export const EventCard = ({userInfo, item, index, onClickLike}) => {
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('EventDetail', {item: item})}
-      style={styles.cardContainer}>
+      style={styles.cardContainer}
+      key={key}>
       <Image
         source={{uri: config.SITE_URL + '/img/mark/brown1.png'}}
         style={{position: 'absolute', zIndex: 100, width: 50, height: 50}}

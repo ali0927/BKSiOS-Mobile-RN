@@ -21,6 +21,7 @@ const EventsCarousel = () => {
         item={item}
         index={index}
         onClickLike={onClickLike}
+        key={'lEvent' + index}
       />
     );
   };

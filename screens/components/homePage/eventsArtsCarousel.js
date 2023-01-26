@@ -22,6 +22,7 @@ const EventsArtsCarousel = () => {
         item={item}
         index={index}
         onClickLike={onClickLike}
+        key={'aEvent' + index}
       />
     );
   };
