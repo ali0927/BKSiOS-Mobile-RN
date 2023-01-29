@@ -45,10 +45,11 @@ export const NewsStackScreen = () => {
                 <Image source={arrowLeft} />
               </TouchableOpacity>
               <Text style={styles.titleText}>{t('article')}</Text>
-              <TouchableOpacity
+              <View style={{width: 10}}></View>
+              {/* <TouchableOpacity
                 onPress={() => console.log('Share Button Clicked...')}>
                 <Image source={shareImg} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           ),
           headerBackVisible: false,
