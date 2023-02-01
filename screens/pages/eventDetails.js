@@ -49,6 +49,7 @@ import {
   BUSD_MAIN_ABI,
   BUSD_TEST_ABI,
 } from '../utils/payment_contract';
+import FastImage from 'react-native-fast-image';
 const deviceWidth = Dimensions.get('window').width;
 export const EventDetailsScreen = ({route}) => {
   const [userInfo, setUserInfo] = useState();
@@ -643,19 +644,40 @@ export const EventDetailsScreen = ({route}) => {
           <Modal
             isVisible={mapModalVisible}
             onBackdropPress={() => setMapModalVisible(false)}>
-            <View style={styles.modalContainer}>
-              {/* <View style={styles.modalTitleContainer}>
+            <View style={styles.modalFloorContainer}>
+              <View
+                style={{
+                  position: 'absolute',
+                  right: -10,
+                  top: -10,
+                  zIndex: 99,
+                }}>
                 <TouchableOpacity onPress={() => setMapModalVisible(false)}>
-                  <Text style={styles.modalClose}>&times;</Text>
+                  <Text
+                    style={{
+                      ...styles.modalClose,
+                      backgroundColor: '#887bff',
+                      borderRadius: 30,
+                      width: 30,
+                      height: 30,
+                      padding: 0,
+                      lineHeight: 32,
+                      fontSize: 26,
+                    }}>
+                    &times;
+                  </Text>
                 </TouchableOpacity>
-              </View> */}
+              </View>
               <Image
                 source={{
                   uri:
                     config.API_BASE_URL +
                     '/api/upload/get_file?path=' +
                     eventCard.picture_floormap,
+                  priority: FastImage.priority.normal,
                 }}
+                resizeMode={FastImage.resizeMode.contain}
+                style={styles.img}
               />
             </View>
           </Modal>
@@ -962,6 +984,11 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingLeft: 20,
   },
+  modalFloorContainer: {
+    position: 'relative',
+    borderRadius: 10,
+    maxHeight: deviceWidth - 40,
+  },
   modalTitleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -977,6 +1004,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '79%',
+  },
+  img: {
+    width: deviceWidth - 40,
+    height: '100%',
   },
   subTitle: {
     fontFamily: 'SpaceGrotesk-Medium',
