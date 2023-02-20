@@ -50,6 +50,7 @@ import {
   BUSD_TEST_ABI,
 } from '../utils/payment_contract';
 import FastImage from 'react-native-fast-image';
+import moment from 'moment/moment';
 const deviceWidth = Dimensions.get('window').width;
 export const EventDetailsScreen = ({route}) => {
   const [userInfo, setUserInfo] = useState();
@@ -286,13 +287,8 @@ export const EventDetailsScreen = ({route}) => {
     return date.format('DD. MM. YYYY');
   };
   const timeString = t => {
-    var date = new Date(t);
-    return (
-      twoStrings(date.getUTCHours()) +
-      ' : ' +
-      twoStrings(date.getUTCMinutes()) +
-      ' GMT'
-    );
+    const dd = moment(t).format("h:mm a");
+    return dd;
   };
 
   const twoStrings = str => {
