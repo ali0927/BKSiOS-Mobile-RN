@@ -582,8 +582,8 @@ export const EventDetailsScreen = ({route}) => {
           <View style={styles.divider} />
           <View style={styles.flexRow}>
             <Text style={styles.remainTickets}>
-              {tempData.total_tickets - tempData.buy_count}{' '}
-              {t('ticket(s) left')}
+              {/* {tempData.total_tickets - tempData.buy_count}{' '}
+              {t('ticket(s) left')} */}
             </Text>
             <Text style={styles.priceText}>
               <Currency price={tempData.price} /> <CurrencySymbol />
