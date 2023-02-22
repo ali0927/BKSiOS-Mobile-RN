@@ -468,7 +468,9 @@ export const EventDetailsScreen = ({route}) => {
             </View>
             <View>
               <Text style={styles.text2}>{t('location')}</Text>
-              <Text style={styles.infoText}>{tempData.location}</Text>
+              <Text style={{...styles.infoText, width: '70%'}}>
+                {tempData.location}
+              </Text>
             </View>
           </View>
           <View style={styles.infoContainer}>
@@ -498,7 +500,7 @@ export const EventDetailsScreen = ({route}) => {
                   }}
                   style={styles.avatarImg}
                 />
-                <Text style={{...styles.infoText, width: '80%'}}>
+                <Text style={{...styles.infoText, width: '70%'}}>
                   {collectionName}
                 </Text>
               </View>
