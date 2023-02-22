@@ -42,7 +42,7 @@ import {
   getLatestEventCards,
   updateEventLike,
 } from '../helper/event';
-import {getLikesNumber} from '../utils';
+import {getLikesNumber, isVideoFile} from '../utils';
 import {
   BUSDPayment_testnet,
   BUSDPayment_TEST_ABI,
@@ -51,6 +51,7 @@ import {
 } from '../utils/payment_contract';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment/moment';
+import Video from 'react-native-video';
 const deviceWidth = Dimensions.get('window').width;
 export const EventDetailsScreen = ({route}) => {
   const [userInfo, setUserInfo] = useState();
@@ -287,7 +288,7 @@ export const EventDetailsScreen = ({route}) => {
     return date.format('DD. MM. YYYY');
   };
   const timeString = t => {
-    const dd = moment(t).format("h:mm a");
+    const dd = moment(t).format('h:mm a');
     return dd;
   };
 
@@ -429,16 +430,30 @@ export const EventDetailsScreen = ({route}) => {
     <ScrollView style={styles.container}>
       {tempData && (
         <View>
-          <Image
-            source={{
-              uri:
-                config.API_BASE_URL +
-                '/api/upload/get_file?path=' +
-                tempData.picture_large,
-            }}
-            style={styles.eventImg}
-            resizeMode="stretch"
-          />
+          {isVideoFile(tempData.picture_large) ? (
+            <Video
+              source={{
+                uri:
+                  config.API_BASE_URL +
+                  '/api/upload/get_file?path=' +
+                  tempData.picture_large,
+              }}
+              style={styles.eventImg}
+              resizeMode="stretch"
+              repeat
+            />
+          ) : (
+            <Image
+              source={{
+                uri:
+                  config.API_BASE_URL +
+                  '/api/upload/get_file?path=' +
+                  tempData.picture_large,
+              }}
+              style={styles.eventImg}
+              resizeMode="stretch"
+            />
+          )}
           <View style={styles.flexRow}>
             <Text style={styles.name} ellipsizeMode="tail" numberOfLines={3}>
               {tempData.name}
@@ -468,7 +483,7 @@ export const EventDetailsScreen = ({route}) => {
             </View>
             <View>
               <Text style={styles.text2}>{t('location')}</Text>
-              <Text style={{...styles.infoText, width: '70%'}}>
+              <Text style={{...styles.infoText, width: '100%'}}>
                 {tempData.location}
               </Text>
             </View>
