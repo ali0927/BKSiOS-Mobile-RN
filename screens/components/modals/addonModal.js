@@ -25,18 +25,18 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'SpaceGrotesk-Medium',
-    fontSize: 26,
+    fontSize: 22,
     color: '#fff',
     fontWeight: Platform.OS === 'ios' ? '700' : '500',
     textAlign: 'center',
-    marginTop: 10,
+    marginTop: 5,
   },
   description: {
     fontFamily: 'SpaceGrotesk-Medium',
-    fontSize: 20,
+    fontSize: 18,
     color: '#fff',
     fontWeight: '400',
     textAlign: 'justify',
-    marginTop: 5,
+    marginTop: 15,
   },
 });
