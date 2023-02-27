@@ -661,7 +661,7 @@ export const ProfileScreen = () => {
                     ? styles.inputOnFocus
                     : styles.input
                 }
-                value={generalValues.mobileNumber}
+                value={generalValues.mobileNumber !== null ? generalValues.mobileNumber : ""}
                 autoCapitalize="none"
                 onChangeText={val => handleGeneralChange('mobileNumber', val)}
               />
