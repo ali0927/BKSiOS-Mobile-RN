@@ -271,6 +271,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 16,
     fontWeight: '400',
+    textAlign: 'justify',
     color: 'rgba(255, 255, 255, 0.66)',
     marginTop: 10,
   },
