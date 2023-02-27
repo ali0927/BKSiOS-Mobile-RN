@@ -20,7 +20,7 @@ import checkImg from '../../../assets/img/icons/check.png';
 import filterImg from '../../../assets/img/icons/filter.png';
 import {AboutScreen} from '../../pages/about';
 import {ActivityScreen} from '../../pages/activity';
-import {LikedScreen} from '../../pages/liked';
+// import {LikedScreen} from '../../pages/liked';
 import {MenuHomeScreen} from '../../pages/menuHome';
 import {ProfileScreen} from '../../pages/profile';
 
@@ -204,14 +204,14 @@ export const MenuStackScreen = () => {
           headerBackVisible: false,
         }}
       />
-      <MenuStack.Screen
+      {/* <MenuStack.Screen
         name="Liked"
         component={LikedScreen}
         options={{
           headerTitle: () => <Header title={t('liked')} />,
           headerBackVisible: false,
         }}
-      />
+      /> */}
       {/* <MenuStack.Screen
         name="Liked"
         component={LikedScreen}
