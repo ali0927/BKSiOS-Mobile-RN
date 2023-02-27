@@ -110,7 +110,7 @@ export const ProfileAuthorScreen = ({route}) => {
               <TouchableOpacity
                 style={styles.socialImg}
                 onPress={() =>
-                  Linking.openURL('https://medium.com/BackstageBks')
+                  Linking.openURL('https://bksbackstageofficial.medium.com/')
                 }>
                 <Image source={mediumImg} />
               </TouchableOpacity>
