@@ -27,18 +27,18 @@ export const ProfileAuthorScreen = ({route}) => {
   const collectionData = route.params.item;
   const {t} = useTranslation();
 
-  const copyToClipboard = key => {
-    Toast.show({
-      type: 'success',
-      text1: 'Copied',
-      text2: 'You can paste these characters...  👋',
-    });
-    if (key === 'wallet') {
-      Clipboard.setString(collectionData.creator.wallet_address);
-    } else {
-      Clipboard.setString('https://bksbackstage.io');
-    }
-  };
+  // const copyToClipboard = key => {
+  //   Toast.show({
+  //     type: 'success',
+  //     text1: 'Copied',
+  //     text2: 'You can paste these characters...  👋',
+  //   });
+  //   if (key === 'wallet') {
+  //     Clipboard.setString(collectionData.creator.wallet_address);
+  //   } else {
+  //     Clipboard.setString('https://bksbackstage.io');
+  //   }
+  // };
 
   useEffect(() => {
     console.log('collectionData', collectionData);
@@ -52,9 +52,9 @@ export const ProfileAuthorScreen = ({route}) => {
               uri:
                 config.API_BASE_URL +
                 '/api/upload/get_file?path=' +
-                collectionData.picture_large,
+                collectionData.picture_background,
             }}
-            resizeMode="stretch"
+            resizeMode="cover"
             style={styles.backgroundImg}
           />
         </View>
@@ -82,9 +82,9 @@ export const ProfileAuthorScreen = ({route}) => {
               <Text style={styles.text1}>{collectionData.name}</Text>
               <Image source={badgeMark} style={styles.badgeMark} />
             </View>
-            <Text style={styles.idText}>{collectionData.category}</Text>
+            <Text style={styles.idText}>@{collectionData.creator.name}</Text>
             <Text style={styles.description}>{collectionData.description}</Text>
-            <Text style={styles.subTitle}>{t('wallet')}</Text>
+            {/* <Text style={styles.subTitle}>{t('wallet')}</Text>
             <View style={styles.clipboardDiv}>
               <Text style={styles.input} ellipsizeMode="tail" numberOfLines={1}>
                 {collectionData?.creator.wallet_address}
@@ -94,7 +94,7 @@ export const ProfileAuthorScreen = ({route}) => {
                 onPress={() => copyToClipboard('wallet')}>
                 <Image source={copyImg} />
               </TouchableOpacity>
-            </View>
+            </View> */}
             <Text style={styles.subTitle}>{t('links')}</Text>
             <View style={styles.socialDiv}>
               <TouchableOpacity
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     height: 224,
   },
   backgroundImg: {
-    width: '100%',
+    // width: '100%',
     height: '100%',
   },
   avatarContainer: {

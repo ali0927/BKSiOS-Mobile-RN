@@ -12,6 +12,7 @@ import Carousel from 'react-native-snap-carousel';
 import {getAllCollections} from '../../helper/event';
 // import badgeMark from '../../../assets/img/icons/verified.png';
 import {useNavigation} from '@react-navigation/core';
+import BadgeMarkImg from '../../../assets/img/icons/verified.svg';
 import config from '../../helper/config';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
@@ -21,7 +22,8 @@ const CollectionCard = ({item}) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Collection', {item: item})}
+      // onPress={() => navigation.navigate('Collection', {item: item})}
+      onPress={() => navigation.navigate('AuthorProfile', {item: item})}
       style={styles.cardContainer}>
       <Image
         style={styles.collectionImg}
@@ -29,13 +31,14 @@ const CollectionCard = ({item}) => {
           uri:
             config.API_BASE_URL +
             '/api/upload/get_file?path=' +
-            item.picture_large,
+            item.picture_background,
         }}
         key={item.id}
+        resizeMode="cover"
       />
       <View style={styles.collectionMeta}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('AuthorProfile', {item: item})}
+        <View
+          // onPress={() => navigation.navigate('AuthorProfile', {item: item})}
           style={styles.collectionAvatar}>
           <Image
             source={{
@@ -47,16 +50,18 @@ const CollectionCard = ({item}) => {
             style={styles.avatarImg}
           />
           {/* <Image source={badgeMark} style={styles.badgeMark} /> */}
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('AuthorProfile', {item: item})}>
+        </View>
+        <View
+          // onPress={() => navigation.navigate('AuthorProfile', {item: item})}
+          style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text
             style={styles.collectionName}
             ellipsizeMode="tail"
             numberOfLines={2}>
             {item.name}
           </Text>
-        </TouchableOpacity>
+          <BadgeMarkImg style={{marginLeft: 5, marginVertical: 10}} />
+        </View>
         <Text style={styles.collectionNumber}>{item.category}</Text>
       </View>
     </TouchableOpacity>
@@ -105,7 +110,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     width: '100%',
     marginRight: 5,
-    height: 340,
+    height: 320,
     borderRadius: 12,
     backgroundColor: 'rgba(255, 255, 255, 0.07)',
     overflow: 'hidden',
@@ -115,15 +120,16 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.15)',
   },
   collectionImg: {
-    height: 170,
+    height: 160,
   },
   collectionMeta: {
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    height: 170,
+    height: 160,
     backgroundColor: '#14142f',
+    paddingHorizontal: 15
   },
   collectionAvatar: {
     borderRadius: 12,
