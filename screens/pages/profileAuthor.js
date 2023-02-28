@@ -99,7 +99,7 @@ export const ProfileAuthorScreen = ({route}) => {
             <View style={styles.socialDiv}>
               <TouchableOpacity
                 style={styles.socialImg}
-                onPress={() => Linking.openURL('https://t.me/BKSBackstage')}>
+                onPress={() => Linking.openURL('https://bksbackstage.io')}>
                 <Image source={globalImg} />
               </TouchableOpacity>
               <TouchableOpacity

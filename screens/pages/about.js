@@ -36,7 +36,7 @@ export const AboutScreen = () => {
           <View style={styles.socialDiv}>
             <TouchableOpacity
               style={styles.socialImg}
-              onPress={() => Linking.openURL('https://t.me/BKSBackstage')}>
+              onPress={() => Linking.openURL('https://bksbackstage.io')}>
               <Image source={globalImg} />
             </TouchableOpacity>
             <TouchableOpacity
@@ -47,7 +47,7 @@ export const AboutScreen = () => {
             <TouchableOpacity
               style={styles.socialImg}
               onPress={() =>
-                Linking.openURL('https://medium.com/BackstageBks')
+                Linking.openURL('https://bksbackstageofficial.medium.com')
               }>
               <Image source={mediumImg} />
             </TouchableOpacity>
