@@ -9,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Dimensions
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import avatarImg from '../../assets/img/avatars/avatar3.jpg';
@@ -17,6 +18,7 @@ import {Loading} from '../components/loading';
 import config from '../helper/config';
 import {allTickets, getAllCollections, getAllEventCards} from '../helper/event';
 
+const deviceWidth = Dimensions.get('window').width;
 export const SearchScreen = () => {
   const navigation = useNavigation();
   const [originTickets, setOriginTickets] = useState([]);
@@ -151,7 +153,7 @@ export const SearchScreen = () => {
                           uri:
                             config.API_BASE_URL +
                             '/api/upload/get_file?path=' +
-                            collection.picture_large,
+                            collection.picture_background,
                           priority: FastImage.priority.normal,
                         }}
                         resizeMode={FastImage.resizeMode.cover}
@@ -374,7 +376,7 @@ export const SearchScreen = () => {
                           justifyContent: 'space-between',
                           paddingBottom: 10,
                         }}>
-                        <Text style={styles.resultName}>
+                        <Text style={styles.resultName} numberOfLines={2}>
                           {ticket.eventcard.name}
                         </Text>
                         <Text style={styles.resultDescription}>
@@ -420,8 +422,8 @@ const styles = StyleSheet.create({
   categoryItem: {
     display: 'flex',
     justifyContent: 'center',
-    width: 160,
-    height: 160,
+    width:  deviceWidth/2 - 30,
+    height: deviceWidth/2 - 30,
     borderRadius: 12,
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
   },
@@ -445,8 +447,8 @@ const styles = StyleSheet.create({
   },
   resultItem: {
     display: 'flex',
-    width: 160,
-    height: 260,
+    width: deviceWidth/2 - 30,
+    height: deviceWidth/2 + 70,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.15)',
     marginBottom: 20,
@@ -454,7 +456,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   resultBackImg: {
-    height: 160,
+    height: deviceWidth/2 - 30,
     width: '100%',
     overflow: 'hidden',
     backgroundColor: 'rgba(255, 255, 255, 0.07)',
