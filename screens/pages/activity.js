@@ -31,6 +31,7 @@ import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import FastImage from 'react-native-fast-image';
 import Modal from 'react-native-modal';
 import {sendOnlyMail} from '../helper/message';
+import {Loading} from '../components/loading';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -148,7 +149,7 @@ const ActivityCard = ({
   );
 };
 export const ActivityScreen = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [tickets, setTickets] = useState([]);
   const [ipfs, setIpfs] = useState('');
   const [userInfo, setUserInfo] = useState();
@@ -171,6 +172,7 @@ export const ActivityScreen = () => {
       userTickets().then(res => {
         console.log('userTicekts');
         if (res.success) {
+          setLoading(false);
           sortTickets(res.tickets);
         }
       });
@@ -498,50 +500,72 @@ export const ActivityScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollContainer}>
-        {tickets &&
-          tickets.map((ticket, i) => (
-            <ActivityCard
-              ticket={ticket}
-              key={i}
-              t={t}
-              sendMail={sendMail}
-              setIsModalVisible={setIsModalVisible}
-              mintNFT={mintNFT}
-              setIpfs={setIpfs}
-            />
-          ))}
-        <Modal
-          backdropColor="#6a4dfd"
-          transparent={false}
-          deviceHeight={deviceHeight + 50}
-          statusBarTranslucent
-          isVisible={isModalVisible}
-          onBackdropPress={() => setIsModalVisible(false)}>
-          <View style={styles.modalContainer}>
-            <FastImage
-              source={{
-                uri: ipfs,
-                priority: FastImage.priority.normal,
-              }}
-              resizeMode={FastImage.resizeMode.contain}
+      {loading ? (
+        <Loading />
+      ) : (
+        <ScrollView style={styles.scrollContainer}>
+          {tickets.length === 0 ? (
+            <View
               style={{
-                width: '100%',
-                height: deviceWidth - 40,
-                borderWidth: 3,
-                borderColor: '#6a4dfd',
-                shadowColor: '#6a4dfd',
-                shadowOffset: {
-                  width: 0,
-                  height: 0,
-                },
-                shadowOpacity: 0.43,
-                elevation: 10,
-              }}
-            />
-          </View>
-        </Modal>
-      </ScrollView>
+                height: deviceHeight-150,
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...styles.ticketName,
+                  fontSize: 20,
+                  lineHeight: 25,
+                  width: '100%',
+                  textAlign: 'center',
+                }}>
+                You don't have any activity.
+              </Text>
+            </View>
+          ) : (
+            tickets.map((ticket, i) => (
+              <ActivityCard
+                ticket={ticket}
+                key={i}
+                t={t}
+                sendMail={sendMail}
+                setIsModalVisible={setIsModalVisible}
+                mintNFT={mintNFT}
+                setIpfs={setIpfs}
+              />
+            ))
+          )}
+          <Modal
+            backdropColor="#6a4dfd"
+            transparent={false}
+            deviceHeight={deviceHeight + 50}
+            statusBarTranslucent
+            isVisible={isModalVisible}
+            onBackdropPress={() => setIsModalVisible(false)}>
+            <View style={styles.modalContainer}>
+              <FastImage
+                source={{
+                  uri: ipfs,
+                  priority: FastImage.priority.normal,
+                }}
+                resizeMode={FastImage.resizeMode.contain}
+                style={{
+                  width: '100%',
+                  height: deviceWidth - 40,
+                  borderWidth: 3,
+                  borderColor: '#6a4dfd',
+                  shadowColor: '#6a4dfd',
+                  shadowOffset: {
+                    width: 0,
+                    height: 0,
+                  },
+                  shadowOpacity: 0.43,
+                  elevation: 10,
+                }}
+              />
+            </View>
+          </Modal>
+        </ScrollView>
+      )}
     </View>
   );
 };
