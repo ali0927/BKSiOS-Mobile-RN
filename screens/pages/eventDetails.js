@@ -481,7 +481,7 @@ export const EventDetailsScreen = ({route}) => {
                 <BadgeMark />
               </View>
             </View>
-            <View>
+            <View style={styles.halfWidth}>
               <Text style={styles.text2}>{t('location')}</Text>
               <Text style={{...styles.infoText, width: '100%'}}>
                 {tempData.location}
@@ -927,7 +927,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontFamily: 'SpaceGrotesk-Medium',
-    textAlign: 'left',
+    textAlign: 'justify',
     fontSize: 16,
     color: 'rgba(255, 255, 255, 0.66)',
     fontWeight: '400',
