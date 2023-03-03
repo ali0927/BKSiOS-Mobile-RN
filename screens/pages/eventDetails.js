@@ -496,7 +496,9 @@ export const EventDetailsScreen = ({route}) => {
             <View>
               <Text style={styles.text2}>{t('time')}</Text>
               <Text style={styles.infoText}>
-                {timeString(new Date(tempData.date))}
+                {timeString(
+                  tempData.date === '' ? new Date() : new Date(tempData.date),
+                )}
               </Text>
               <Text style={styles.infoText}></Text>
             </View>
@@ -589,7 +591,13 @@ export const EventDetailsScreen = ({route}) => {
               <Text style={styles.evStartTxt}>{t('event starts in')}</Text>
             </View>
             <View style={styles.counterContainer}>
-              <EventCountDown date={new Date(tempData.date).toISOString()} />
+              <EventCountDown
+                date={
+                  tempData.date === ''
+                    ? new Date()
+                    : new Date(tempData.date).toISOString()
+                }
+              />
             </View>
           </View>
           <View style={styles.divider} />

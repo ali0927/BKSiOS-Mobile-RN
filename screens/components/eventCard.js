@@ -40,7 +40,7 @@ export const EventCard = ({userInfo, item, index, onClickLike, key}) => {
   };
 
   const CountTime = ({date, size = 'md'}) => {
-    const d = new Date(date);
+    const d = date === "" ? new Date() :  new Date(date);
     return (
       <Countdown date={d} renderer={props => renderer({...props, size})} />
     );
@@ -105,9 +105,12 @@ export const EventCard = ({userInfo, item, index, onClickLike, key}) => {
       <View style={styles.collectionMeta}>
         <Text style={styles.name}>{item.name}</Text>
         <View style={styles.details}>
-          <View style={{...styles.detailContainer, height: 40}}>
+          <View style={{...styles.detailContainer}}>
             <Text style={styles.info}>{t('collection')} </Text>
-            <Text style={styles.infoVal} ellipsizeMode="tail" numberOfLines={2}>
+            <Text
+              style={{...styles.infoVal, width: '90%'}}
+              ellipsizeMode="tail"
+              numberOfLines={2}>
               {item.collection.name}
             </Text>
           </View>
@@ -242,7 +245,7 @@ const styles = StyleSheet.create({
   name: {
     fontFamily: 'SpaceGrotesk-Medium',
     width: '100%',
-    textAlign: 'left',
+    textAlign: 'center',
     fontSize: 20,
     lineHeight: 24,
     fontWeight: Platform.OS === 'ios' ? '700' : '500',
