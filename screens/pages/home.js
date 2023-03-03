@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 32,
     fontWeight: Platform.OS === 'ios' ? '700' : '500',
-    textAlign: 'left',
+    textAlign: 'center',
     marginTop: 30,
     paddingLeft: 20,
   },
