@@ -52,7 +52,9 @@ export const ArticleCard = data => {
               navigation.navigate('NewsDetail', {id: data.item.id})
             }>
             <Text style={styles.articleTitle} numberOfLines={3}>
-              {data.item.title}
+              {data.item.title.charAt(0) === ' '
+                ? data.item.title.slice(1)
+                : data.item.title}
             </Text>
           </TouchableOpacity>
         </View>
@@ -96,9 +98,9 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
     lineHeight: 26,
+    textAlign: 'center',
     color: '#fff',
     fontWeight: Platform.OS === 'ios' ? '700' : '500',
-    letterSpacing: 0.5,
   },
   categoryBtn: {
     alignItems: 'center',

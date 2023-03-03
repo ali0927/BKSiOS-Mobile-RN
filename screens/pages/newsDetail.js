@@ -91,7 +91,11 @@ export const NewsDetailScreen = ({route, navigation}) => {
               onPress={() => console.log('Clicked News Button')}>
               <Text style={styles.newsText}>{t('news')}</Text>
             </TouchableOpacity>
-            <Text style={styles.articleTitle}>{article.title}</Text>
+            <Text style={styles.articleTitle}>
+              {article.title.charAt(0) === ' '
+                ? article.title.slice(1)
+                : article.title}
+            </Text>
             <RenderHTML
               contentWidth={width}
               source={{html: article.description}}
@@ -167,6 +171,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
     lineHeight: 26,
+    textAlign: 'center',
     color: '#fff',
     fontWeight: Platform.OS === 'ios' ? '700' : '500',
     marginTop: 10,
@@ -179,6 +184,7 @@ const htmlStyleSheet = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
     lineHeight: 26,
+    textAlign: 'justify',
     color: '#fff',
     fontWeight: Platform.OS === 'ios' ? '700' : '500',
   },
@@ -186,6 +192,7 @@ const htmlStyleSheet = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 20,
     lineHeight: 22,
+    textAlign: 'justify',
     color: '#fff',
     fontWeight: Platform.OS === 'ios' ? '700' : '500',
   },
@@ -197,13 +204,14 @@ const htmlStyleSheet = StyleSheet.create({
     resizeMode: 'contain',
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   p: {
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 16,
     color: 'rgba(255, 255, 255, 0.66)',
     lineHeight: 20,
+    textAlign: 'justify',
     fontWeight: '500',
   },
   ul: {
