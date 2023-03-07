@@ -290,6 +290,9 @@ export const EventDetailsScreen = ({route}) => {
     });
     return date.format('DD. MM. YYYY');
   };
+  const dateFormat = d => {
+    return moment(d).format('MMMM Do YYYY, h:mm:ss a');
+  };
   const timeString = t => {
     const dd = moment(t).format('h:mm a');
     return dd;
@@ -510,21 +513,36 @@ export const EventDetailsScreen = ({route}) => {
               </Text>
             </View>
           </View>
-          <View style={styles.infoContainer}>
-            <View style={styles.halfWidth}>
-              <Text style={styles.text2}>{t('date')}</Text>
-              <Text style={styles.infoText}>{dateString(tempData.date)}</Text>
+          {tempData.end_date === null || tempData.end_date === '' ? (
+            <View style={styles.infoContainer}>
+              <View style={styles.halfWidth}>
+                <Text style={styles.text2}>{t('date')}</Text>
+                <Text style={styles.infoText}>{dateString(tempData.date)}</Text>
+              </View>
+              <View>
+                <Text style={styles.text2}>{t('time')}</Text>
+                <Text style={styles.infoText}>
+                  {timeString(
+                    tempData.date === '' ? new Date() : new Date(tempData.date),
+                  )}
+                </Text>
+                <Text style={styles.infoText}></Text>
+              </View>
             </View>
-            <View>
-              <Text style={styles.text2}>{t('time')}</Text>
-              <Text style={styles.infoText}>
-                {timeString(
-                  tempData.date === '' ? new Date() : new Date(tempData.date),
-                )}
-              </Text>
-              <Text style={styles.infoText}></Text>
+          ) : (
+            <View style={styles.infoContainer}>
+              <View style={styles.halfWidth}>
+                <Text style={styles.text2}>{t('start date')}</Text>
+                <Text style={styles.infoText}>{dateFormat(tempData.date)}</Text>
+              </View>
+              <View style={styles.halfWidth}>
+                <Text style={styles.text2}>{t('end date')}</Text>
+                <Text style={styles.infoText}>
+                  {dateFormat(tempData.end_date)}
+                </Text>
+              </View>
             </View>
-          </View>
+          )}
           <View style={styles.divider} />
           <View style={styles.infoContainer}>
             <View style={styles.halfWidth}>
