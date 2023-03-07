@@ -17,7 +17,7 @@ export const HomeHero = ({navigation}) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Explore')}>
+          onPress={() => navigation.navigate('Search')}>
           <Text style={styles.buttonText}>{t('explore')}</Text>
         </TouchableOpacity>
         {!userInfo && (

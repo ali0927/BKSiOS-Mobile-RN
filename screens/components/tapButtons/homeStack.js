@@ -20,6 +20,7 @@ import {ForgetPasswordScreen} from '../../pages/signPage/ForgetPassword';
 import {useTranslation} from 'react-i18next';
 import {SignInScreen} from '../../pages/signPage/signIn';
 import {SignUpScreen} from '../../pages/signPage/signUp';
+import { EventDetailsScreen } from '../../pages/eventDetails';
 
 const HomeStack = createNativeStackNavigator();
 const windowWidth = Dimensions.get('window').width;
@@ -99,6 +100,14 @@ export const HomeStackScreen = () => {
         component={CollectionScreen}
         options={{
           headerTitle: () => <Header title={t('collection')} />,
+          headerBackVisible: false,
+        }}
+      />
+      <HomeStack.Screen
+        name="EventDetail"
+        component={EventDetailsScreen}
+        options={{
+          headerTitle: () => <Header title={t('item')} />,
           headerBackVisible: false,
         }}
       />

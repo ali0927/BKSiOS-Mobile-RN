@@ -69,7 +69,7 @@ export const EventCard = ({userInfo, item, index, onClickLike, key}) => {
   return (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate('Explore', {
+        navigation.navigate('Home', {
           screen: 'EventDetail',
           params: {item: item},
         })

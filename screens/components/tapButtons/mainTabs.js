@@ -5,7 +5,6 @@ import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
   Dimensions,
-  Image,
   Platform,
   SafeAreaView,
   StatusBar,
@@ -15,8 +14,6 @@ import {
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import ExploreActImg from '../../../assets/img/icons/explore-act.svg';
-import ExploreImg from '../../../assets/img/icons/explore.svg';
 import HomeActImg from '../../../assets/img/icons/home-act.svg';
 import HomeImg from '../../../assets/img/icons/home.svg';
 import MenuActImg from '../../../assets/img/icons/menu-act.svg';
@@ -26,9 +23,7 @@ import NewsImg from '../../../assets/img/icons/news.svg';
 import SearchActImg from '../../../assets/img/icons/search-act.svg';
 import SearchTopImg from '../../../assets/img/icons/search-top.svg';
 import SearchImg from '../../../assets/img/icons/search.svg';
-// import HomeActImg from '../../../assets/img/home.svg';
 import {SearchScreen} from '../../pages/search';
-import {ExplorerStackScreen} from './explorerStack';
 import {HomeStackScreen} from './homeStack';
 import {MenuStackScreen} from './menuStack';
 import {NewsStackScreen} from './newsStack';
@@ -36,12 +31,10 @@ import {NewsStackScreen} from './newsStack';
 const Tab = createBottomTabNavigator();
 const THEME_COLOR = '#14142f';
 const windowWidth = Dimensions.get('window').width;
-// const windowHeight = Dimensions.get('window').height;
 
 export default function MainTabs() {
   const [focusedItem, setFocusedItem] = useState(true);
   const [searchValue, setSearchValue] = useState('');
-  // const [searchValidation, setSearchValidation] = useState('');
   const dispatch = useDispatch();
   const {t, i18n} = useTranslation();
   const countryInfo = useSelector(
@@ -114,15 +107,15 @@ export default function MainTabs() {
             name="Search"
             component={SearchScreen}
             options={{
-              tabBarLabel: t('search'),
+              tabBarLabel: t('explore'),
               headerTitle: () => (
                 <View style={{alignItems: 'center', width: windowWidth - 30}}>
-                  <Text style={styles.headerTitle}>{t('search')}</Text>
+                  <Text style={styles.headerTitle}>{t('explore')}</Text>
                   <View style={styles.searchContainer}>
                     <TextInput
                       onFocus={() => setFocusedItem(true)}
                       onBlur={() => setFocusedItem(false)}
-                      placeholder={t('search items, collections, and creators')}
+                      placeholder={t('explore')}
                       placeholderTextColor=" rgba(255, 255, 255, 0.33)"
                       style={focusedItem ? styles.inputOnFocus : styles.input}
                       value={searchValue}
@@ -136,35 +129,6 @@ export default function MainTabs() {
               tabBarIcon: status =>
                 status.focused ? <SearchActImg /> : <SearchImg />,
               headerStyle: styles.headerStyle,
-            }}
-          />
-          <Tab.Screen
-            name="Explore"
-            component={ExplorerStackScreen}
-            options={{
-              tabBarLabel: t('explore'),
-              headerTitle: () => (
-                <View style={{alignItems: 'center'}}>
-                  <Text style={styles.headerTitle}>{t('explore')}</Text>
-                  <View style={styles.searchContainer}>
-                    <TextInput
-                      onFocus={() => setFocusedItem(true)}
-                      onBlur={() => setFocusedItem(false)}
-                      placeholder={t('search items, collections, and creators')}
-                      placeholderTextColor=" rgba(255, 255, 255, 0.33)"
-                      style={focusedItem ? styles.inputOnFocus : styles.input}
-                      value={searchValue}
-                      autoCapitalize="none"
-                      onChangeText={val => handleChange(val.toLowerCase())}
-                    />
-                    <SearchTopImg style={styles.searchImage} />
-                  </View>
-                </View>
-              ),
-              tabBarIcon: status =>
-                status.focused ? <ExploreActImg /> : <ExploreImg />,
-              headerStyle: styles.headerStyle,
-              headerShown: false,
             }}
           />
           <Tab.Screen
