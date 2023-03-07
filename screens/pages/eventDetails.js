@@ -15,6 +15,7 @@ import {
   Dimensions,
   TouchableOpacity,
   View,
+  TouchableHighlight,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
@@ -22,6 +23,7 @@ import {useSelector} from 'react-redux';
 import bitkeepImg from '../../assets/img/bitkeep.png';
 import creditImg from '../../assets/img/credit-card.png';
 import ClockImg from '../../assets/img/icons/clock.svg';
+import MuteImg from '../../assets/img/mute.svg';
 import LikeImg from '../../assets/img/icons/liked-white.svg';
 import LikeBlueImg from '../../assets/img/icons/like-fill.svg';
 import mapImg from '../../assets/img/icons/map.png';
@@ -78,6 +80,7 @@ export const EventDetailsScreen = ({route}) => {
   const [wallet, setWallet] = useState('');
   const [showCreditModal, setShowCreditModal] = useState(false);
   const [collectionPicture, setCollectionPicture] = useState('');
+  const [isMuted, setIsMuted] = useState(false);
   // Credit card
 
   const toggleModal = () => {
@@ -429,19 +432,38 @@ export const EventDetailsScreen = ({route}) => {
   return (
     <ScrollView style={styles.container}>
       {tempData && (
-        <View>
+        <View style={styles.muteImg}>
           {isVideoFile(tempData.picture_large) ? (
-            <Video
-              source={{
-                uri:
-                  config.API_BASE_URL +
-                  '/api/upload/get_file?path=' +
-                  tempData.picture_large,
-              }}
-              style={styles.eventImg}
-              resizeMode="stretch"
-              repeat
-            />
+            <TouchableHighlight
+              onPress={() => setIsMuted(!isMuted)}
+              style={styles.eventImg}>
+              <View style={{position: 'relative'}}>
+                {isMuted && (
+                  <MuteImg
+                    style={{
+                      position: `absolute`,
+                      right: 10,
+                      top: 10,
+                      zIndex: 10,
+                    }}
+                    height={30}
+                    width={30}
+                  />
+                )}
+                <Video
+                  source={{
+                    uri:
+                      config.API_BASE_URL +
+                      '/api/upload/get_file?path=' +
+                      tempData.picture_large,
+                  }}
+                  style={styles.eventImg}
+                  muted={isMuted}
+                  resizeMode="stretch"
+                  repeat
+                />
+              </View>
+            </TouchableHighlight>
           ) : (
             <Image
               source={{
