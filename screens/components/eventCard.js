@@ -129,7 +129,8 @@ export const EventCard = ({userInfo, item, index, onClickLike, key}) => {
               style={{
                 flexDirection: 'row',
                 flexWrap: 'wrap',
-                height: 70,
+                maxHeight: 80,
+                overflow: 'hidden'
               }}>
               {JSON.parse(item.addons).map((addon, i) => (
                 <TouchableOpacity onPress={() => showModal(addon)}>
@@ -139,7 +140,7 @@ export const EventCard = ({userInfo, item, index, onClickLike, key}) => {
                       width: 30,
                       height: 30,
                       borderRadius: 5,
-                      marginRight: 18,
+                      marginRight: 26,
                       marginTop: 10,
                     }}
                   />
