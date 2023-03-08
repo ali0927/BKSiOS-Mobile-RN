@@ -719,4 +719,7 @@ const styles = StyleSheet.create({
     top: 10,
     left: 10,
   },
+  eventCardsContainer: {
+    alignItems: 'center',
+  },
 });

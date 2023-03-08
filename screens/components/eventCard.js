@@ -99,7 +99,7 @@ export const EventCard = ({userInfo, item, index, onClickLike, key}) => {
             item.picture_small,
           priority: FastImage.priority.normal,
         }}
-        resizeMode={FastImage.resizeMode.stretch}
+        resizeMode={FastImage.resizeMode.contain}
         style={styles.img}
       />
       <View style={styles.collectionMeta}>
@@ -183,10 +183,8 @@ export const EventCard = ({userInfo, item, index, onClickLike, key}) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    flex: 1,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    width: '100%',
-    marginRight: 30,
+    width: ITEM_WIDTH,
     marginTop: 15,
     borderRadius: 12,
     overflow: 'hidden',
@@ -204,7 +202,7 @@ const styles = StyleSheet.create({
     zIndex: 200,
   },
   img: {
-    width: '100%',
+    width: ITEM_WIDTH,
     borderTopRightRadius: 8,
     borderTopLeftRadius: 8,
     height: ITEM_WIDTH,
