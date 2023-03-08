@@ -207,19 +207,9 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   inputOnFocus: {
-    // shadowColor: '#6a4dfd',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 0,
-    // },
-    // shadowOpacity: 0.8,
-    // shadowRadius: 5,
-    // borderColor: '#6a4dfd',
-    // border: 'none',
     borderColor: 'transparent',
     backgroundColor: 'rgba(255, 255, 255, 0.06)',
     width: windowWidth - 35,
-    // width: 350,
     height: 36,
     borderWidth: 1,
     padding: 8,
@@ -228,9 +218,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     fontSize: 14,
     fontWeight: '500',
-  },
-  inputText: {
-    color: '#fff',
   },
   searchImage: {
     position: 'absolute',
