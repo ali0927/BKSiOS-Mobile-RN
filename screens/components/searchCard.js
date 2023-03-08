@@ -1,6 +1,5 @@
 import {useNavigation} from '@react-navigation/core';
-import React, {useEffect} from 'react';
-import {useTranslation} from 'react-i18next';
+import React from 'react';
 import {
   Dimensions,
   Image,
@@ -17,11 +16,6 @@ import {Loading} from './loading';
 const deviceWidth = Dimensions.get('window').width;
 export const SearchCard = ({collections, isLoading}) => {
   const navigation = useNavigation();
-  const {t} = useTranslation();
-
-  useEffect(() => {
-    console.log('FSAFAF', isLoading, 'VVV==>', collections);
-  }, []);
   return (
     <View style={styles.resultContainer}>
       {isLoading && <Loading />}
