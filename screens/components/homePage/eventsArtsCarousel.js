@@ -23,6 +23,7 @@ const EventsArtsCarousel = () => {
         index={index}
         onClickLike={onClickLike}
         key={'aEvent' + index}
+        goTo = {"EventDetail"}
       />
     );
   };
