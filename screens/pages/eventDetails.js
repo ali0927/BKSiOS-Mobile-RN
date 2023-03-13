@@ -59,6 +59,7 @@ export const EventDetailsScreen = ({route}) => {
   const [userInfo, setUserInfo] = useState();
   const _userInfo = useSelector(state => state.userInfoReducer).userInfo;
   const country = useSelector(state => state.locationInfoReducer).locationInfo;
+  const tab = useSelector(state => state.tabInfoReducer).currentTab;
 
   const id = route.params.item.id;
   const tempData = route.params.item;
@@ -438,6 +439,9 @@ export const EventDetailsScreen = ({route}) => {
   useEffect(() => {
     setUserInfo(JSON.parse(_userInfo));
   }, [_userInfo]);
+  useEffect(() => {
+    if (tab !== 'Home') setIsMuted(true);
+  }, [tab]);
   return (
     <ScrollView style={styles.container}>
       {tempData && (

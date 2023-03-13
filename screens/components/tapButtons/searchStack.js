@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/core';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Dimensions,
   Image,
@@ -36,7 +36,9 @@ export const SearchStackScreen = () => {
   };
 
   const Header = ({title, goTo}) => {
-    const currentCollection = useSelector(state => state.collectionInfoReducer).currentCollection;
+    const currentCollection = useSelector(
+      state => state.collectionInfoReducer,
+    ).currentCollection;
     console.log('Current Collection:', currentCollection);
     return (
       <View style={styles.headerContainer}>
@@ -53,7 +55,11 @@ export const SearchStackScreen = () => {
       </View>
     );
   };
-
+  useEffect(() => {
+    navigation.addListener('tabPress', e => {
+      dispatch({type: 'SET_TAB_INFO', payload: 'Explore'});
+    });
+  }, [navigation]);
   return (
     <SearchStack.Navigator
       initialRouteName="SearchMain"

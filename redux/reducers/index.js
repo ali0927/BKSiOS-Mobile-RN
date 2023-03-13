@@ -4,6 +4,7 @@ import {locationInfoReducer} from './locationInfo';
 import {searchInfoReducer} from './searchInfo';
 import {userInfoReducer} from './userInfo';
 import {collectionInfoReducer} from './collectionInfo';
+import {tabInfoReducer} from './tabInfo';
 
 export default combineReducers({
   userInfoReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   locationInfoReducer,
   currencyInfoReducer,
   collectionInfoReducer,
+  tabInfoReducer,
 });

@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/core';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Dimensions,
   Image,
@@ -21,6 +21,7 @@ import {useTranslation} from 'react-i18next';
 import {SignInScreen} from '../../pages/signPage/signIn';
 import {SignUpScreen} from '../../pages/signPage/signUp';
 import {EventDetailsScreen} from '../../pages/eventDetails';
+import {useDispatch} from 'react-redux';
 
 const HomeStack = createNativeStackNavigator();
 const windowWidth = Dimensions.get('window').width;
@@ -28,6 +29,7 @@ const windowWidth = Dimensions.get('window').width;
 export const HomeStackScreen = () => {
   const navigation = useNavigation();
   const {t} = useTranslation();
+  const dispatch = useDispatch();
   const Header = ({title}) => {
     return (
       <View style={styles.headerContainer}>
@@ -39,7 +41,11 @@ export const HomeStackScreen = () => {
       </View>
     );
   };
-
+  useEffect(() => {
+    navigation.addListener('tabPress', e => {
+      dispatch({type: 'SET_TAB_INFO', payload: 'Home'});
+    });
+  }, [navigation]);
   return (
     <HomeStack.Navigator
       initialRouteName="HomeMain"
