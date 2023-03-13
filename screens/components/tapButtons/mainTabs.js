@@ -23,7 +23,6 @@ import NewsImg from '../../../assets/img/icons/news.svg';
 import SearchActImg from '../../../assets/img/icons/search-act.svg';
 import SearchTopImg from '../../../assets/img/icons/search-top.svg';
 import SearchImg from '../../../assets/img/icons/search.svg';
-import {SearchScreen} from '../../pages/search';
 import {HomeStackScreen} from './homeStack';
 import {SearchStackScreen} from './searchStack';
 import {MenuStackScreen} from './menuStack';
