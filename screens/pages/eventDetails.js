@@ -101,21 +101,27 @@ export const EventDetailsScreen = ({route}) => {
     return s.substr(s.length - size);
   };
 
-  const renderer = ({days, hours, minutes, seconds, completed}) => {
+  const renderer = ({days, hours, minutes, seconds, completed, size}) => {
     if (completed) {
-      return <CompletionList />;
+      return <CompletionList size={size} />;
     } else {
       return (
         <Text style={styles.text1}>
-          {days} days {pad(hours)}h {pad(minutes)}m {pad(seconds)}s
+          {days} days {pad(hours)}h {pad(minutes)}m
         </Text>
       );
     }
   };
 
-  const EventCountDown = ({date}) => {
-    const d = new Date(date);
-    return <Countdown date={d} renderer={renderer} />;
+  const EventCountDown = ({event, size = 'md'}) => {
+    const d = new Date(event.date);
+    const e = new Date(event.end_date);
+    return (
+      <Countdown
+        date={event.end_date ? e : d}
+        renderer={props => renderer({...props, size})}
+      />
+    );
   };
 
   const handleBuyTicket = (orderid, _wallet, _chain) => {
@@ -513,36 +519,56 @@ export const EventDetailsScreen = ({route}) => {
               </Text>
             </View>
           </View>
-          {tempData.end_date === null || tempData.end_date === '' ? (
+          {tempData.category === 'Category1' && (
             <View style={styles.infoContainer}>
               <View style={styles.halfWidth}>
                 <Text style={styles.text2}>{t('date')}</Text>
-                <Text style={styles.infoText}>{dateString(tempData.date)}</Text>
+                <Text style={styles.infoText}>
+                  {moment(tempData.date).format('ll')}
+                </Text>
               </View>
               <View>
                 <Text style={styles.text2}>{t('time')}</Text>
                 <Text style={styles.infoText}>
-                  {timeString(
-                    tempData.date === '' ? new Date() : new Date(tempData.date),
-                  )}
+                  {moment(tempData.date).format('h:mm a')}
                 </Text>
                 <Text style={styles.infoText}></Text>
               </View>
             </View>
-          ) : (
-            <View style={styles.infoContainer}>
-              <View style={styles.halfWidth}>
-                <Text style={styles.text2}>{t('start date')}</Text>
-                <Text style={styles.infoText}>{dateFormat(tempData.date)}</Text>
+          )}
+          {tempData.category === 'Category3' &&
+            (tempData.period === null ? (
+              <View style={styles.infoContainer}>
+                <View style={styles.halfWidth}>
+                  <Text style={styles.text2}>
+                    {tempData?.end_date ? t('start date') : t('date')}
+                  </Text>
+                  <Text style={{...styles.infoText, width: '90%'}}>
+                    {tempData?.end_date
+                      ? moment(tempData.date).format('LLL')
+                      : moment(tempData.date).format('ll')}
+                  </Text>
+                </View>
+                <View style={styles.halfWidth}>
+                  <Text style={styles.text2}>
+                    {tempData?.end_date ? t('end date') : t('time')}
+                  </Text>
+                  <Text style={styles.infoText}>
+                    {tempData?.end_date
+                      ? moment(tempData.end_date).format('LLL')
+                      : moment(tempData.date).format('h:mm a')}
+                  </Text>
+                  <Text style={styles.infoText}></Text>
+                </View>
               </View>
-              <View style={styles.halfWidth}>
-                <Text style={styles.text2}>{t('end date')}</Text>
+            ) : (
+              <View style={{...styles.halfWidth, marginBottom: 10}}>
+                <Text style={styles.text2}>{t('Benefit Period')}</Text>
                 <Text style={styles.infoText}>
-                  {dateFormat(tempData.end_date)}
+                  {tempData.period} {tempData.period_unit}
                 </Text>
               </View>
-            </View>
-          )}
+            ))}
           <View style={styles.divider} />
           <View style={styles.infoContainer}>
             <View style={styles.halfWidth}>
@@ -624,28 +650,28 @@ export const EventDetailsScreen = ({route}) => {
             modalVisible={isAddonModalVisible}
             setModalVisible={setAddonModalVisible}
           />
-          <View style={styles.divider} />
-          <View style={styles.eventCounter}>
-            <View style={styles.rowCenter}>
-              <ClockImg />
-              <Text style={styles.evStartTxt}>{t('event starts in')}</Text>
-            </View>
-            <View style={styles.counterContainer}>
-              <EventCountDown
-                date={
-                  tempData.date === ''
-                    ? new Date()
-                    : new Date(tempData.date).toISOString()
-                }
-              />
-            </View>
-          </View>
+          {tempData.category !== 'Category2' && (
+            <>
+              <View style={styles.divider} />
+              <View style={styles.eventCounter}>
+                <View style={styles.rowCenter}>
+                  <ClockImg />
+                  <Text style={styles.evStartTxt}>
+                    {tempData.category === 'Category1'
+                      ? t('event starts in')
+                      : t('end of the offer')}
+                  </Text>
+                </View>
+                <View style={styles.counterContainer}>
+                  <EventCountDown event={tempData} />
+                </View>
+              </View>
+            </>
+          )}
+
           <View style={styles.divider} />
           <View style={styles.flexRow}>
-            <Text style={styles.remainTickets}>
-              {/* {tempData.total_tickets - tempData.buy_count}{' '}
-              {t('ticket(s) left')} */}
-            </Text>
+            <Text style={styles.remainTickets}></Text>
             <Text style={styles.priceText}>
               <Currency price={tempData.price} /> <CurrencySymbol />
             </Text>
@@ -855,6 +881,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk-Medium',
     fontSize: 24,
     lineHeight: 24,
+    textAlign: 'center',
     width: deviceWidth - 80,
     color: '#fff',
     fontWeight: Platform.OS === 'ios' ? '700' : '500',
@@ -975,7 +1002,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontFamily: 'SpaceGrotesk-Medium',
-    textAlign: 'justify',
+    textAlign: 'left',
     fontSize: 16,
     color: 'rgba(255, 255, 255, 0.66)',
     fontWeight: '400',

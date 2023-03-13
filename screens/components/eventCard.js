@@ -40,7 +40,7 @@ export const EventCard = ({userInfo, item, index, onClickLike, key}) => {
   };
 
   const CountTime = ({date, size = 'md'}) => {
-    const d = date === "" ? new Date() :  new Date(date);
+    const d = new Date(date);
     return (
       <Countdown date={d} renderer={props => renderer({...props, size})} />
     );
@@ -130,7 +130,7 @@ export const EventCard = ({userInfo, item, index, onClickLike, key}) => {
                 flexDirection: 'row',
                 flexWrap: 'wrap',
                 maxHeight: 80,
-                overflow: 'hidden'
+                overflow: 'hidden',
               }}>
               {JSON.parse(item.addons).map((addon, i) => (
                 <TouchableOpacity onPress={() => showModal(addon)}>
@@ -151,20 +151,26 @@ export const EventCard = ({userInfo, item, index, onClickLike, key}) => {
         </View>
         <View style={styles.divider} />
         <View style={styles.footerDetails}>
-          <Text style={styles.info}>ends in</Text>
+          <Text style={styles.info}>
+            {item.category !== 'Category2' ? 'ends in' : ''}
+          </Text>
           <Text style={styles.info}>{t('reserve price')}</Text>
         </View>
         <View style={styles.footerDetails}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <ClockImg
-              style={{
-                width: 20,
-                height: 20,
-                marginRight: 10,
-              }}
-            />
-            <CountTime date={item.date} />
-          </View>
+          {item.category !== 'Category2' ? (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <ClockImg
+                style={{
+                  width: 20,
+                  height: 20,
+                  marginRight: 10,
+                }}
+              />
+              <CountTime date={item?.end_date ? item.end_date : item.date} />
+            </View>
+          ) : (
+            <View />
+          )}
           <View>
             <Text style={styles.price}>
               <Currency price={item.price + addonPrice} /> <CurrencySymbol />

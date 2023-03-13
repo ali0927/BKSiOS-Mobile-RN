@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 160,
     backgroundColor: '#14142f',
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
   collectionAvatar: {
     borderRadius: 12,
