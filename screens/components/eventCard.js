@@ -23,7 +23,7 @@ import {AddonModal} from './modals/addonModal';
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 
-export const EventCard = ({userInfo, item, index, onClickLike, key}) => {
+export const EventCard = ({userInfo, item, index, onClickLike, key, goTo}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentAddon, setCurrentAddon] = useState();
   const navigation = useNavigation();
@@ -69,10 +69,15 @@ export const EventCard = ({userInfo, item, index, onClickLike, key}) => {
   return (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate('Home', {
-          screen: 'EventDetail',
-          params: {item: item},
-        })
+        goTo === 'EventDetail'
+          ? navigation.navigate('Home', {
+              screen: 'EventDetail',
+              params: {item: item},
+            })
+          : navigation.navigate('Search', {
+              screen: 'EventDetail1',
+              params: {item: item},
+            })
       }
       style={styles.cardContainer}
       key={key}>

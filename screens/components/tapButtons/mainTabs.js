@@ -25,6 +25,7 @@ import SearchTopImg from '../../../assets/img/icons/search-top.svg';
 import SearchImg from '../../../assets/img/icons/search.svg';
 import {SearchScreen} from '../../pages/search';
 import {HomeStackScreen} from './homeStack';
+import {SearchStackScreen} from './searchStack';
 import {MenuStackScreen} from './menuStack';
 import {NewsStackScreen} from './newsStack';
 
@@ -105,7 +106,7 @@ export default function MainTabs() {
           />
           <Tab.Screen
             name="Search"
-            component={SearchScreen}
+            component={SearchStackScreen}
             options={{
               tabBarLabel: t('explore'),
               headerTitle: () => (
@@ -128,7 +129,7 @@ export default function MainTabs() {
               ),
               tabBarIcon: status =>
                 status.focused ? <SearchActImg /> : <SearchImg />,
-              headerStyle: styles.headerStyle,
+              headerShown: false,
             }}
           />
           <Tab.Screen

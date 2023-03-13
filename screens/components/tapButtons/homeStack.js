@@ -8,7 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Platform
+  Platform,
 } from 'react-native';
 import arrowLeft from '../../../assets/img/icons/arrow-left.png';
 import logoImg from '../../../assets/img/icons/logo-app.png';
@@ -20,7 +20,7 @@ import {ForgetPasswordScreen} from '../../pages/signPage/ForgetPassword';
 import {useTranslation} from 'react-i18next';
 import {SignInScreen} from '../../pages/signPage/signIn';
 import {SignUpScreen} from '../../pages/signPage/signUp';
-import { EventDetailsScreen } from '../../pages/eventDetails';
+import {EventDetailsScreen} from '../../pages/eventDetails';
 
 const HomeStack = createNativeStackNavigator();
 const windowWidth = Dimensions.get('window').width;

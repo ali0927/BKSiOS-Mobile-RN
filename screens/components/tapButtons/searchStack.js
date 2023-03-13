@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/core';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
@@ -11,16 +12,19 @@ import {
   View,
 } from 'react-native';
 import arrowLeft from '../../../assets/img/icons/arrow-left.png';
-import searchTopImg from '../../../assets/img/icons/search-top.png';
-import {EventDetailsScreen} from '../../pages/eventDetails';
-// import {PrivacyScreen} from '../../pages/signPage/privacy';
 import {useTranslation} from 'react-i18next';
-import {useDispatch} from 'react-redux';
-import {ExplorerScreen} from '../../pages/explorer';
+import {useDispatch, useSelector} from 'react-redux';
+import {SearchScreen} from '../../pages/search';
+import SearchActImg from '../../../assets/img/icons/search-act.svg';
+import SearchTopImg from '../../../assets/img/icons/search-top.svg';
+import SearchImg from '../../../assets/img/icons/search.svg';
+import {ProfileAuthor1Screen} from '../../pages/profileAuthor1';
+import {EventDetails1Screen} from '../../pages/eventDetails1';
 
-const ExplorerStack = createNativeStackNavigator();
+const THEME_COLOR = '#14142f';
+const SearchStack = createNativeStackNavigator();
 const windowWidth = Dimensions.get('window').width;
-export const ExplorerStackScreen = () => {
+export const SearchStackScreen = () => {
   const [focusedItem, setFocusedItem] = useState(true);
   const [searchValue, setSearchValue] = useState('');
   const navigation = useNavigation();
@@ -30,68 +34,84 @@ export const ExplorerStackScreen = () => {
     setSearchValue(value);
     dispatch({type: 'SET_SEARCH_INFO', payload: value});
   };
-  const Header = () => {
+
+  const Header = ({title, goTo}) => {
+    const currentCollection = useSelector(state => state.collectionInfoReducer).currentCollection;
+    console.log('Current Collection:', currentCollection);
     return (
       <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Explorer')}>
+        <TouchableOpacity
+          onPress={() =>
+            goTo === 'SearchMain'
+              ? navigation.navigate('SearchMain')
+              : navigation.navigate('AuthorProfile1', {item: currentCollection})
+          }>
           <Image source={arrowLeft} />
         </TouchableOpacity>
-        <Text style={styles.titleText}>{t('item')}</Text>
+        <Text style={styles.titleText}>{title}</Text>
         <View style={{width: 60}} />
       </View>
     );
   };
 
   return (
-    <ExplorerStack.Navigator
-      initialRouteName="Explorer"
+    <SearchStack.Navigator
+      initialRouteName="SearchMain"
       screenOptions={{
         headerStyle: {
           backgroundColor: '#14142f',
           headerShown: false,
         },
       }}>
-      <ExplorerStack.Screen
-        name="Explorer"
-        component={ExplorerScreen}
+      <SearchStack.Screen
+        name="SearchMain"
+        component={SearchScreen}
         options={{
           tabBarLabel: t('explore'),
           headerTitle: () => (
-            <View
-              style={{
-                alignItems: 'center',
-                width: windowWidth - 40,
-                paddingVertical: 15,
-              }}>
+            <View style={{alignItems: 'center', width: windowWidth - 30}}>
               <Text style={styles.headerTitle}>{t('explore')}</Text>
               <View style={styles.searchContainer}>
                 <TextInput
                   onFocus={() => setFocusedItem(true)}
                   onBlur={() => setFocusedItem(false)}
-                  placeholder={t('search items, collections, and creators')}
+                  placeholder={t('explore')}
                   placeholderTextColor=" rgba(255, 255, 255, 0.33)"
                   style={focusedItem ? styles.inputOnFocus : styles.input}
                   value={searchValue}
                   autoCapitalize="none"
                   onChangeText={val => handleChange(val.toLowerCase())}
                 />
-                <Image source={searchTopImg} style={styles.searchImage} />
+                <SearchTopImg style={styles.searchImage} />
               </View>
             </View>
           ),
-          //   headerShown: false,
-          headerBackVisible: false,
+          tabBarIcon: status =>
+            status.focused ? <SearchActImg /> : <SearchImg />,
+          headerStyle: styles.headerStyle,
         }}
       />
-      <ExplorerStack.Screen
-        name="EventDetail"
-        component={EventDetailsScreen}
+      <SearchStack.Screen
+        name="AuthorProfile1"
+        component={ProfileAuthor1Screen}
         options={{
-          headerTitle: () => <Header title={t('item')} />,
+          headerTitle: () => (
+            <Header title={t('profile')} goTo={'SearchMain'} />
+          ),
           headerBackVisible: false,
         }}
       />
-    </ExplorerStack.Navigator>
+      <SearchStack.Screen
+        name="EventDetail1"
+        component={EventDetails1Screen}
+        options={{
+          headerTitle: () => (
+            <Header title={t('item')} goTo={'AuthorProfile1'} />
+          ),
+          headerBackVisible: false,
+        }}
+      />
+    </SearchStack.Navigator>
   );
 };
 
@@ -168,5 +188,9 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     marginBottom: 10,
     letterSpacing: 2,
+  },
+  headerStyle: {
+    height: 100,
+    backgroundColor: THEME_COLOR,
   },
 });

@@ -36,7 +36,7 @@ import {getLikesNumber} from '../utils';
 
 const windowWidth = Dimensions.get('window').width;
 
-export const ProfileAuthorScreen = ({route}) => {
+export const ProfileAuthor1Screen = ({route}) => {
   const collectionData = route.params.item;
   const {t} = useTranslation();
   // for events
@@ -470,7 +470,7 @@ export const ProfileAuthorScreen = ({route}) => {
                   index={index}
                   onClickLike={onClickLike}
                   key={'exc' + index}
-                  goTo = {"EventDetail"}
+                  goTo = {"EventDetail1"}
                 />
               ))}
               {events.length === 0 && !loading && (

@@ -12,9 +12,11 @@ import {
 import FastImage from 'react-native-fast-image';
 import config from '../helper/config';
 import {Loading} from './loading';
+import {useDispatch} from 'react-redux';
 
 const deviceWidth = Dimensions.get('window').width;
 export const SearchCard = ({collections, isLoading}) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   return (
     <View style={styles.resultContainer}>
@@ -24,9 +26,13 @@ export const SearchCard = ({collections, isLoading}) => {
           return (
             <TouchableOpacity
               style={styles.resultItem}
-              onPress={() =>
-                navigation.navigate('AuthorProfile', {item: collection})
-              }
+              onPress={() => {
+                dispatch({
+                  type: 'SET_COLLECTION_INFO',
+                  payload: collection,
+                });
+                navigation.navigate('AuthorProfile1', {item: collection});
+              }}
               key={'collections' + i}>
               <View style={styles.resultBackImg}>
                 <FastImage
