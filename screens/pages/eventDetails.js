@@ -474,15 +474,15 @@ export const EventDetailsScreen = ({route}) => {
               </View>
             </TouchableHighlight>
           ) : (
-            <Image
+            <FastImage
               source={{
                 uri:
                   config.API_BASE_URL +
                   '/api/upload/get_file?path=' +
                   tempData.picture_large,
               }}
+              resizeMode={FastImage.resizeMode.stretch}
               style={styles.eventImg}
-              resizeMode="stretch"
             />
           )}
           <View style={styles.flexRow}>
