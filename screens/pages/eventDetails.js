@@ -593,7 +593,7 @@ export const EventDetailsScreen = ({route}) => {
               </View>
             </View>
             <View style={styles.halfWidth}>
-              <Text style={styles.text2}>{t('addons')}</Text>
+              <Text style={styles.text2}>{t('addons included')}</Text>
               <View
                 style={{
                   flexDirection: 'row',

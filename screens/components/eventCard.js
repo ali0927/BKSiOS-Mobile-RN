@@ -129,7 +129,7 @@ export const EventCard = ({userInfo, item, index, onClickLike, key, goTo}) => {
         </View>
         <View style={styles.details}>
           <View>
-            <Text style={styles.info}>{t('addons')}</Text>
+            <Text style={styles.info}>{t('addons included')}</Text>
             <View
               style={{
                 flexDirection: 'row',
