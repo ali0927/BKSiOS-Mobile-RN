@@ -39,7 +39,6 @@ export const SearchScreen = () => {
   ]);
   const [currentCategory, setCurrentCategory] = useState(0);
   const searchInfo = useSelector(state => state.searchInfoReducer).searchInfo;
- 
   const filterData = collections_ => {
     let res = [];
     if (searchInfo !== null) {
@@ -61,13 +60,31 @@ export const SearchScreen = () => {
         temp = res.collections;
         setAllCollections(temp);
         setCollections(
-          temp.filter(collection => collection.category === 'Events'),
+          temp.filter(collection => {
+            if (
+              collection.categories !== null &&
+              collection.categories.includes('Category1')
+            )
+              return collection;
+          }),
         );
         setDigitalCollections(
-          temp.filter(collection => collection.category === 'Art'),
+          temp.filter(collection => {
+            if (
+              collection.categories !== null &&
+              collection.categories.includes('Category2')
+            )
+              return collection;
+          }),
         );
         setServicesCollections(
-          temp.filter(collection => collection.category === 'Store'),
+          temp.filter(collection => {
+            if (
+              collection.categories !== null &&
+              collection.categories.includes('Category3')
+            )
+              return collection;
+          }),
         );
       } else {
         console.log('ERROR:::', res);
@@ -76,7 +93,7 @@ export const SearchScreen = () => {
   }, []);
 
   useEffect(() => {
-    console.log("Search info changed", searchInfo);
+    console.log('Search info changed', searchInfo);
   }, [searchInfo]);
   return (
     <View style={styles.container}>
