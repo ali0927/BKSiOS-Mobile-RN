@@ -5,6 +5,7 @@ import {searchInfoReducer} from './searchInfo';
 import {userInfoReducer} from './userInfo';
 import {collectionInfoReducer} from './collectionInfo';
 import {tabInfoReducer} from './tabInfo';
+import {itemInfoReducer} from './itemInfo';
 
 export default combineReducers({
   userInfoReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
   currencyInfoReducer,
   collectionInfoReducer,
   tabInfoReducer,
+  itemInfoReducer,
 });

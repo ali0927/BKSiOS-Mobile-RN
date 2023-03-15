@@ -42,10 +42,11 @@ export const HomeStackScreen = () => {
     );
   };
   useEffect(() => {
-    navigation.addListener('tabPress', e => {
+    navigation.addListener('focus', e => {
       dispatch({type: 'SET_TAB_INFO', payload: 'Home'});
+      dispatch({type: 'SET_ITEM_MUTE_SEARCH', payload: true});
     });
-  }, [navigation]);
+  }, []);
   return (
     <HomeStack.Navigator
       initialRouteName="HomeMain"

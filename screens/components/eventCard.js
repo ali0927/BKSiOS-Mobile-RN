@@ -11,6 +11,7 @@ import {
   View,
   Platform,
 } from 'react-native';
+import {useDispatch} from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import ClockImg from '../../assets/img/icons/clock.svg';
 import LikeBlueImg from '../../assets/img/icons/like-fill.svg';
@@ -28,6 +29,7 @@ export const EventCard = ({userInfo, item, index, onClickLike, key, goTo}) => {
   const [currentAddon, setCurrentAddon] = useState();
   const navigation = useNavigation();
   const {t} = useTranslation();
+  const dispatch = useDispatch();
   const addons = item.addons === '' ? [] : JSON.parse(item.addons);
   let addonPrice = 0;
   addons.forEach(addon => {
@@ -68,7 +70,14 @@ export const EventCard = ({userInfo, item, index, onClickLike, key, goTo}) => {
 
   return (
     <TouchableOpacity
-      onPress={() =>
+      onPress={() => {
+        dispatch({
+          type:
+            goTo === 'EventDetail'
+              ? 'SET_ITEM_MUTE_HOME'
+              : 'SET_ITEM_MUTE_SEARCH',
+          payload: false,
+        });
         goTo === 'EventDetail'
           ? navigation.navigate('Home', {
               screen: 'EventDetail',
@@ -77,8 +86,8 @@ export const EventCard = ({userInfo, item, index, onClickLike, key, goTo}) => {
           : navigation.navigate('Search', {
               screen: 'EventDetail1',
               params: {item: item},
-            })
-      }
+            });
+      }}
       style={styles.cardContainer}
       key={key}>
       <Image

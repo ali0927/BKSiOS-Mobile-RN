@@ -73,7 +73,7 @@ export const ProfileAuthorScreen = ({route}) => {
   const filterCheckList = [
     {id: 0, title: t('all'), label: 'all'},
     {id: 1, title: t('event'), label: 'event'},
-    {id: 2, title: t('digital Art'), label: 'digitalArt'},
+    {id: 2, title: t('digital art'), label: 'digitalArt'},
     {id: 3, title: t('service'), label: 'service'},
   ];
   const sortCheckList = [

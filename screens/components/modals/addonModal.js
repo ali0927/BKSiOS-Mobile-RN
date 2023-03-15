@@ -3,7 +3,6 @@ import {StyleSheet, Text, View, Platform} from 'react-native';
 import Modal from 'react-native-modal';
 
 export const AddonModal = ({addon, modalVisible, setModalVisible}) => {
-  console.log('DATA=>');
   return (
     <Modal
       isVisible={modalVisible}

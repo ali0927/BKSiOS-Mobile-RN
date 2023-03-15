@@ -55,7 +55,7 @@ export const SearchScreen = () => {
     getAllCollections().then(res => {
       if (res.success) {
         setIsLoading(false);
-        console.log(res.collections);
+        // console.log(res.collections);
         let temp = [];
         temp = res.collections;
         setAllCollections(temp);
@@ -93,7 +93,7 @@ export const SearchScreen = () => {
   }, []);
 
   useEffect(() => {
-    console.log('Search info changed', searchInfo);
+    console.log('Search info changed');
   }, [searchInfo]);
   return (
     <View style={styles.container}>

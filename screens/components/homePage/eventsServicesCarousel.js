@@ -59,7 +59,7 @@ const EventsServicesCarousel = () => {
   useEffect(() => {
     getAllEventCards().then(res => {
       if (res.success) {
-        console.log(res.eventcards);
+        // console.log(res.eventcards);
         let temp = [];
         temp = res.eventcards.sort(
           (a, b) =>

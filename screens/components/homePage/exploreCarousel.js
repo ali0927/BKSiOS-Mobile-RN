@@ -57,7 +57,7 @@ const ExploreCarousel = () => {
   useEffect(() => {
     getAllEventCards().then(res => {
       if (res.success) {
-        console.log('Explorer Event Result', res.eventcards);
+        // console.log('Explorer Event Result', res.eventcards);
         setEvents(res.eventcards);
       }
     });

@@ -39,7 +39,6 @@ export const SearchStackScreen = () => {
     const currentCollection = useSelector(
       state => state.collectionInfoReducer,
     ).currentCollection;
-    console.log('Current Collection:', currentCollection);
     return (
       <View style={styles.headerContainer}>
         <TouchableOpacity
@@ -56,10 +55,11 @@ export const SearchStackScreen = () => {
     );
   };
   useEffect(() => {
-    navigation.addListener('tabPress', e => {
+    navigation.addListener('focus', e => {
       dispatch({type: 'SET_TAB_INFO', payload: 'Explore'});
+      dispatch({type: 'SET_ITEM_MUTE_HOME', payload: true});
     });
-  }, [navigation]);
+  }, []);
   return (
     <SearchStack.Navigator
       initialRouteName="SearchMain"

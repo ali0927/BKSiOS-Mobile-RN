@@ -19,7 +19,7 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import bitkeepImg from '../../assets/img/bitkeep.png';
 import creditImg from '../../assets/img/credit-card.png';
 import ClockImg from '../../assets/img/icons/clock.svg';
@@ -60,12 +60,14 @@ export const EventDetailsScreen = ({route}) => {
   const _userInfo = useSelector(state => state.userInfoReducer).userInfo;
   const country = useSelector(state => state.locationInfoReducer).locationInfo;
   const tab = useSelector(state => state.tabInfoReducer).currentTab;
+  const isMuted = useSelector(state => state.itemInfoReducer).isMutedHome;
 
   const id = route.params.item.id;
   const tempData = route.params.item;
 
   const navigation = useNavigation();
   const {t} = useTranslation();
+  const dispatch = useDispatch();
 
   const [isSold, setSold] = useState(false);
   const [addons, setAddons] = useState([]);
@@ -81,7 +83,7 @@ export const EventDetailsScreen = ({route}) => {
   const [wallet, setWallet] = useState('');
   const [showCreditModal, setShowCreditModal] = useState(false);
   const [collectionPicture, setCollectionPicture] = useState('');
-  const [isMuted, setIsMuted] = useState(false);
+  // const [isMuted, setIsMuted] = useState(false);
   // Credit card
 
   const toggleModal = () => {
@@ -440,15 +442,20 @@ export const EventDetailsScreen = ({route}) => {
     setUserInfo(JSON.parse(_userInfo));
   }, [_userInfo]);
   useEffect(() => {
-    if (tab !== 'Home') setIsMuted(true);
-  }, [tab]);
+    console.log('MUTED:::', isMuted);
+  }, [isMuted]);
+  // useEffect(() => {
+  //   if (tab !== 'Home') setIsMuted(true);
+  // }, [tab]);
   return (
     <ScrollView style={styles.container}>
       {tempData && (
         <View style={styles.muteImg}>
           {isVideoFile(tempData.picture_large) ? (
             <TouchableHighlight
-              onPress={() => setIsMuted(!isMuted)}
+              onPress={() =>
+                dispatch({type: 'SET_ITEM_MUTE_HOME', payload: !isMuted})
+              }
               style={styles.eventImg}>
               <View style={{position: 'relative'}}>
                 {isMuted && (
